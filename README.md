@@ -110,41 +110,10 @@ To build:
 <pre>
 cd shared_ptr
 rm *.o
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
-
-# Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffeeb59b220, data=foo1)
-copy constructor Foo(0x7fdbb7c029f8, data=)
-delete Foo(0x7ffeeb59b220, data=foo1)
-sptr1 ref count now 1
-sptr2 ref count now 2
-
-# Try to create a deadlock:
-other use_count now 3
-sptr1 ref count now 2
-other use_count now 3
-sptr2 ref count now 2
-
-# Undo the 'deadlock':
-other use_count now 0
-sptr1 ref count now 2
-other use_count now 0
-sptr2 ref count now 2
-
-# Release the shared sptrs, expect foo1 to be destroyed:
-sptr1 ref count now 0
-delete Foo(0x7fdbb7c029f8, data=foo1)
-sptr2 ref count now 0
-
-# You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fdbb7c029b0, data=foo0)
-sptr0 = Foo(0x7fdbb7c029b0, data=foo0)
-delete Foo(0x7fdbb7c029b0, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -277,28 +246,10 @@ To build:
 <pre>
 cd shared_ptr_wrapper
 rm *.o
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
-
-# create a class and share it between two pointers:
-new Foo(0x7ffee1679658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee1679688,Foo(0x7fa6c1c029c8, data=foo1-data))
-delete Foo(0x7ffee1679658, data=foo1-data)
-sptr1 ref count now 1
-sptr2 ref count now 2
-
-# release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee1679688,Foo(0x7fa6c1c029c8, data=foo1-data))
-sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee1679608,Foo(0x7fa6c1c029c8, data=foo1-data))
-delete Foo(0x7fa6c1c029c8, data=foo1-data)
-sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee1679608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee1679688)
 </pre>
 How to use std::unique_ptr
 ==========================
@@ -380,21 +331,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee8fea088, data=foo1)
-copy constructor Foo(0x7feffcf00030, data=)
-delete Foo(0x7ffee8fea088, data=foo1)
+new Foo(0x7ffeed91e088, data=foo1)
+copy constructor Foo(0x7fbf29c029e0, data=)
+delete Foo(0x7ffeed91e088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7feffcf00050, data=foo2)
+new Foo(0x7fbf29c02a00, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7feffcf00030, data=foo1)
+uptr1 = Foo(0x7fbf29c029e0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7feffcf00050, data=foo2)
+uptr3 = Foo(0x7fbf29c02a00, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7feffcf00050, data=foo2)
-delete Foo(0x7feffcf00030, data=foo1)
+delete Foo(0x7fbf29c02a00, data=foo2)
+delete Foo(0x7fbf29c029e0, data=foo1)
 </pre>

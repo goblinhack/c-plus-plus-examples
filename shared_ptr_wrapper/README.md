@@ -129,26 +129,8 @@ To build:
 <pre>
 cd shared_ptr_wrapper
 rm *.o
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
-
-# create a class and share it between two pointers:
-new Foo(0x7ffee1679658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee1679688,Foo(0x7fa6c1c029c8, data=foo1-data))
-delete Foo(0x7ffee1679658, data=foo1-data)
-sptr1 ref count now 1
-sptr2 ref count now 2
-
-# release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee1679688,Foo(0x7fa6c1c029c8, data=foo1-data))
-sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee1679608,Foo(0x7fa6c1c029c8, data=foo1-data))
-delete Foo(0x7fa6c1c029c8, data=foo1-data)
-sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee1679608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee1679688)
 </pre>
