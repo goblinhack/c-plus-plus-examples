@@ -77,7 +77,7 @@ fi
 echo "    " >> .Makefile
 echo "EXE=$EXE # AUTOGEN" >> .Makefile
 echo "LDLIBS=$LDLIBS # AUTOGEN" >> .Makefile
-echo "CFLAGS=\$(COMPILER_FLAGS) \$(COMPILER_WARNINGS) # AUTOGEN" >> .Makefile
+echo "CXXFLAGS=\$(COMPILER_FLAGS) \$(COMPILER_WARNINGS) # AUTOGEN" >> .Makefile
 
 cat Makefile | grep -v AUTOGEN | grep -v "^    $" >> .Makefile
 

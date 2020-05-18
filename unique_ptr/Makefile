@@ -13,17 +13,16 @@ CC=clang # AUTOGEN
     
 EXE= # AUTOGEN
 LDLIBS= # AUTOGEN
-CFLAGS=$(COMPILER_FLAGS) $(COMPILER_WARNINGS) # AUTOGEN
+CXXFLAGS=$(COMPILER_FLAGS) $(COMPILER_WARNINGS) # AUTOGEN
 NAME=example
-OBJDIR=.o
 
-TARGET_OBJECTS=$(OBJDIR)/main.o
+TARGET_OBJECTS=main.o
 
-EXTRA_CFLAGS=
+EXTRA_CXXFLAGS=
 
-$(OBJDIR)/%.o: %.cpp
-	@echo $(CXX) $(EXTRA_CFLAGS) $(CFLAGS) -c -o $@ $<
-	@$(CXX) $(EXTRA_CFLAGS) $(CFLAGS) -c -o $@ $<
+%.o: %.cpp
+	@echo $(CXX) $(EXTRA_CXXFLAGS) $(CXXFLAGS) -c -o $@ $<
+	@$(CXX) $(EXTRA_CXXFLAGS) $(CXXFLAGS) -c -o $@ $<
 
 #
 # link
@@ -39,10 +38,9 @@ $(TARGET): $(TARGET_OBJECTS)
 .PHONY: clobber
 
 clean:
-	rm -rf $(TARGET) $(OBJDIR)/*.o
+	rm -rf *.o
 
 clobber: clean
-	mkdir -p $(OBJDIR)
 
 all: $(TARGET) 
 # DO NOT DELETE
