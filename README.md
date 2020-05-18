@@ -8,6 +8,8 @@ main features of the language. You can build each example individually
 or as a whole. Please let me know if this is useful to anyone or if
 there are any areas you want covered.
 
+work in progress
+----------------
 [shared pointer wrapper](shared_ptr_wrapper/README.md.md)
 
 Building
