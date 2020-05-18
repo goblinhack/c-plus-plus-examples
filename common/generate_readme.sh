@@ -32,7 +32,8 @@ cat $TEMPLATE | sed '/NOTE-BUILD-CODE/,/NOTE-RUN-CODE/!d' | grep -v "^NOTE-"
 # use $'...' when you want escape sequences to be interpreted by the shell.
 # as bsd sed cannot grok \x01b
 #
-./example | sed $'s,[\x01-\x1F\x7F]\[[0-9;]*[a-zA-Z],**,g'
+./example | sed -e $'s,[\x01-\x1F\x7F]\[[0-9;]*[a-zA-Z],**,g' \
+                -e 's/\*\*\(.*\)\*\*/<\/pre>**\1**<pre>/g'
 
 #
 # Remove the markers

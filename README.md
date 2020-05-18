@@ -97,27 +97,27 @@ c++ .o/main.o  -o example
 Expected output:
 <pre>
 
-**create a class and share it between two pointers:**
-new Foo(0x7ffee99a5758, data=foo1)
-delete Foo(0x7ffee99a5758, data=foo1)
+</pre>**create a class and share it between two pointers:**<pre>
+new Foo(0x7ffeeba1b758, data=foo1)
+delete Foo(0x7ffeeba1b758, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-**try to create a deadlock:**
+</pre>**try to create a deadlock:**<pre>
 other use_count now 3
 sptr1 ref count now 2
 other use_count now 3
 sptr2 ref count now 2
 
-**undo the deadlock:**
+</pre>**undo the deadlock:**<pre>
 other use_count now 0
 sptr1 ref count now 2
 other use_count now 0
 sptr2 ref count now 2
 
-**release the shared sptrs, expect foo1 to be destroyed:**
+</pre>**release the shared sptrs, expect foo1 to be destroyed:**<pre>
 sptr1 ref count now 0
-delete Foo(0x7fa5a34029f8, data=foo1)
+delete Foo(0x7ff0bbc029f8, data=foo1)
 sptr2 ref count now 0
 </pre>
 How to make your own wrapper around std::shared_ptr
@@ -259,19 +259,19 @@ c++ .o/main.o  -o example
 Expected output:
 <pre>
 
-**create a class and share it between two pointers:**
-new Foo(0x7ffee0327700, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee0327718,Foo(0x7f80254029c8, data=foo1-data))
-delete Foo(0x7ffee0327700, data=foo1-data)
+</pre>**create a class and share it between two pointers:**<pre>
+new Foo(0x7ffee7670700, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee7670718,Foo(0x7feb404029c8, data=foo1-data))
+delete Foo(0x7ffee7670700, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-**release the shared sptrs, expect foo1 to be destroyed:**
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0327718,Foo(0x7f80254029c8, data=foo1-data))
+</pre>**release the shared sptrs, expect foo1 to be destroyed:**<pre>
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7670718,Foo(0x7feb404029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0327760,Foo(0x7f80254029c8, data=foo1-data))
-delete Foo(0x7f80254029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7670760,Foo(0x7feb404029c8, data=foo1-data))
+delete Foo(0x7feb404029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0327760)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0327718)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7670760)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7670718)
 </pre>
