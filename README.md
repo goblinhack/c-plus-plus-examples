@@ -1,5 +1,5 @@
-Modern C++ examples
-===================
+Modern C++ (C++11 ... C++20) examples
+=====================================
 
 Are you looking for a collection of short snippets of modern C++ code
 covering features in C++11 and beyond? Of course you are! As I'm always
@@ -8,21 +8,16 @@ main features of the language. You can build each example individually
 or as a whole. Please let me know if this is useful to anyone or if
 there are any areas you want covered.
 
-work in progress
-----------------
-
 [shared pointer](shared_ptr/README.md)
 
 [shared pointer wrapper](shared_ptr_wrapper/README.md)
 
-Building all
-============
-
-Do
-
+To build all:
+=============
 <pre>
     sh ./RUNME
 </pre>
+
 std::shared_ptr example
 =======================
 
@@ -83,10 +78,10 @@ c++ .o/main.o  -o example
 
 Expected output:
 <pre>
-new Foo(0x7f8b644029c8, data=foo1-data)
-new Foo(0x7f8b64402a38, data=foo2-data)
-delete Foo(0x7f8b64402a38, data=foo2-data)
-delete Foo(0x7f8b644029c8, data=foo1-data)
+new Foo(0x7fb9b3c029c8, data=foo1-data)
+new Foo(0x7fb9b3c02a38, data=foo2-data)
+delete Foo(0x7fb9b3c02a38, data=foo2-data)
+delete Foo(0x7fb9b3c029c8, data=foo1-data)
 </pre>
 Simple C++ 11 wrapper for std::shared_ptr
 =========================================
