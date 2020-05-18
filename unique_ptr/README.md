@@ -5,7 +5,17 @@ Unique pointers are just that. They cannot be shared. If you try to share
 them you will find that an assign happens instead and the ownership of the
 pointer moves, leaving the old unique pointer looking at nullptr.
 
-To move unique pointers between owners, use std::move as below
+To create a unique pointer you can either use the following which is a bit
+long winded
+
+- std::unique_ptr<class Foo> uptr(new Foo("foo2"));
+
+Or, the following which hides the use of "new" but also invokes the copy
+constructor. If you don't want that, use the above.
+
+- auto uptr = std::make_unique< class Foo >(Foo("foo1"));
+
+To change the ownership of a unique pointer, use std::move
 
 ```C++
 #include <memory>
@@ -13,27 +23,20 @@ To move unique pointers between owners, use std::move as below
 #include <sstream>
 #include "../common/common.h"
 
-typedef std::shared_ptr< class Foo > Foop;
-
 class Foo {
 private:
     std::string data; // local data for foo for debugging
-    Foop other;       // pointer to other Foo's so we can make a deadlock
 public:
     Foo(std::string data) : data(data) {
         std::cout << "new " << to_string() << std::endl;
     }
+    Foo(const Foo& other) {
+        std::cout << "copy constructor " << to_string() << std::endl;
+        data = other.data;
+    }
     ~Foo() {
         // Note, other.reset will be called for us
         std::cout << "delete " << to_string() << std::endl;
-    }
-    void addref (Foop other) {
-        other = other;
-        std::cout << "other use_count now " << other.use_count() << std::endl;
-    }
-    void delref (void) {
-        other.reset();
-        std::cout << "other use_count now " << other.use_count() << std::endl;
     }
     std::string to_string (void) {
         auto address = static_cast<const void*>(this);
@@ -45,62 +48,51 @@ public:
 
 int main (void)
 {
-    // create a class and share it between two pointers:
-    auto sptr1 = std::make_shared< class Foo >(Foo("foo1"));
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    auto sptr2 = sptr1;
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+    // NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
+    auto uptr1 = std::make_unique< class Foo >(Foo("foo1"));
 
-    // try to create a deadlock:
-    sptr1->addref(sptr2);
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    sptr2->addref(sptr1);
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+    // NOTE: to avoid the copy, do this:
+    std::unique_ptr<class Foo> uptr2(new Foo("foo2"));
 
-    // undo the deadlock:
-    sptr1->delref();
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    sptr2->delref();
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+    // As you cannot copy unique pointers, reassign it with move
+    std::unique_ptr<class Foo> uptr3;
+    uptr3 = std::move(uptr2);
 
-    // release the shared sptrs, expect foo1 to be destroyed:
-    sptr1.reset();
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    sptr2.reset();
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+    // Let's print all the unique ptrs now
+    std::cout << "uptr1 = " << (uptr1.get() ? uptr1->to_string() : "nullptr") << std::endl;
+    std::cout << "uptr2 = " << (uptr2.get() ? uptr2->to_string() : "nullptr") << std::endl;
+    std::cout << "uptr3 = " << (uptr3.get() ? uptr3->to_string() : "nullptr") << std::endl;
+
+    // Expect the unique ptr data to be destroyed now
 }
 ```
 To build:
 <pre>
-cd shared_ptr
+cd unique_ptr
 rm -rf example .o/*.o
-c++ -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o .o/main.o main.cpp
 c++ .o/main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# create a class and share it between two pointers:
-new Foo(0x7ffeef188758, data=foo1)
-delete Foo(0x7ffeef188758, data=foo1)
-sptr1 ref count now 1
-sptr2 ref count now 2
+# NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
+new Foo(0x7ffee0256088, data=foo1)
+copy constructor Foo(0x7f9575c029e0, data=)
+delete Foo(0x7ffee0256088, data=foo1)
 
-# try to create a deadlock:
-other use_count now 3
-sptr1 ref count now 2
-other use_count now 3
-sptr2 ref count now 2
+# NOTE: to avoid the copy, do this:
+new Foo(0x7f9575c02a00, data=foo2)
 
-# undo the deadlock:
-other use_count now 0
-sptr1 ref count now 2
-other use_count now 0
-sptr2 ref count now 2
+# As you cannot copy unique pointers, reassign it with move
 
-# release the shared sptrs, expect foo1 to be destroyed:
-sptr1 ref count now 0
-delete Foo(0x7fdd47d000c8, data=foo1)
-sptr2 ref count now 0
+# Let's print all the unique ptrs now
+uptr1 = Foo(0x7f9575c029e0, data=foo1)
+uptr2 = nullptr
+uptr3 = Foo(0x7f9575c02a00, data=foo2)
+
+# Expect the unique ptr data to be destroyed now
+delete Foo(0x7f9575c02a00, data=foo2)
+delete Foo(0x7f9575c029e0, data=foo1)
 </pre>
