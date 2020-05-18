@@ -1,0 +1,22 @@
+NOTE-BEGIN
+std::shared_ptr example
+=======================
+
+Here we create two instances of a std::shared_ptr and then make them point to
+each other. This creates a deadlock which can only be resolved by calling 
+reset() upon which the pointers can then be destructed.
+
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
