@@ -15,9 +15,3 @@ covered. This is (probably forever) a work in progress.
 
 [How to make your own wrapper around std::shared_ptr](shared_ptr_wrapper/README.md)
 
-To build all:
-=============
-<pre>
-    sh ./RUNME
-</pre>
-
