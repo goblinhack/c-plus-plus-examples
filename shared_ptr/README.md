@@ -58,8 +58,8 @@ c++ .o/main.o  -o example
 
 Expected output:
 <pre>
-new Foo(0x7fb9b84029c8, data=foo1-data)
-new Foo(0x7fb9b8402a38, data=foo2-data)
-delete Foo(0x7fb9b8402a38, data=foo2-data)
-delete Foo(0x7fb9b84029c8, data=foo1-data)
+new Foo(0x7f8b644029c8, data=foo1-data)
+new Foo(0x7f8b64402a38, data=foo2-data)
+delete Foo(0x7f8b64402a38, data=foo2-data)
+delete Foo(0x7f8b644029c8, data=foo1-data)
 </pre>
