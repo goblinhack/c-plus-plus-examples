@@ -1,0 +1,10 @@
+#!/bin/sh
+for i in \
+    shared_ptr \
+    shared_ptr_wrapper
+do
+    echo $i:
+    (cd $i; sh ./RUNME)
+    echo
+done
+cat README.md.template */README.md > README.md
