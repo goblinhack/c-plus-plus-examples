@@ -12,6 +12,7 @@ work in progress
 ----------------
 
 [shared pointer](shared_ptr/README.md)
+
 [shared pointer wrapper](shared_ptr_wrapper/README.md)
 
 Building all
