@@ -1,4 +1,4 @@
-COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 -O2  # AUTOGEN
+COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 # AUTOGEN
     
 CLANG_COMPILER_WARNINGS=-Wall # AUTOGEN
 GCC_COMPILER_WARNINGS=-Wall # AUTOGEN
@@ -19,7 +19,7 @@ OBJDIR=.o
 
 TARGET_OBJECTS=$(OBJDIR)/main.o
 
-EXTRA_CFLAGS=-std=c++11
+EXTRA_CFLAGS=
 
 $(OBJDIR)/%.o: %.cpp
 	@echo $(CXX) $(EXTRA_CFLAGS) $(CFLAGS) -c -o $@ $<

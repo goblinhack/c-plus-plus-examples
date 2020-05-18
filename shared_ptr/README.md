@@ -72,7 +72,7 @@ To build:
 <pre>
 cd shared_ptr
 rm -rf example .o/*.o
-c++ -std=c++11 -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
+c++ -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
 c++ .o/main.o  -o example
 ./example
 </pre>
@@ -80,8 +80,8 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffee92d9758, data=foo1)
-delete Foo(0x7ffee92d9758, data=foo1)
+new Foo(0x7ffeef188758, data=foo1)
+delete Foo(0x7ffeef188758, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -99,6 +99,6 @@ sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7f92204029f8, data=foo1)
+delete Foo(0x7fdd47d000c8, data=foo1)
 sptr2 ref count now 0
 </pre>

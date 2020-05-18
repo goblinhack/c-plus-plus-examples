@@ -24,8 +24,7 @@ cat Makefile.base | sed '/DO NOT DELETE/,$d' > Makefile.tmp
 mv Makefile.tmp Makefile
 makedepend *.cpp -p .o/ 2>/dev/null
 
-echo "COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 -O0 $SDL_FLAGS # AUTOGEN" >> .Makefile
-echo "COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 -O2 $SDL_FLAGS # AUTOGEN" > .Makefile
+echo "COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 # AUTOGEN" > .Makefile
 echo "    " >> .Makefile
 echo "CLANG_COMPILER_WARNINGS=-Wall # AUTOGEN" >> .Makefile
 echo "GCC_COMPILER_WARNINGS=-Wall # AUTOGEN" >> .Makefile
