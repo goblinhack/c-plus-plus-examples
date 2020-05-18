@@ -1,8 +1,7 @@
 NAME=example
 OBJDIR=.o
 
-TARGET_OBJECTS=$(OBJDIR)/main.o \
-               $(OBJDIR)/traceback.o $(OBJDIR)/ptrcheck.o $(OBJDIR)/sprintf.o
+TARGET_OBJECTS=$(OBJDIR)/main.o
 
 EXTRA_CFLAGS=-std=c++11
 

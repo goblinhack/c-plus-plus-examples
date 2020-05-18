@@ -1,5 +1,5 @@
-std::shared_ptr example
-=======================
+How to use std::shared_ptr
+==========================
 
 Here we create two instances of a std::shared_ptr and then make them point to
 each other. This creates a deadlock which can only be resolved by calling 
@@ -58,8 +58,8 @@ c++ .o/main.o  -o example
 
 Expected output:
 <pre>
-new Foo(0x7fec9ac029c8, data=foo1-data)
-new Foo(0x7fec9ac02a38, data=foo2-data)
-delete Foo(0x7fec9ac02a38, data=foo2-data)
-delete Foo(0x7fec9ac029c8, data=foo1-data)
+new Foo(0x7ff8dd4029c8, data=foo1-data)
+new Foo(0x7ff8dd402a38, data=foo2-data)
+delete Foo(0x7ff8dd402a38, data=foo2-data)
+delete Foo(0x7ff8dd4029c8, data=foo1-data)
 </pre>

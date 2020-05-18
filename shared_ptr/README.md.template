@@ -1,6 +1,6 @@
 NOTE-BEGIN
-std::shared_ptr example
-=======================
+How to use std::shared_ptr
+==========================
 
 Here we create two instances of a std::shared_ptr and then make them point to
 each other. This creates a deadlock which can only be resolved by calling 
