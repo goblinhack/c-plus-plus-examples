@@ -1,0 +1,33 @@
+NOTE-BEGIN
+How to use std::unique_ptr
+==========================
+
+Unique pointers are just that. They cannot be shared. If you try to share
+them you will find that an assign happens instead and the ownership of the
+pointer moves, leaving the old unique pointer looking at nullptr.
+
+To create a unique pointer you can either use the following which is a bit
+long winded
+
+- std::unique_ptr<class Foo> uptr(new Foo("foo2"));
+
+Or, the following which hides the use of "new" but also invokes the copy
+constructor. If you don't want that, use the above.
+
+- auto uptr = std::make_unique< class Foo >(Foo("foo1"));
+
+To change the ownership of a unique pointer, use std::move
+
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

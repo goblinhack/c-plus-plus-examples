@@ -13,6 +13,11 @@ public:
     Foo(std::string data) : data(data) {
         std::cout << "new " << to_string() << std::endl;
     }
+    Foo(const Foo& o) {
+        std::cout << "copy constructor " << to_string() << std::endl;
+        data = o.data;
+        other = o.other;
+    }
     ~Foo() {
         // Note, other.reset will be called for us
         std::cout << "delete " << to_string() << std::endl;
@@ -35,27 +40,31 @@ public:
 
 int main (void)
 {
-    DOC("create a class and share it between two pointers:");
+    DOC("Create a copy constructed class and share it between two pointers:");
     auto sptr1 = std::make_shared< class Foo >(Foo("foo1"));
     std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
     auto sptr2 = sptr1;
     std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 
-    DOC("try to create a deadlock:");
+    DOC("Try to create a deadlock:");
     sptr1->addref(sptr2);
     std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
     sptr2->addref(sptr1);
     std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 
-    DOC("undo the deadlock:");
+    DOC("Undo the 'deadlock':");
     sptr1->delref();
     std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
     sptr2->delref();
     std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 
-    DOC("release the shared sptrs, expect foo1 to be destroyed:");
+    DOC("Release the shared sptrs, expect foo1 to be destroyed:");
     sptr1.reset();
     std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
     sptr2.reset();
     std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+
+    DOC("You can also create shared pointers WITHOUT copy constructor overhead");
+    std::shared_ptr<class Foo> sptr0(new Foo("foo0"));
+    std::cout << "sptr0 = " << (sptr0.get() ? sptr0->to_string() : "nullptr") << std::endl;
 }

@@ -129,7 +129,7 @@ To build:
 <pre>
 cd shared_ptr_wrapper
 rm -rf example .o/*.o
-c++ -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o .o/main.o main.cpp
 c++ .o/main.o  -o example
 ./example
 </pre>
@@ -137,18 +137,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffee44cc700, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee44cc718,Foo(0x7fc88b4029c8, data=foo1-data))
-delete Foo(0x7ffee44cc700, data=foo1-data)
+new Foo(0x7ffee2f70658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee2f70688,Foo(0x7feff74029c8, data=foo1-data))
+delete Foo(0x7ffee2f70658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee44cc718,Foo(0x7fc88b4029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee2f70688,Foo(0x7feff74029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee44cc760,Foo(0x7fc88b4029c8, data=foo1-data))
-delete Foo(0x7fc88b4029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee2f70608,Foo(0x7feff74029c8, data=foo1-data))
+delete Foo(0x7feff74029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee44cc760)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee44cc718)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee2f70608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee2f70688)
 </pre>

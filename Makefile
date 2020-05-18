@@ -1,4 +1,4 @@
-SUBDIRS=shared_ptr shared_ptr_wrapper
+SUBDIRS=unique_ptr shared_ptr shared_ptr_wrapper
 
 #
 # To force clean and avoid "up to date" warning.

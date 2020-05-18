@@ -1,0 +1,50 @@
+COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 # AUTOGEN
+    
+CLANG_COMPILER_WARNINGS=-Wall # AUTOGEN
+GCC_COMPILER_WARNINGS=-Wall # AUTOGEN
+GXX_COMPILER_WARNINGS=-Wall # AUTOGEN
+COMPILER_WARNINGS=$(GCC_COMPILER_WARNINGS) # AUTOGEN
+COMPILER_WARNINGS=$(GXX_COMPILER_WARNINGS) # AUTOGEN
+COMPILER_WARNINGS=$(CLANG_COMPILER_WARNINGS) # AUTOGEN
+CC=clang # AUTOGEN
+# CC=gcc # AUTOGEN
+# CC=cc # AUTOGEN
+# CC=g++ # AUTOGEN
+    
+EXE= # AUTOGEN
+LDLIBS= # AUTOGEN
+CFLAGS=$(COMPILER_FLAGS) $(COMPILER_WARNINGS) # AUTOGEN
+NAME=example
+OBJDIR=.o
+
+TARGET_OBJECTS=$(OBJDIR)/main.o
+
+EXTRA_CFLAGS=
+
+$(OBJDIR)/%.o: %.cpp
+	@echo $(CXX) $(EXTRA_CFLAGS) $(CFLAGS) -c -o $@ $<
+	@$(CXX) $(EXTRA_CFLAGS) $(CFLAGS) -c -o $@ $<
+
+#
+# link
+#
+TARGET=$(NAME)$(EXE)
+$(TARGET): $(TARGET_OBJECTS)
+	$(CXX) $(TARGET_OBJECTS) $(LDLIBS) -o $(TARGET)
+
+#
+# To force clean and avoid "up to date" warning.
+#
+.PHONY: clean
+.PHONY: clobber
+
+clean:
+	rm -rf $(TARGET) $(OBJDIR)/*.o
+
+clobber: clean
+	mkdir -p $(OBJDIR)
+
+all: $(TARGET) 
+# DO NOT DELETE
+
+.o/main.o: ../common/common.h

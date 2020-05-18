@@ -6,6 +6,16 @@ Here we create two instances of a std::shared_ptr and then make them point to
 each other. This creates a deadlock which can only be resolved by calling 
 reset() upon which the pointers can then be destructed.
 
+To create a shared pointer you can either use the following which is a bit
+long winded
+
+- std::shared_ptr<class Foo> sptr(new Foo("foo2"));
+
+Or, the following which hides the use of "new" but also invokes the copy
+constructor. If you don't want that, use the above.
+
+- auto sptr = std::make_shared< class Foo >(Foo("foo1"));
+
 ```C++
 NOTE-READ-CODE
 ```

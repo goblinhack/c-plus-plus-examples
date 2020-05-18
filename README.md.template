@@ -11,6 +11,8 @@ individually or as a whole.
 Let me know if this is useful to anyone or if there are any areas you want
 covered. This is (probably forever) a work in progress.
 
+[How to use std::unique_ptr](unique_ptr/README.md)
+
 [How to use std::shared_ptr](shared_ptr/README.md)
 
 [How to make your own wrapper around std::shared_ptr](shared_ptr_wrapper/README.md)
