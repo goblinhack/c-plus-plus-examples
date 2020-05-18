@@ -76,30 +76,29 @@ c++ -std=c++11 -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
 c++ .o/main.o  -o example
 ./example
 </pre>
-
 Expected output:
 <pre>
 
-</pre>**create a class and share it between two pointers:**<pre>
-new Foo(0x7ffeeba1b758, data=foo1)
-delete Foo(0x7ffeeba1b758, data=foo1)
+# create a class and share it between two pointers:
+new Foo(0x7ffee92d9758, data=foo1)
+delete Foo(0x7ffee92d9758, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-</pre>**try to create a deadlock:**<pre>
+# try to create a deadlock:
 other use_count now 3
 sptr1 ref count now 2
 other use_count now 3
 sptr2 ref count now 2
 
-</pre>**undo the deadlock:**<pre>
+# undo the deadlock:
 other use_count now 0
 sptr1 ref count now 2
 other use_count now 0
 sptr2 ref count now 2
 
-</pre>**release the shared sptrs, expect foo1 to be destroyed:**<pre>
+# release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7ff0bbc029f8, data=foo1)
+delete Foo(0x7f92204029f8, data=foo1)
 sptr2 ref count now 0
 </pre>

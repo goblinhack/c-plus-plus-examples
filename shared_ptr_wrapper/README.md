@@ -133,23 +133,22 @@ c++ -std=c++11 -std=c++2a -Werror -g -ggdb3 -O2 -Wall -c -o .o/main.o main.cpp
 c++ .o/main.o  -o example
 ./example
 </pre>
-
 Expected output:
 <pre>
 
-</pre>**create a class and share it between two pointers:**<pre>
-new Foo(0x7ffee7670700, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee7670718,Foo(0x7feb404029c8, data=foo1-data))
-delete Foo(0x7ffee7670700, data=foo1-data)
+# create a class and share it between two pointers:
+new Foo(0x7ffee74d7700, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee74d7718,Foo(0x7fedf24029c8, data=foo1-data))
+delete Foo(0x7ffee74d7700, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-</pre>**release the shared sptrs, expect foo1 to be destroyed:**<pre>
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7670718,Foo(0x7feb404029c8, data=foo1-data))
+# release the shared sptrs, expect foo1 to be destroyed:
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee74d7718,Foo(0x7fedf24029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7670760,Foo(0x7feb404029c8, data=foo1-data))
-delete Foo(0x7feb404029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee74d7760,Foo(0x7fedf24029c8, data=foo1-data))
+delete Foo(0x7fedf24029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7670760)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7670718)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee74d7760)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee74d7718)
 </pre>
