@@ -38,7 +38,7 @@ $(TARGET): $(TARGET_OBJECTS)
 .PHONY: clobber
 
 clean:
-	rm -rf *.o
+	rm -f *.o $(TARGET)
 
 clobber: clean
 
