@@ -3,7 +3,7 @@ How to make your own wrapper around std::shared_ptr
 ===================================================
 
 Here we create a wrapper around std::shared_ptr. Why? Mostly educational,
-but you could use this to keep track of memory allcoation and frees as part
+but you could use this to keep track of memory allocation and frees as part
 of a basic leak detector.
 
 We will create two instances of our wrapper around std::shared_ptr and then
