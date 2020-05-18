@@ -137,19 +137,19 @@ c++ .o/main.o  -o example
 Expected output:
 <pre>
 
-[31;1;4mcreate a class and share it between two pointers:[0m
-new Foo(0x7ffee7ba8700, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee7ba8718,Foo(0x7fae474029c8, data=foo1-data))
-delete Foo(0x7ffee7ba8700, data=foo1-data)
+**create a class and share it between two pointers:**
+new Foo(0x7ffee0327700, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee0327718,Foo(0x7f80254029c8, data=foo1-data))
+delete Foo(0x7ffee0327700, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-[31;1;4mrelease the shared sptrs, expect foo1 to be destroyed:[0m
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7ba8718,Foo(0x7fae474029c8, data=foo1-data))
+**release the shared sptrs, expect foo1 to be destroyed:**
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0327718,Foo(0x7f80254029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7ba8760,Foo(0x7fae474029c8, data=foo1-data))
-delete Foo(0x7fae474029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0327760,Foo(0x7f80254029c8, data=foo1-data))
+delete Foo(0x7f80254029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7ba8760)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7ba8718)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0327760)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0327718)
 </pre>

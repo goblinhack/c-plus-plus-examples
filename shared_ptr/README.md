@@ -80,26 +80,26 @@ c++ .o/main.o  -o example
 Expected output:
 <pre>
 
-[31;1;4mcreate a class and share it between two pointers:[0m
-new Foo(0x7ffee7731758, data=foo1)
-delete Foo(0x7ffee7731758, data=foo1)
+**create a class and share it between two pointers:**
+new Foo(0x7ffee99a5758, data=foo1)
+delete Foo(0x7ffee99a5758, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-[31;1;4mtry to create a deadlock:[0m
+**try to create a deadlock:**
 other use_count now 3
 sptr1 ref count now 2
 other use_count now 3
 sptr2 ref count now 2
 
-[31;1;4mundo the deadlock:[0m
+**undo the deadlock:**
 other use_count now 0
 sptr1 ref count now 2
 other use_count now 0
 sptr2 ref count now 2
 
-[31;1;4mrelease the shared sptrs, expect foo1 to be destroyed:[0m
+**release the shared sptrs, expect foo1 to be destroyed:**
 sptr1 ref count now 0
-delete Foo(0x7f92124029f8, data=foo1)
+delete Foo(0x7fa5a34029f8, data=foo1)
 sptr2 ref count now 0
 </pre>
