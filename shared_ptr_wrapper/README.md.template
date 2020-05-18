@@ -6,10 +6,6 @@ Here we create a wrapper around std::shared_ptr. Why? Mostly educational,
 but you could use this to keep track of memory allocation and frees as part
 of a basic leak detector.
 
-We will create two instances of our wrapper around std::shared_ptr and then
-make them point to each other. This creates a deadlock which can only be
-resolved by calling reset() upon which the pointers can then be destructed.
-
 ```C++
 NOTE-READ-CODE
 ```

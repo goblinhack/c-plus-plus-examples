@@ -5,23 +5,20 @@ Here we create a wrapper around std::shared_ptr. Why? Mostly educational,
 but you could use this to keep track of memory allocation and frees as part
 of a basic leak detector.
 
-We will create two instances of our wrapper around std::shared_ptr and then
-make them point to each other. This creates a deadlock which can only be
-resolved by calling reset() upon which the pointers can then be destructed.
-
 ```C++
 #include <memory>
 #include <sstream>
 #include <string>
 #include <iostream>
+#include "../common/common.h"
 
-template <typename T> class SmartPointerWrapper {
+template <typename T> class MySharedPtr {
 private:
     std::shared_ptr<T> sptr;
     std::string name {"nullptr"};
 
     void debug (const std::string &what) {
-        std::cout << what << " " << to_string() << std::endl;
+        std::cout << name << ": " << what << " " << to_string() << std::endl;
     }
 
     std::string to_string (void) {
@@ -29,55 +26,72 @@ private:
         std::stringstream ss;
         ss << address;
         if (sptr) {
-            return "SmartPointerWrapper(" + ss.str() + "," + sptr->to_string() + ")";
+            return "MySharedPtr(" + ss.str() + "," + sptr->to_string() + ")";
         } else {
-            return "SmartPointerWrapper(" + ss.str() + ")";
+            return "MySharedPtr(" + ss.str() + ")";
         }
     }
 public:
     // explicit means constructor must match exactly
-    template <typename ...ARGS> explicit 
-      SmartPointerWrapper(const std::string &name, ARGS... a) : name(name) { 
+    template <typename ...ARGS> explicit
+      MySharedPtr(const std::string &name, ARGS... a) : name(name) {
         sptr = std::make_shared<T>(a...);
-        debug("make_shared");
+        debug("MySharedPtr::make_shared");
     }
 
-    explicit SmartPointerWrapper(const std::string &name) : name(name) { 
+    explicit MySharedPtr(const std::string &name) : name(name) {
         sptr = std::make_shared<T>();
-        debug("make_shared");
+        debug("MySharedPtr::make_shared");
     }
 
-    explicit SmartPointerWrapper(void) {
-        debug("init");
+    explicit MySharedPtr(void) {
+        debug("MySharedPtr::default constructor");
     }
 
-    ~SmartPointerWrapper() {
-        debug("delete");
+    ~MySharedPtr() {
+        debug("MySharedPtr::delete");
     }
 
-    void rename(const std::string &name) { 
-        this->name = name;
-        debug("rename");
+    T* const operator->() {
+        debug("MySharedPtr::-> dereference");
+        return sptr.operator->();
     }
 
-    T* const operator->() { return sptr.operator->(); }
-    T* get() const { return sptr.get(); }
-    T& operator*() { return *sptr; }
-    const T& operator*() const { return *sptr; }
-    operator bool() const { return (bool)sptr; }
+    T* get() const {
+        debug("MySharedPtr::get ptr");
+        return sptr.get();
+    }
 
-    void reset() { 
-        debug("reset");
-        sptr.reset(); 
+    T& operator*() {
+        debug("MySharedPtr::* ptr");
+        return *sptr;
+    }
+
+    const T& operator*() const {
+        debug("MySharedPtr::const * ptr");
+        return *sptr;
+    }
+
+    operator bool() const {
+        debug("MySharedPtr::bool");
+        return (bool)sptr;
+    }
+
+    size_t use_count(void) const {
+        return sptr.use_count();
+    }
+
+    void reset() {
+        debug("MySharedPtr::reset");
+        sptr.reset();
     }
 };
 
-typedef SmartPointerWrapper< class Foo > Foop;
+typedef MySharedPtr< class Foo > Foop;
 
 class Foo {
 private:
     std::string data;
-    Foop other {};
     void debug (const std::string &what) {
         std::cout << what << " " << to_string() << std::endl;
     }
@@ -87,12 +101,6 @@ public:
     }
     ~Foo() {
         debug("delete");
-    }
-    void addref (Foop other) {
-        other = other;
-    }
-    void delref (void) {
-        other.reset();
     }
     std::string to_string (void) {
         auto address = static_cast<const void*>(this);
@@ -104,14 +112,17 @@ public:
 
 int main (void)
 {
-    auto foo1 = SmartPointerWrapper< class Foo >(std::string("foo1"),
-                                                 std::string("foo1-data"));
-    auto foo2 = SmartPointerWrapper< class Foo >(std::string("foo2"),
-                                                 std::string("foo2-data"));
-    foo1->addref(foo2);
-    foo2->addref(foo1);
-    foo1->delref();
-    foo2->delref();
+    // create a class and share it between two pointers:
+    auto sptr1 = MySharedPtr< class Foo >("[foo1]", Foo("foo1-data"));
+    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
+    auto sptr2 = sptr1;
+    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+
+    // release the shared sptrs, expect foo1 to be destroyed:
+    sptr1.reset();
+    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
+    sptr2.reset();
+    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 }
 ```
 To build:
@@ -125,20 +136,20 @@ c++ .o/main.o  -o example
 
 Expected output:
 <pre>
-init SmartPointerWrapper(0x7f9078c029e0)
-new Foo(0x7f9078c029c8, data=foo1-data)
-make_shared SmartPointerWrapper(0x7ffee0ca0688,Foo(0x7f9078c029c8, data=foo1-data))
-init SmartPointerWrapper(0x7f9078c02ae0)
-new Foo(0x7f9078c02ac8, data=foo2-data)
-make_shared SmartPointerWrapper(0x7ffee0ca0760,Foo(0x7f9078c02ac8, data=foo2-data))
-delete SmartPointerWrapper(0x7ffee0ca06b0,Foo(0x7f9078c02ac8, data=foo2-data))
-delete SmartPointerWrapper(0x7ffee0ca06d8,Foo(0x7f9078c029c8, data=foo1-data))
-reset SmartPointerWrapper(0x7f9078c029e0)
-reset SmartPointerWrapper(0x7f9078c02ae0)
-delete SmartPointerWrapper(0x7ffee0ca0760,Foo(0x7f9078c02ac8, data=foo2-data))
-delete Foo(0x7f9078c02ac8, data=foo2-data)
-delete SmartPointerWrapper(0x7f9078c02ae0)
-delete SmartPointerWrapper(0x7ffee0ca0688,Foo(0x7f9078c029c8, data=foo1-data))
-delete Foo(0x7f9078c029c8, data=foo1-data)
-delete SmartPointerWrapper(0x7f9078c029e0)
+
+[31;1;4mcreate a class and share it between two pointers:[0m
+new Foo(0x7ffee7ba8700, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee7ba8718,Foo(0x7fae474029c8, data=foo1-data))
+delete Foo(0x7ffee7ba8700, data=foo1-data)
+sptr1 ref count now 1
+sptr2 ref count now 2
+
+[31;1;4mrelease the shared sptrs, expect foo1 to be destroyed:[0m
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7ba8718,Foo(0x7fae474029c8, data=foo1-data))
+sptr1 ref count now 0
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7ba8760,Foo(0x7fae474029c8, data=foo1-data))
+delete Foo(0x7fae474029c8, data=foo1-data)
+sptr2 ref count now 0
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7ba8760)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7ba8718)
 </pre>

@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# This is a wrapper script to build all examples and update the documents
+#
 for i in \
     shared_ptr \
     shared_ptr_wrapper
