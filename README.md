@@ -10,7 +10,7 @@ there are any areas you want covered.
 
 work in progress
 ----------------
-[shared pointer wrapper](shared_ptr_wrapper/README.md.md)
+[shared pointer wrapper](shared_ptr_wrapper/README.md)
 
 Building
 ========
