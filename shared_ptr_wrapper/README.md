@@ -2,7 +2,7 @@ How to make your own wrapper around std::shared_ptr
 ===================================================
 
 Here we create a wrapper around std::shared_ptr. Why? Mostly educational,
-but you could use this to keep track of memory allcoation and frees as part
+but you could use this to keep track of memory allocation and frees as part
 of a basic leak detector.
 
 We will create two instances of our wrapper around std::shared_ptr and then
@@ -125,20 +125,20 @@ c++ .o/main.o  -o example
 
 Expected output:
 <pre>
-init SmartPointerWrapper(0x7f94984029e0)
-new Foo(0x7f94984029c8, data=foo1-data)
-make_shared SmartPointerWrapper(0x7ffee4ea9688,Foo(0x7f94984029c8, data=foo1-data))
-init SmartPointerWrapper(0x7f9498402ae0)
-new Foo(0x7f9498402ac8, data=foo2-data)
-make_shared SmartPointerWrapper(0x7ffee4ea9760,Foo(0x7f9498402ac8, data=foo2-data))
-delete SmartPointerWrapper(0x7ffee4ea96b0,Foo(0x7f9498402ac8, data=foo2-data))
-delete SmartPointerWrapper(0x7ffee4ea96d8,Foo(0x7f94984029c8, data=foo1-data))
-reset SmartPointerWrapper(0x7f94984029e0)
-reset SmartPointerWrapper(0x7f9498402ae0)
-delete SmartPointerWrapper(0x7ffee4ea9760,Foo(0x7f9498402ac8, data=foo2-data))
-delete Foo(0x7f9498402ac8, data=foo2-data)
-delete SmartPointerWrapper(0x7f9498402ae0)
-delete SmartPointerWrapper(0x7ffee4ea9688,Foo(0x7f94984029c8, data=foo1-data))
-delete Foo(0x7f94984029c8, data=foo1-data)
-delete SmartPointerWrapper(0x7f94984029e0)
+init SmartPointerWrapper(0x7f9078c029e0)
+new Foo(0x7f9078c029c8, data=foo1-data)
+make_shared SmartPointerWrapper(0x7ffee0ca0688,Foo(0x7f9078c029c8, data=foo1-data))
+init SmartPointerWrapper(0x7f9078c02ae0)
+new Foo(0x7f9078c02ac8, data=foo2-data)
+make_shared SmartPointerWrapper(0x7ffee0ca0760,Foo(0x7f9078c02ac8, data=foo2-data))
+delete SmartPointerWrapper(0x7ffee0ca06b0,Foo(0x7f9078c02ac8, data=foo2-data))
+delete SmartPointerWrapper(0x7ffee0ca06d8,Foo(0x7f9078c029c8, data=foo1-data))
+reset SmartPointerWrapper(0x7f9078c029e0)
+reset SmartPointerWrapper(0x7f9078c02ae0)
+delete SmartPointerWrapper(0x7ffee0ca0760,Foo(0x7f9078c02ac8, data=foo2-data))
+delete Foo(0x7f9078c02ac8, data=foo2-data)
+delete SmartPointerWrapper(0x7f9078c02ae0)
+delete SmartPointerWrapper(0x7ffee0ca0688,Foo(0x7f9078c029c8, data=foo1-data))
+delete Foo(0x7f9078c029c8, data=foo1-data)
+delete SmartPointerWrapper(0x7f9078c029e0)
 </pre>
