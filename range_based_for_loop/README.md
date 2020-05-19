@@ -1,155 +1,60 @@
-How to use std::move
-====================
+How to use a range based for loop
+=================================
+
+A nice extension in C++ 11 is range based for loops. They are both
+readable and safer as you do not need to manually specify the boundary
+conditions.
+
+There are a few ways to walk such lists. One is via a constant iterator e.g.:
 
 By now you will have seen the following range based for loop e.g.:
 ```C++
-    for (i : container) { }
+    for (auto const i : container) { }
 ```
-Now it would be nice to apply that to our own classes too. To do this,
-you need to define something that can hold where we are in the processing
-loop, called an iterator e.g.:
+Another, if you wish to modify the data as you go is:
 ```C++
-    class Iterator {
-    public:
-        Iterator(T* ptr) : ptr(ptr) {}
-        Iterator operator++() { ++ptr; return *this; }
-        bool operator!= (const Iterator& o) const {
-            return ptr != o.ptr;
-        }
-        const T& operator*() const { return *ptr; }
-   private:
-       T* ptr;
-   };
-public:
-   Iterator begin() const { return Iterator(data); }
-   Iterator end() const { return Iterator(data + len); }
+    for (auto &i : container) { }
 ```
-Notice that the iterator has some private data that we increment as
-we walk.
+However it may be 'simpler' to always do the following and use a forward reference:
+```C++
+    for (auto &&i : container) { }
+```
+This handles corner cases for things like vectors of bitfields that you cannot have
+a reference to.
 
 Here is a full example:
 ```C++
 #include <iostream>
-#include <sstream>
 #include <algorithm>
+#include <vector>
 #include "../common/common.h"
 
-template<class T> class MyVector {
-private:
-    T *data;
-    size_t maxlen;
-    size_t currlen;
-public:
-    MyVector<T> () : data (nullptr), maxlen(0), currlen(0) {
-        std::cout << "default constructor " << to_string() << std::endl;
-    }
-    MyVector<T> (int maxlen) : data (new T [maxlen]),
-                               maxlen(maxlen),
-                               currlen(0) {
-        std::cout << "new " << to_string() << std::endl;
-    }
-    MyVector<T> (const MyVector& o) {
-        std::cout << "copy constructor called for " << o.to_string() << std::endl;
-        data = new T [o.maxlen];
-        maxlen = o.maxlen;
-        currlen = o.currlen;
-        std::copy(o.data, o.data + o.maxlen, data);
-        std::cout << "copy constructor result is  " << to_string() << std::endl;
-    }
-    MyVector<T> (MyVector<T>&& o) {
-        std::cout << "std::move called for " << o.to_string() << std::endl;
-        data = o.data;
-        maxlen = o.maxlen;
-        currlen = o.currlen;
-        o.data = nullptr;
-        o.maxlen = 0;
-        o.currlen = 0;
-        std::cout << "std::move result is  " << to_string() << std::endl;
-    }
-    ~MyVector<T> () {
-        std::cout << "delete " << to_string() << std::endl;
-    }
-    void push_back (const T& i) {
-        if (currlen >= maxlen) {
-            maxlen *= 2;
-            auto newdata = new T [maxlen];
-            std::copy(data, data + currlen, newdata);
-            if (data) {
-                delete[] data;
-            }
-            data = newdata;
-        }
-        data[currlen++] = i;
-        std::cout << "push_back called " << to_string() << std::endl;
-    }
-    friend std::ostream& operator<<(std::ostream &os, const MyVector<T>& o) {
-        auto s = o.data;
-        auto e = o.data + o.currlen;;
-        while (s < e) {
-            os << "[" << *s << "]";
-            s++;
-        }
-        return os;
-    }
-    std::string to_string (void) const {
-        auto address = static_cast<const void*>(this);
-        std::stringstream ss;
-        ss << address;
-
-        std::string elems;
-        auto s = data;
-        auto e = data + currlen;;
-        while (s < e) {
-            elems += std::to_string(*s);
-            s++;
-            if (s < e) {
-                elems += ",";
-            }
-        }
-
-        return "MyVector(" + ss.str() +
-                         ", currlen=" + std::to_string(currlen) +
-                         ", maxlen=" + std::to_string(maxlen) +
-                         " elems=[" + elems + "])";
-    }
-    class Iterator {
-    public:
-        Iterator(T* ptr) : ptr(ptr) {}
-        Iterator operator++() { ++ptr; return *this; }
-        bool operator!= (const Iterator& o) const {
-            return ptr != o.ptr;
-        }
-        const T& operator*() const { return *ptr; }
-   private:
-       T* ptr;
-   };
-public:
-   Iterator begin() const {
-       return Iterator(data);
-   }
-   Iterator end() const {
-       return Iterator(data + currlen);
-   }
-};
-
 int main() {
-    // Create a custom vector class:
-    auto vec1 = MyVector<int>(1);
-    vec1.push_back(10);
-    vec1.push_back(11);
-    vec1.push_back(12);
+    // Create a vector of strings:
+    std::initializer_list< std::string > init1 = {"elem1", "elem1"};
+    std::vector< std::string > vec1(init1);
 
-    // Walk the custom vector with our iterator:
-    for (auto i : vec1) {
+    // Range based for loop iterator with a const:
+    for (const auto i : vec1) {
         std::cout << "vec1: walk " << i << std::endl;
     }
 
-    // End, expect vec1 destroy:
+    // Range based for loop iterator with a modifiable reference:
+    for (auto &i : vec1) {
+        i += "+ stuff";
+        std::cout << "vec1: walk " << i << std::endl;
+    }
+
+    // Range based for loop iterator with forward reference:
+    for (auto &&i : vec1) {
+        i += "+ more stuff";
+        std::cout << "vec1: walk " << i << std::endl;
+    }
 }
 ```
 To build:
 <pre>
-cd custom_begin_end
+cd range_based_for_loop
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
@@ -158,17 +63,17 @@ c++ main.o  -o example
 Expected output:
 <pre>
 
-# Create a custom vector class:
-new MyVector(0x7ffee2116740, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffee2116740, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffee2116740, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffee2116740, currlen=3, maxlen=4 elems=[10,11,12])
+# Create a vector of strings:
 
-# Walk the custom vector with our iterator:
-vec1: walk 10
-vec1: walk 11
-vec1: walk 12
+# Range based for loop iterator with a const:
+vec1: walk elem1
+vec1: walk elem1
 
-# End, expect vec1 destroy:
-delete MyVector(0x7ffee2116740, currlen=3, maxlen=4 elems=[10,11,12])
+# Range based for loop iterator with a modifiable reference:
+vec1: walk elem1+ stuff
+vec1: walk elem1+ stuff
+
+# Range based for loop iterator with forward reference:
+vec1: walk elem1+ stuff+ more stuff
+vec1: walk elem1+ stuff+ more stuff
 </pre>
