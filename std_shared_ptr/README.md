@@ -99,9 +99,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffee172e220, data=foo1)
-copy constructor Foo(0x7fc8444029f8, data=)
-delete Foo(0x7ffee172e220, data=foo1)
+new Foo(0x7ffeef548220, data=foo1)
+copy constructor Foo(0x7fc3e6c029f8, data=)
+delete Foo(0x7ffeef548220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -119,11 +119,11 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7fc8444029f8, data=foo1)
+delete Foo(0x7fc3e6c029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fc8444029b0, data=foo0)
-sptr0 = Foo(0x7fc8444029b0, data=foo0)
-delete Foo(0x7fc8444029b0, data=foo0)
+new Foo(0x7fc3e6c029b0, data=foo0)
+sptr0 = Foo(0x7fc3e6c029b0, data=foo0)
+delete Foo(0x7fc3e6c029b0, data=foo0)
 </pre>

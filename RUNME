@@ -5,7 +5,7 @@
 . common/common.sh
 
 SUBDIRS="range_based_for_loop \
-         custom_begin_end \
+         range_based_for_loop_custom_begin_end \
          std_move \
          std_unique_ptr \
          std_shared_ptr \
@@ -17,4 +17,8 @@ do
     log $i:
     (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
 done
-cat README.md.template */README.md > README.md
+
+cp README.md.template README.md
+for i in $SUBDIRS
+    cat $i/README.md >> README.md
+do
