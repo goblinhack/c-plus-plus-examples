@@ -100,7 +100,7 @@ int main() {
     vec2.push_back(13);
     std::cout << "vec2: " << vec2 << std::endl;
 
-    DOC("Create a new vector from vec1, vec3 via the move constructor (&&&):");
+    DOC("Create a new vector from vec1, vec3 via the move constructor (&&):");
     auto vec3 = std::move(*vec1);
     std::cout << "vec3: " << vec3 << std::endl;
 
