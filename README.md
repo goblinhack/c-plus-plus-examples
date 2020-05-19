@@ -25,7 +25,7 @@ To build all the examples, just do:
 ```C++
    make 
 ```
-to also rebuild the documentation:
+To build all the examples and the documentation and run every examle, do:
 ```C++
    sh ./RUNME
 ```
@@ -190,10 +190,10 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7ffee4dabc40, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffee4dabc40, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffee4dabc40, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffee4dabc40, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffee2116740, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee2116740, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee2116740, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee2116740, currlen=3, maxlen=4 elems=[10,11,12])
 
 # Walk the custom vector with our iterator:
 vec1: walk 10
@@ -201,7 +201,7 @@ vec1: walk 11
 vec1: walk 12
 
 # End, expect vec1 destroy:
-delete MyVector(0x7ffee4dabc40, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffee2116740, currlen=3, maxlen=4 elems=[10,11,12])
 </pre>
 How to use std::move
 ====================
@@ -368,37 +368,37 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7fb7fb402950, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7fb7fb402950, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7f9198c029b0, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7f9198c029b0, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7f9198c029b0, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffee6b27b98, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7f9198c029b0, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffee91f2698, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffee6b27b98, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffee6b27b98, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffee91f2698, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffee91f2698, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffee6b27b78, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7f9198c029b0, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffee91f2678, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffee6b27b78, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffee6b27b78, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffee91f2678, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffee91f2678, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7fb7fb402950, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7f9198c029b0, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffee6b27b78, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffee6b27b98, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffee91f2678, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffee91f2698, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>
 How to use std::shared_ptr
 ==========================
@@ -501,9 +501,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffeed434720, data=foo1)
-copy constructor Foo(0x7fd09bc02998, data=)
-delete Foo(0x7ffeed434720, data=foo1)
+new Foo(0x7ffeebcb2220, data=foo1)
+copy constructor Foo(0x7fad454029f8, data=)
+delete Foo(0x7ffeebcb2220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -521,13 +521,13 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7fd09bc02998, data=foo1)
+delete Foo(0x7fad454029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fd09bc02950, data=foo0)
-sptr0 = Foo(0x7fd09bc02950, data=foo0)
-delete Foo(0x7fd09bc02950, data=foo0)
+new Foo(0x7fad454029b0, data=foo0)
+sptr0 = Foo(0x7fad454029b0, data=foo0)
+delete Foo(0x7fad454029b0, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -668,20 +668,20 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffeeb061b58, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeeb061b88,Foo(0x7fabc1c02968, data=foo1-data))
-delete Foo(0x7ffeeb061b58, data=foo1-data)
+new Foo(0x7ffeed23a658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeed23a688,Foo(0x7fbf5a4029c8, data=foo1-data))
+delete Foo(0x7ffeed23a658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeb061b88,Foo(0x7fabc1c02968, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeed23a688,Foo(0x7fbf5a4029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeb061b08,Foo(0x7fabc1c02968, data=foo1-data))
-delete Foo(0x7fabc1c02968, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeed23a608,Foo(0x7fbf5a4029c8, data=foo1-data))
+delete Foo(0x7fbf5a4029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeb061b08)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeb061b88)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeed23a608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeed23a688)
 </pre>
 How to use std::unique_ptr
 ==========================
@@ -763,21 +763,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffeea04f588, data=foo1)
-copy constructor Foo(0x7fbb37402980, data=)
-delete Foo(0x7ffeea04f588, data=foo1)
+new Foo(0x7ffeecb19088, data=foo1)
+copy constructor Foo(0x7fb54c400b40, data=)
+delete Foo(0x7ffeecb19088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7fbb374029a0, data=foo2)
+new Foo(0x7fb54c400b60, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7fbb37402980, data=foo1)
+uptr1 = Foo(0x7fb54c400b40, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7fbb374029a0, data=foo2)
+uptr3 = Foo(0x7fb54c400b60, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7fbb374029a0, data=foo2)
-delete Foo(0x7fbb37402980, data=foo1)
+delete Foo(0x7fb54c400b60, data=foo2)
+delete Foo(0x7fb54c400b40, data=foo1)
 </pre>

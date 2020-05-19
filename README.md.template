@@ -25,7 +25,7 @@ To build all the examples, just do:
 ```C++
    make 
 ```
-to also rebuild the documentation:
+To build all the examples and the documentation and run every examle, do:
 ```C++
    sh ./RUNME
 ```
