@@ -1,4 +1,7 @@
-SUBDIRS=unique_ptr shared_ptr shared_ptr_wrapper
+SUBDIRS=std_move \
+	std_unique_ptr \
+	std_shared_ptr \
+	std_shared_ptr_wrapper
 
 #
 # To force clean and avoid "up to date" warning.

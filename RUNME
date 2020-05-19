@@ -3,10 +3,13 @@
 # This is a wrapper script to build all examples and update the documents
 #
 . common/common.sh
-for i in \
-    unique_ptr \
-    shared_ptr \
-    shared_ptr_wrapper
+
+SUBDIRS="std_move \
+         std_unique_ptr \
+         std_shared_ptr \
+         std_shared_ptr_wrapper"
+
+for i in $SUBDIRS
 do
     echo
     log $i:

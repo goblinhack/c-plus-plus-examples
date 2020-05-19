@@ -1,0 +1,49 @@
+NOTE-BEGIN
+How to use std::move
+====================
+
+std::move is a nifty way to avoid the use of temporaries when doing copies
+of data. For example if you do:
+
+```C++
+template<class T> void simpleswap(T& a, T& b) {
+    T tmp = b;
+    b = a;
+    a = b;
+}
+```
+
+You will see the copy constructor invoked. Not a huge deal for small classes,
+but if you are dealing with a vector, that could be very expensive.
+
+A better approach is to use std::move e.g.
+
+```C++
+template<class T> void simpleswap(T& a, T& b) {
+    T tmp { std::move(a) }; // invokes move constructor
+    a = std::move(b);       // invokes move assignment
+    b = std::move(tmp);     // invokes move assignment
+}
+```
+
+Now the question is, how do we implement std::move on our own classes.
+To use this you will see a new form of constructor with the "&&" syntax.
+The example below will create our own vector class and then implement
+the move constructor to transfer elements across. The old vector will
+be left empty.
+
+Note that std::vector already does this approach; we're just applying
+the same ideas to a custom class.
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
