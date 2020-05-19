@@ -78,9 +78,9 @@ public:
         }
 
         return "MyVector(" + ss.str() +
-                        ", currlen=" + std::to_string(currlen) +
-                        ", maxlen=" + std::to_string(maxlen) +
-                        " elems=[" + elems + "])";
+                         ", currlen=" + std::to_string(currlen) +
+                         ", maxlen=" + std::to_string(maxlen) +
+                         " elems=[" + elems + "])";
     }
 };
 
