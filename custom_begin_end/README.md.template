@@ -1,6 +1,6 @@
 NOTE-BEGIN
-How to use std::move
-====================
+How to use a range based for loop with your own class iterator
+==============================================================
 
 By now you will have seen the following range based for loop e.g.:
 ```C++

@@ -1,0 +1,39 @@
+NOTE-BEGIN
+How to use a range based for loop
+=================================
+
+A nice extension in C++ 11 is range based for loops. They are both
+readable and safer as you do not need to manually specify the boundary
+conditions.
+
+There are a few ways to walk such lists. One is via a constant iterator e.g.:
+
+By now you will have seen the following range based for loop e.g.:
+```C++
+    for (auto const i : container) { }
+```
+Another, if you wish to modify the data as you go is:
+```C++
+    for (auto &i : container) { }
+```
+However it may be 'simpler' to always do the following and use a forward reference:
+```C++
+    for (auto &&i : container) { }
+```
+This handles corner cases for things like vectors of bitfields that you cannot have
+a reference to.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

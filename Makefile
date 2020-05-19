@@ -1,4 +1,5 @@
-SUBDIRS=custom_begin_end \
+SUBDIRS=range_based_for_loop \
+	custom_begin_end \
 	std_move \
 	std_unique_ptr \
 	std_shared_ptr \
