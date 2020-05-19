@@ -13,7 +13,7 @@ covered. This is (probably forever) a work in progress.
 
 [How to use range based for loops](range_based_for_loop/README.md)
 
-[How to use range based for loops with custom iterator](custom_begin_end/README.md)
+[How to use range based for loops with your own iterator](custom_begin_end/README.md)
 
 [How to use std::move](std_move/README.md)
 
@@ -271,10 +271,10 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7ffee4f4e730, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffee4f4e730, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffee4f4e730, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffee4f4e730, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffee1404730, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee1404730, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee1404730, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee1404730, currlen=3, maxlen=4 elems=[10,11,12])
 
 # Walk the custom vector with our iterator:
 vec1: walk 10
@@ -282,7 +282,7 @@ vec1: walk 11
 vec1: walk 12
 
 # End, expect vec1 destroy:
-delete MyVector(0x7ffee4f4e730, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffee1404730, currlen=3, maxlen=4 elems=[10,11,12])
 </pre>
 How to use std::move
 ====================
@@ -449,37 +449,37 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7fc9154029b0, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7fc9154029b0, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7fc9154029b0, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7ff6fbc029b0, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ff6fbc029b0, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ff6fbc029b0, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7fc9154029b0, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffee3657698, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7ff6fbc029b0, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffeef69c698, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffee3657698, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffee3657698, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffeef69c698, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffeef69c698, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7fc9154029b0, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffee3657678, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7ff6fbc029b0, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffeef69c678, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffee3657678, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffee3657678, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffeef69c678, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffeef69c678, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7fc9154029b0, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7ff6fbc029b0, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffee3657678, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffee3657698, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffeef69c678, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffeef69c698, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>
 How to use std::unique_ptr
 ==========================
@@ -561,23 +561,23 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee9ae0088, data=foo1)
-copy constructor Foo(0x7f9b33c029e0, data=)
-delete Foo(0x7ffee9ae0088, data=foo1)
+new Foo(0x7ffee5b99088, data=foo1)
+copy constructor Foo(0x7fc7b9d00030, data=)
+delete Foo(0x7ffee5b99088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7f9b33c02a00, data=foo2)
+new Foo(0x7fc7b9d00050, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7f9b33c029e0, data=foo1)
+uptr1 = Foo(0x7fc7b9d00030, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7f9b33c02a00, data=foo2)
+uptr3 = Foo(0x7fc7b9d00050, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7f9b33c02a00, data=foo2)
-delete Foo(0x7f9b33c029e0, data=foo1)
+delete Foo(0x7fc7b9d00050, data=foo2)
+delete Foo(0x7fc7b9d00030, data=foo1)
 </pre>
 How to use std::shared_ptr
 ==========================
@@ -680,9 +680,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffeef94d220, data=foo1)
-copy constructor Foo(0x7fb5df600048, data=)
-delete Foo(0x7ffeef94d220, data=foo1)
+new Foo(0x7ffee4e8d220, data=foo1)
+copy constructor Foo(0x7fa5304029f8, data=)
+delete Foo(0x7ffee4e8d220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -700,13 +700,13 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7fb5df600048, data=foo1)
+delete Foo(0x7fa5304029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fb5df600000, data=foo0)
-sptr0 = Foo(0x7fb5df600000, data=foo0)
-delete Foo(0x7fb5df600000, data=foo0)
+new Foo(0x7fa5304029b0, data=foo0)
+sptr0 = Foo(0x7fa5304029b0, data=foo0)
+delete Foo(0x7fa5304029b0, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -847,18 +847,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffeefbb7658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeefbb7688,Foo(0x7fd5284029c8, data=foo1-data))
-delete Foo(0x7ffeefbb7658, data=foo1-data)
+new Foo(0x7ffee7b9f658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee7b9f688,Foo(0x7f9b5cc029c8, data=foo1-data))
+delete Foo(0x7ffee7b9f658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeefbb7688,Foo(0x7fd5284029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7b9f688,Foo(0x7f9b5cc029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeefbb7608,Foo(0x7fd5284029c8, data=foo1-data))
-delete Foo(0x7fd5284029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee7b9f608,Foo(0x7f9b5cc029c8, data=foo1-data))
+delete Foo(0x7f9b5cc029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeefbb7608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeefbb7688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7b9f608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee7b9f688)
 </pre>

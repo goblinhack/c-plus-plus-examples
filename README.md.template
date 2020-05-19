@@ -13,7 +13,7 @@ covered. This is (probably forever) a work in progress.
 
 [How to use range based for loops](range_based_for_loop/README.md)
 
-[How to use range based for loops with custom iterator](custom_begin_end/README.md)
+[How to use range based for loops with your own iterator](custom_begin_end/README.md)
 
 [How to use std::move](std_move/README.md)
 
