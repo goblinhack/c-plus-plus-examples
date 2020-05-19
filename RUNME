@@ -11,14 +11,11 @@ SUBDIRS="range_based_for_loop \
          std_shared_ptr \
          std_shared_ptr_wrapper"
 
+cp README.md.template README.md
 for i in $SUBDIRS
 do
     echo
     log $i:
     (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
-done
-
-cp README.md.template README.md
-for i in $SUBDIRS
     cat $i/README.md >> README.md
-do
+done
