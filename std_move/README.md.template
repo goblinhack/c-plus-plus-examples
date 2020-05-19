@@ -20,9 +20,9 @@ A better approach is to use std::move e.g.
 
 ```C++
 template<class T> void simpleswap(T& a, T& b) {
-    T tmp { std::move(a) }; // invokes move constructor
-    a = std::move(b);       // invokes move assignment
-    b = std::move(tmp);     // invokes move assignment
+    T tmp { std::move(a) };
+    a = std::move(b);
+    b = std::move(tmp);
 }
 ```
 
