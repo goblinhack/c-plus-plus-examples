@@ -113,5 +113,4 @@ int main() {
     delete vec1;
 
     DOC("End, expect vec2 and vec3 destroy:");
-    DOC("End");
 }
