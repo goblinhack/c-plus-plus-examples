@@ -11,6 +11,8 @@ individually or as a whole.
 Let me know if this is useful to anyone or if there are any areas you want
 covered. This is (probably forever) a work in progress.
 
+[How to use range based for loops with custom iterator](custom_begin_end/README.md)
+
 [How to use std::move](std_move/README.md)
 
 [How to use std::unique_ptr](std_unique_ptr/README.md)
@@ -19,3 +21,11 @@ covered. This is (probably forever) a work in progress.
 
 [How to make your own wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
 
+To build all the examples, just do:
+```C++
+   make 
+```
+to also rebuild the documentation:
+```C++
+   sh ./RUNME
+```

@@ -1,0 +1,44 @@
+NOTE-BEGIN
+How to use std::move
+====================
+
+By now you will have seen the following range based for loop e.g.:
+```C++
+    for (i : container) { }
+```
+Now it would be nice to apply that to our own classes too. To do this,
+you need to define something that can hold where we are in the processing
+loop, called an iterator e.g.:
+```C++
+    class Iterator {
+    public:
+        Iterator(T* ptr) : ptr(ptr) {}
+        Iterator operator++() { ++ptr; return *this; }
+        bool operator!= (const Iterator& o) const {
+            return ptr != o.ptr;
+        }
+        const T& operator*() const { return *ptr; }
+   private:
+       T* ptr;
+   };
+public:
+   Iterator begin() const { return Iterator(data); }
+   Iterator end() const { return Iterator(data + len); }
+```
+Notice that the iterator has some private data that we increment as
+we walk.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

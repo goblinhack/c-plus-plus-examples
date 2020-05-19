@@ -11,6 +11,8 @@ individually or as a whole.
 Let me know if this is useful to anyone or if there are any areas you want
 covered. This is (probably forever) a work in progress.
 
+[How to use range based for loops with custom iterator](custom_begin_end/README.md)
+
 [How to use std::move](std_move/README.md)
 
 [How to use std::unique_ptr](std_unique_ptr/README.md)
@@ -19,6 +21,188 @@ covered. This is (probably forever) a work in progress.
 
 [How to make your own wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
 
+To build all the examples, just do:
+```C++
+   make 
+```
+to also rebuild the documentation:
+```C++
+   sh ./RUNME
+```
+How to use std::move
+====================
+
+By now you will have seen the following range based for loop e.g.:
+```C++
+    for (i : container) { }
+```
+Now it would be nice to apply that to our own classes too. To do this,
+you need to define something that can hold where we are in the processing
+loop, called an iterator e.g.:
+```C++
+    class Iterator {
+    public:
+        Iterator(T* ptr) : ptr(ptr) {}
+        Iterator operator++() { ++ptr; return *this; }
+        bool operator!= (const Iterator& o) const {
+            return ptr != o.ptr;
+        }
+        const T& operator*() const { return *ptr; }
+   private:
+       T* ptr;
+   };
+public:
+   Iterator begin() const { return Iterator(data); }
+   Iterator end() const { return Iterator(data + len); }
+```
+Notice that the iterator has some private data that we increment as
+we walk.
+
+Here is a full example:
+```C++
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include "../common/common.h"
+
+template<class T> class MyVector {
+private:
+    T *data;
+    size_t maxlen;
+    size_t currlen;
+public:
+    MyVector<T> () : data (nullptr), maxlen(0), currlen(0) {
+        std::cout << "default constructor " << to_string() << std::endl;
+    }
+    MyVector<T> (int maxlen) : data (new T [maxlen]),
+                               maxlen(maxlen),
+                               currlen(0) {
+        std::cout << "new " << to_string() << std::endl;
+    }
+    MyVector<T> (const MyVector& o) {
+        std::cout << "copy constructor called for " << o.to_string() << std::endl;
+        data = new T [o.maxlen];
+        maxlen = o.maxlen;
+        currlen = o.currlen;
+        std::copy(o.data, o.data + o.maxlen, data);
+        std::cout << "copy constructor result is  " << to_string() << std::endl;
+    }
+    MyVector<T> (MyVector<T>&& o) {
+        std::cout << "std::move called for " << o.to_string() << std::endl;
+        data = o.data;
+        maxlen = o.maxlen;
+        currlen = o.currlen;
+        o.data = nullptr;
+        o.maxlen = 0;
+        o.currlen = 0;
+        std::cout << "std::move result is  " << to_string() << std::endl;
+    }
+    ~MyVector<T> () {
+        std::cout << "delete " << to_string() << std::endl;
+    }
+    void push_back (const T& i) {
+        if (currlen >= maxlen) {
+            maxlen *= 2;
+            auto newdata = new T [maxlen];
+            std::copy(data, data + currlen, newdata);
+            if (data) {
+                delete[] data;
+            }
+            data = newdata;
+        }
+        data[currlen++] = i;
+        std::cout << "push_back called " << to_string() << std::endl;
+    }
+    friend std::ostream& operator<<(std::ostream &os, const MyVector<T>& o) {
+        auto s = o.data;
+        auto e = o.data + o.currlen;;
+        while (s < e) {
+            os << "[" << *s << "]";
+            s++;
+        }
+        return os;
+    }
+    std::string to_string (void) const {
+        auto address = static_cast<const void*>(this);
+        std::stringstream ss;
+        ss << address;
+
+        std::string elems;
+        auto s = data;
+        auto e = data + currlen;;
+        while (s < e) {
+            elems += std::to_string(*s);
+            s++;
+            if (s < e) {
+                elems += ",";
+            }
+        }
+
+        return "MyVector(" + ss.str() +
+                         ", currlen=" + std::to_string(currlen) +
+                         ", maxlen=" + std::to_string(maxlen) +
+                         " elems=[" + elems + "])";
+    }
+    class Iterator {
+    public:
+        Iterator(T* ptr) : ptr(ptr) {}
+        Iterator operator++() { ++ptr; return *this; }
+        bool operator!= (const Iterator& o) const {
+            return ptr != o.ptr;
+        }
+        const T& operator*() const { return *ptr; }
+   private:
+       T* ptr;
+   };
+public:
+   Iterator begin() const {
+       return Iterator(data);
+   }
+   Iterator end() const {
+       return Iterator(data + currlen);
+   }
+};
+
+int main() {
+    // Create a custom vector class:
+    auto vec1 = MyVector<int>(1);
+    vec1.push_back(10);
+    vec1.push_back(11);
+    vec1.push_back(12);
+
+    // Walk the custom vector with our iterator:
+    for (auto i : vec1) {
+        std::cout << "vec1: walk " << i << std::endl;
+    }
+
+    // End, expect vec1 destroy:
+}
+```
+To build:
+<pre>
+cd custom_begin_end
+rm -f *.o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
+./example
+</pre>
+Expected output:
+<pre>
+
+# Create a custom vector class:
+new MyVector(0x7ffee4dabc40, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee4dabc40, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee4dabc40, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee4dabc40, currlen=3, maxlen=4 elems=[10,11,12])
+
+# Walk the custom vector with our iterator:
+vec1: walk 10
+vec1: walk 11
+vec1: walk 12
+
+# End, expect vec1 destroy:
+delete MyVector(0x7ffee4dabc40, currlen=3, maxlen=4 elems=[10,11,12])
+</pre>
 How to use std::move
 ====================
 
@@ -135,9 +319,9 @@ public:
         }
 
         return "MyVector(" + ss.str() +
-                        ", currlen=" + std::to_string(currlen) +
-                        ", maxlen=" + std::to_string(maxlen) +
-                        " elems=[" + elems + "])";
+                         ", currlen=" + std::to_string(currlen) +
+                         ", maxlen=" + std::to_string(maxlen) +
+                         " elems=[" + elems + "])";
     }
 };
 
@@ -170,7 +354,6 @@ int main() {
     delete vec1;
 
     // End, expect vec2 and vec3 destroy:
-    // End
 }
 ```
 To build:
@@ -185,39 +368,37 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7f8372c029b0, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7f8372c029b0, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7f8372c029b0, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7fb7fb402950, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7fb7fb402950, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7f8372c029b0, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffeed9ad688, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffee6b27b98, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffeed9ad688, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffeed9ad688, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffee6b27b98, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffee6b27b98, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7f8372c029b0, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffeed9ad668, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7fb7fb402950, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffee6b27b78, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffeed9ad668, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffeed9ad668, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffee6b27b78, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffee6b27b78, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7f8372c029b0, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7fb7fb402950, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-
-# End
-delete MyVector(0x7ffeed9ad668, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffeed9ad688, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffee6b27b78, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffee6b27b98, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>
 How to use std::shared_ptr
 ==========================
@@ -320,9 +501,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffee2375220, data=foo1)
-copy constructor Foo(0x7f8ed24029f8, data=)
-delete Foo(0x7ffee2375220, data=foo1)
+new Foo(0x7ffeed434720, data=foo1)
+copy constructor Foo(0x7fd09bc02998, data=)
+delete Foo(0x7ffeed434720, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -340,13 +521,13 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7f8ed24029f8, data=foo1)
+delete Foo(0x7fd09bc02998, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7f8ed24029b0, data=foo0)
-sptr0 = Foo(0x7f8ed24029b0, data=foo0)
-delete Foo(0x7f8ed24029b0, data=foo0)
+new Foo(0x7fd09bc02950, data=foo0)
+sptr0 = Foo(0x7fd09bc02950, data=foo0)
+delete Foo(0x7fd09bc02950, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -487,20 +668,20 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffee268c658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee268c688,Foo(0x7f9d8ec029c8, data=foo1-data))
-delete Foo(0x7ffee268c658, data=foo1-data)
+new Foo(0x7ffeeb061b58, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeeb061b88,Foo(0x7fabc1c02968, data=foo1-data))
+delete Foo(0x7ffeeb061b58, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee268c688,Foo(0x7f9d8ec029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeb061b88,Foo(0x7fabc1c02968, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee268c608,Foo(0x7f9d8ec029c8, data=foo1-data))
-delete Foo(0x7f9d8ec029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeb061b08,Foo(0x7fabc1c02968, data=foo1-data))
+delete Foo(0x7fabc1c02968, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee268c608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee268c688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeb061b08)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeb061b88)
 </pre>
 How to use std::unique_ptr
 ==========================
@@ -582,21 +763,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee3b7a088, data=foo1)
-copy constructor Foo(0x7fb761c029e0, data=)
-delete Foo(0x7ffee3b7a088, data=foo1)
+new Foo(0x7ffeea04f588, data=foo1)
+copy constructor Foo(0x7fbb37402980, data=)
+delete Foo(0x7ffeea04f588, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7fb761c02a00, data=foo2)
+new Foo(0x7fbb374029a0, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7fb761c029e0, data=foo1)
+uptr1 = Foo(0x7fbb37402980, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7fb761c02a00, data=foo2)
+uptr3 = Foo(0x7fbb374029a0, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7fb761c02a00, data=foo2)
-delete Foo(0x7fb761c029e0, data=foo1)
+delete Foo(0x7fbb374029a0, data=foo2)
+delete Foo(0x7fbb37402980, data=foo1)
 </pre>

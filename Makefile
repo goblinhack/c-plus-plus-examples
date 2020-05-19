@@ -1,4 +1,5 @@
-SUBDIRS=std_move \
+SUBDIRS=custom_begin_end \
+	std_move \
 	std_unique_ptr \
 	std_shared_ptr \
 	std_shared_ptr_wrapper
