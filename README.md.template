@@ -17,6 +17,8 @@ covered. This is (probably forever) a work in progress.
 
 [How to use std::move](std_move/README.md)
 
+[How to use std::forward](std_forward/README.md)
+
 [How to use std::unique_ptr](std_unique_ptr/README.md)
 
 [How to use std::shared_ptr](std_shared_ptr/README.md)
