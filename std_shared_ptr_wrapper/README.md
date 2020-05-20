@@ -137,18 +137,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffee0109658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee0109688,Foo(0x7fa0364029c8, data=foo1-data))
-delete Foo(0x7ffee0109658, data=foo1-data)
+new Foo(0x7ffeed6c4658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeed6c4688,Foo(0x7fda494029c8, data=foo1-data))
+delete Foo(0x7ffeed6c4658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0109688,Foo(0x7fa0364029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeed6c4688,Foo(0x7fda494029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee0109608,Foo(0x7fa0364029c8, data=foo1-data))
-delete Foo(0x7fa0364029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeed6c4608,Foo(0x7fda494029c8, data=foo1-data))
+delete Foo(0x7fda494029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0109608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee0109688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeed6c4608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeed6c4688)
 </pre>

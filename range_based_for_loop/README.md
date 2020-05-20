@@ -20,8 +20,23 @@ However it may be 'simpler' to always do the following and use a forward referen
     for (auto &&i : container) { }
 ```
 This handles corner cases for things like vectors of bitfields that you cannot have
-a reference to.
-
+a reference to. Here is such a corner case. The iterator provided is actually a thing
+called a proxy iterator, vector<bool>::reference. So, this will not compile:
+```C++
+    #include <vector>
+    int main() {
+        std::vector<bool> v(8);
+        for (auto& e : v) { e = true; }
+    }
+```
+But this will!
+```C++
+    #include <vector>
+    int main() {
+        std::vector<bool> v(8);
+        for (auto&& e : v) { e = true; }
+    }
+```
 Here is a full example:
 ```C++
 #include <iostream>

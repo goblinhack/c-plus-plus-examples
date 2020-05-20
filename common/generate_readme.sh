@@ -11,7 +11,9 @@ cat $TEMPLATE | sed '/NOTE-BEGIN/,/NOTE-READ-CODE/!d' | grep -v "^NOTE-"
 #
 cat main.cpp | \
     grep -v "define DOC" | \
-    sed -e 's/DOC(\"\(.*\)\"); *$/\/\/ \1/g'
+    sed -e 's/DOC(\"\(.*\)\"); *$/\/\/ \1/g' \
+        -e 's/OK(\"SUCCESS: \(.*\)\"); *$/\/\/ \1/g' \
+        -e 's/ERR(\"ERROR: \(.*\)\"); *$/\/\/ \1/g'
 cat $TEMPLATE | sed '/NOTE-READ-CODE/,/NOTE-BUILD-CODE/!d' | grep -v "^NOTE-"
 
 #
