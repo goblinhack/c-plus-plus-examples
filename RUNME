@@ -18,10 +18,13 @@ SUBDIRS="\
          std_shared_ptr_wrapper"
 
 cp README.md.template README.md
-for i in $SUBDIRS
-do
-    echo
-    log $i:
-    (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
-    cat $i/README.md >> README.md
-done
+
+# Makes the main page too long:
+#
+# for i in $SUBDIRS
+# do
+#     echo
+#     log $i:
+#     (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
+#     cat $i/README.md >> README.md
+# done
