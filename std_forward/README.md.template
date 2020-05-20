@@ -1,0 +1,37 @@
+NOTE-BEGIN
+How to use std::forward
+=======================
+
+std::forward's aim is to make it easier to pass along the exact type of function
+prototype that is given. For example consider before std::forward you would have
+to define all combinations of a template e.g.:
+```C++
+template <typename A, typename B< void f(A& a, B& b) { }
+template <typename A, typename B< void f(const A& a, B& b) { }
+template <typename A, typename B< void f(A& a, const B& b) { }
+template <typename A, typename B< void f(A& a, B& b) { }
+template <typename A, typename B< void f(const const A& a, const B& b) { }
+```
+This is tedious and does not scale. Now with std::forward we need to define only one template:
+```C++
+template<typename A, typename Account> void f(A&& a, B&& b) {
+    f(std::forward<Account>(a), std::forward<Account>(b));
+}
+```
+I struggled to find a useful example of std::forward, but hit upon an example
+of a bank account. If we have a const version of an account we should expect
+when we pass it to our deposit template that the const function is called;
+and this then throws an exception (the idea being this was a locked account!)
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

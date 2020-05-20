@@ -6,7 +6,7 @@ A nice extension in C++ 11 is range based for loops. They are both
 readable and safer as you do not need to manually specify the boundary
 conditions.
 
-There are a few ways to walk such lists. One is via a constant iterator e.g.:
+There are a few ways to walk such containers. One is via a constant iterator e.g.:
 
 By now you will have seen the following range based for loop e.g.:
 ```C++

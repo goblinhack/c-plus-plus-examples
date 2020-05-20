@@ -1,6 +1,7 @@
 SUBDIRS=range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
 	std_move \
+	std_forward \
 	std_unique_ptr \
 	std_shared_ptr \
 	std_shared_ptr_wrapper
