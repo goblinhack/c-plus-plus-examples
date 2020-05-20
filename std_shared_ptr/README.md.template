@@ -8,14 +8,15 @@ reset() upon which the pointers can then be destructed.
 
 To create a shared pointer you can either use the following which is a bit
 long winded
-
-- std::shared_ptr<class Foo> sptr(new Foo("foo2"));
-
+```C++
+    std::shared_ptr<class Foo> sptr(new Foo("foo2"));
+```
 Or, the following which hides the use of "new" but also invokes the copy
 constructor. If you don't want that, use the above.
-
-- auto sptr = std::make_shared< class Foo >(Foo("foo1"));
-
+```C++
+    auto sptr = std::make_shared< class Foo >(Foo("foo1"));
+```
+Example:
 ```C++
 NOTE-READ-CODE
 ```

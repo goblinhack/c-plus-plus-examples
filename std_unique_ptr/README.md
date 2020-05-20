@@ -7,16 +7,17 @@ pointer moves, leaving the old unique pointer looking at nullptr.
 
 To create a unique pointer you can either use the following which is a bit
 long winded
-
-- std::unique_ptr<class Foo> uptr(new Foo("foo2"));
-
+```C++
+    std::unique_ptr<class Foo> uptr(new Foo("foo2"));
+```
 Or, the following which hides the use of "new" but also invokes the copy
 constructor. If you don't want that, use the above.
+```C++
+    auto uptr = std::make_unique< class Foo >(Foo("foo1"));
+```
+Note: To change the ownership of a unique pointer, use std::move
 
-- auto uptr = std::make_unique< class Foo >(Foo("foo1"));
-
-To change the ownership of a unique pointer, use std::move
-
+Example:
 ```C++
 #include <memory>
 #include <iostream>
@@ -77,21 +78,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee5467088, data=foo1)
-copy constructor Foo(0x7fad13c029e0, data=)
-delete Foo(0x7ffee5467088, data=foo1)
+new Foo(0x7ffeeda0b088, data=foo1)
+copy constructor Foo(0x7ff099e028a0, data=)
+delete Foo(0x7ffeeda0b088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7fad13c02a00, data=foo2)
+new Foo(0x7ff099e028c0, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7fad13c029e0, data=foo1)
+uptr1 = Foo(0x7ff099e028a0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7fad13c02a00, data=foo2)
+uptr3 = Foo(0x7ff099e028c0, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7fad13c02a00, data=foo2)
-delete Foo(0x7fad13c029e0, data=foo1)
+delete Foo(0x7ff099e028c0, data=foo2)
+delete Foo(0x7ff099e028a0, data=foo1)
 </pre>

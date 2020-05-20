@@ -7,14 +7,15 @@ reset() upon which the pointers can then be destructed.
 
 To create a shared pointer you can either use the following which is a bit
 long winded
-
-- std::shared_ptr<class Foo> sptr(new Foo("foo2"));
-
+```C++
+    std::shared_ptr<class Foo> sptr(new Foo("foo2"));
+```
 Or, the following which hides the use of "new" but also invokes the copy
 constructor. If you don't want that, use the above.
-
-- auto sptr = std::make_shared< class Foo >(Foo("foo1"));
-
+```C++
+    auto sptr = std::make_shared< class Foo >(Foo("foo1"));
+```
+Example:
 ```C++
 #include <memory>
 #include <iostream>
@@ -98,9 +99,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffee2118220, data=foo1)
-copy constructor Foo(0x7f98304029f8, data=)
-delete Foo(0x7ffee2118220, data=foo1)
+new Foo(0x7ffee10c7220, data=foo1)
+copy constructor Foo(0x7fd8e64029f8, data=)
+delete Foo(0x7ffee10c7220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -118,11 +119,11 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7f98304029f8, data=foo1)
+delete Foo(0x7fd8e64029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7f98304029b0, data=foo0)
-sptr0 = Foo(0x7f98304029b0, data=foo0)
-delete Foo(0x7f98304029b0, data=foo0)
+new Foo(0x7fd8e64029b0, data=foo0)
+sptr0 = Foo(0x7fd8e64029b0, data=foo0)
+delete Foo(0x7fd8e64029b0, data=foo0)
 </pre>

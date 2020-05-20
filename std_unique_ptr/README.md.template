@@ -8,16 +8,17 @@ pointer moves, leaving the old unique pointer looking at nullptr.
 
 To create a unique pointer you can either use the following which is a bit
 long winded
-
-- std::unique_ptr<class Foo> uptr(new Foo("foo2"));
-
+```C++
+    std::unique_ptr<class Foo> uptr(new Foo("foo2"));
+```
 Or, the following which hides the use of "new" but also invokes the copy
 constructor. If you don't want that, use the above.
+```C++
+    auto uptr = std::make_unique< class Foo >(Foo("foo1"));
+```
+Note: To change the ownership of a unique pointer, use std::move
 
-- auto uptr = std::make_unique< class Foo >(Foo("foo1"));
-
-To change the ownership of a unique pointer, use std::move
-
+Example:
 ```C++
 NOTE-READ-CODE
 ```
