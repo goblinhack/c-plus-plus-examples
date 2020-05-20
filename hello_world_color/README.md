@@ -26,14 +26,17 @@ but it is considered bad practice to use this. See
 Personally I find code clearer when it uses "std:" as you are left in no
 doubt as to what namespace is being used.
 ```C++
+    use namespace std;
     std::cout << ...
 ```
 sends output to the stdout for this process. For errors, you would want to use instead:
 ```C++
+    use namespace std;
     std::cerr << "aargh" << ...
 ```
 For newlines, like in C where we had "\n", you have in C++:
 ```C++
+    use namespace std;
     ... << "aargh" << std::endl;
 ```
 Ok, so enough background. Here is the full example. The output should look like:
