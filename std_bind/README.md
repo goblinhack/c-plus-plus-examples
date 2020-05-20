@@ -136,18 +136,18 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffeee1991c8, cash $0)
+new cash BankAccount(0x7ffeee63b1c8, cash $0)
 
 # create a bind to a static function that invokes a method
-deposit cash called BankAccount(0x7ffeee1991c8, cash $100)
+deposit cash called BankAccount(0x7ffeee63b1c8, cash $100)
 
 # create a bind to a method directly
-deposit cash called BankAccount(0x7ffeee1991c8, cash $200)
+deposit cash called BankAccount(0x7ffeee63b1c8, cash $200)
 
 # check the deposits succeeded
 # SUCCESS: account1 deposit succeeded!
-BankAccount(0x7ffeee1991c8, cash $200)
+BankAccount(0x7ffeee63b1c8, cash $200)
 
 # end
-delete account BankAccount(0x7ffeee1991c8, cash $200)
+delete account BankAccount(0x7ffeee63b1c8, cash $200)
 </pre>

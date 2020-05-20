@@ -15,7 +15,7 @@ covered. This is (probably forever) a work in progress.
 
 [How to use range based for loops with your own iterator](custom_begin_end/README.md)
 
-[How to use std::bind](std_move/README.md)
+[How to use std::bind](std_bind/README.md)
 
 [How to use std::move](std_move/README.md)
 
