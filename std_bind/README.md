@@ -1,127 +1,119 @@
-How to use std::bind
-====================
+How to use std::bind with a method
+==================================
 
-TODO
+std::bind is a useful construct that allows you to associate some context
+(i.e. a classes "this" pointer) with a function. It is primarily of use
+with invoking callback functionaliy, but to get started let's focus on a
+some simple cases:
 ```C++
-TODO
+    auto bind_fn = bind(bind_test, _1, _2, _3);
 ```
-TODO
+The funny syntax, _1 refers to an argument number is is fully called 
+std::placeholders::_1 but for obvious reasons people prefer to use:
 ```C++
-TODO
+    using namespace std::placeholders; // for _1, _2, _3...
 ```
-TODO
+to make things readable. Once a function is bound, you can invoke it
+like:
+```C++
+    bind_fn(1, 2, 3);
+```
+and bind_test with be called with (1, 2, 3). Nice.
 
+It can also be used in std::for_each loops e.g.:
+```C++
+    static void do_stuff (const std::string& arg1) {
+        std::cout << arg1 << std::endl;
+    }
+
+    std::list<std::string> l;
+    auto bind_fn = bind(do_stuff, _1);
+    std::for_each(l.begin(), l.end(), bind_fn);
+```
+And with std::transform (where you show intent to modify the list):
+```C++
+    static std::string do_stuff (std::string& arg1) {
+        return arg1 + " is modified";
+    }
+
+    std::list<std::string> l;
+    auto bind_fn = bind(do_stuff, _1);
+    std::transform(l.begin(), l.end(), l.begin(), bind_fn);
+```
 Here is the full example:
 ```C++
-#include <algorithm>  // for std::move
+#include <algorithm>
 #include <functional> // for _1, _2
 #include <iostream>
-#include <memory>
-#include <random>
-#include <sstream>    // for std::stringstream
+#include <list>
 #include <string>
 #include <utility>
 
-using namespace std::placeholders;  // for _1, _2, _3...
+using namespace std::placeholders; // for _1, _2, _3...
 
-template<class T> class BankAccount {
-private:
-    const T no_cash {};
-    T cash {};
-public:
-    BankAccount<T> () {
-        std::cout << "default constructor " << to_string() << std::endl;
-    }
-    BankAccount<T> (T cash) : cash (cash) {
-        std::cout << "new cash " << to_string() << std::endl;
-    }
-    BankAccount<T> (const BankAccount& o) {
-        std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
-        cash = o.cash;
-        std::cout << "copy cash constructor result is  " << to_string() << std::endl;
-    }
-    // Transfer of funds?
-    BankAccount<T> (BankAccount<T>&& o) {
-        std::cout << "move cash called for " << o.to_string() << std::endl;
-        cash = o.cash;
-        o.cash = no_cash;
-        std::cout << "move cash result is  " << to_string() << std::endl;
-    }
-    ~BankAccount<T> () {
-        std::cout << "delete account " << to_string() << std::endl;
-    }
-    void deposit (const T& deposit) {
-        cash += deposit;
-        std::cout << "deposit cash called " << to_string() << std::endl;
-    }
-    T balance (void) const {
-        return cash;
-    }
-    bool check_balance (T expected) const {
-        if (cash == expected) {
-            return true;
-        } else {
-            throw std::string("account has different funds " +
-                              to_string() + " than expected " +
-                              std::to_string(expected));
-        }
-    }
-    friend int deposit (int cash, const BankAccount<int> &&account) {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, const BankAccount<int> &account) {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, BankAccount<int> &account) {
-        account.deposit(cash);
-        return account.cash;
-    }
-    friend std::ostream& operator<<(std::ostream &os, const BankAccount<T>& o) {
-        os << "$" << std::to_string(o.cash);
-        return os;
-    }
-    std::string to_string (void) const {
-        auto address = static_cast<const void*>(this);
-        std::stringstream ss;
-        ss << address;
-        return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
-    }
-};
-
-void deposit_ammount (int cash, BankAccount<int> &b)
+static void bind_fn1 (const std::string& arg1,
+                      const std::string& arg2,
+                      const std::string& arg3)
 {
-    b.deposit(cash);
+    std::cout << "argument 1 is " << arg1 << std::endl;
+    std::cout << "argument 2 is " << arg2 << std::endl;
+    std::cout << "argument 3 is " << arg3 << std::endl;
+}
+
+//
+// You could cheat here and use &arg1, but that makes a mockery of 
+// std::for_each
+//
+static void bind_try_to_modify_string (std::string arg1)
+{
+    arg1 = arg1 + " and is not modified and this will be ignored";
+}
+
+static std::string bind_really_modify_string (const std::string& arg1)
+{
+    return arg1 + " and is modified";
 }
 
 int main(int, char**)
 {
-    try {
-        // create account1 and try to deposit into it
-        auto account1 = BankAccount<int>(0);
+    const std::string a = "cat";
+    const std::string b = "dog";
+    const std::string c = "ork";
 
-        // create a bind to a static function that invokes a method
-        //
-        // std::ref is not normally needed unless it is something, like
-        // say a bitfield that cannot have a direct reference and needs
-        // to be wrapped by std::reference
-        //
-        auto f1 = std::bind(deposit_ammount, _1, std::ref(account1));
-        f1(100);
+    auto fn1 = bind(bind_fn1, _1, _2, _3);
+    auto fn2 = bind(bind_fn1, _2, _1, _3);
+    auto fn3 = bind(bind_fn1, _3, _1, _2);
 
-        // create a bind to a method directly
-        auto f2 = std::bind(&BankAccount<int>::deposit, &account1,_1);
-        f2(100);
+    // call bind_fn1(_1, _2, _3)
+    fn1(a, b, c);
 
-        // check the deposits succeeded
-        account1.check_balance(200);
+    // call bind_fn1(_2, _1, _3)
+    fn2(a, b, c);
 
-        std::cout << "SUCCESS: account1 deposit succeeded!" << std::endl;
-        std::cout << account1.to_string() << std::endl;
+    // call bind_fn1(_3, _2, _1)
+    fn3(a, b, c);
 
-        // end
-    } catch (const std::string &e) {
-        std::cerr << "FAILED: account1 deposit failed!: " << e << std::endl;
-    }
+    //
+    // Use std::bind with std::for_each
+    //
+    std::initializer_list< std::string > il = { a, b, c };
+    std::list< std::string > l1(il);
+
+    // call our bind function via std::for_each to modify a list of strings
+    auto fn4 = bind(bind_try_to_modify_string, _1);
+    std::for_each(l1.begin(), l1.end(), fn4);
+    for (auto e : l1) { std::cout << "l1 list-elem is now " << e << std::endl; }
+
+    //
+    // Use std::bind with std::transform
+    //
+    std::initializer_list< std::string > i2 = { a, b, c };
+    std::list< std::string > l2(i2);
+
+    // call our bind function via std::transform to modify a list of strings
+    auto fn5 = bind(bind_really_modify_string, _1);
+    std::transform(l2.begin(), l2.end(), l2.begin(), fn5);
+    for (auto e : l2) { std::cout << "l2 list-elem is now " << e << std::endl; }
 }
 ```
 To build:
@@ -135,19 +127,28 @@ c++ main.o  -o example
 Expected output:
 <pre>
 
-# create account1 and try to deposit into it
-new cash BankAccount(0x7ffeee63b1c8, cash $0)
+# call bind_fn1(_1, _2, _3)
+argument 1 is cat
+argument 2 is dog
+argument 3 is ork
 
-# create a bind to a static function that invokes a method
-deposit cash called BankAccount(0x7ffeee63b1c8, cash $100)
+# call bind_fn1(_2, _1, _3)
+argument 1 is dog
+argument 2 is cat
+argument 3 is ork
 
-# create a bind to a method directly
-deposit cash called BankAccount(0x7ffeee63b1c8, cash $200)
+# call bind_fn1(_3, _2, _1)
+argument 1 is ork
+argument 2 is cat
+argument 3 is dog
 
-# check the deposits succeeded
-# SUCCESS: account1 deposit succeeded!
-BankAccount(0x7ffeee63b1c8, cash $200)
+# call our bind function via std::for_each to modify a list of strings
+l1 list-elem is now cat
+l1 list-elem is now dog
+l1 list-elem is now ork
 
-# end
-delete account BankAccount(0x7ffeee63b1c8, cash $200)
+# call our bind function via std::transform to modify a list of strings
+l2 list-elem is now cat and is modified
+l2 list-elem is now dog and is modified
+l2 list-elem is now ork and is modified
 </pre>

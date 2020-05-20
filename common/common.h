@@ -8,5 +8,5 @@
 // White:   \u001b[37m
 // Reset:   \u001b[0m
 #define SUCCESS(x)  std::cout << "\033[0;35mSUCCESS: " << x << "\033[0m" << std::endl
-#define FAILED(x) std::cout << "\033[0;31mFAILED: " << x << "\033[0m" << std::endl
+#define FAILED(x) std::cout << "\033[0;34mFAILED: " << x << "\033[0m" << std::endl
 #define DOC(x) std::cout << "\n\033[31;1;4m" << x << "\033[0m" << std::endl

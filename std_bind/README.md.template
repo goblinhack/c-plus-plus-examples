@@ -1,17 +1,46 @@
 NOTE-BEGIN
-How to use std::bind
-====================
+How to use std::bind with a method
+==================================
 
-TODO
+std::bind is a useful construct that allows you to associate some context
+(i.e. a classes "this" pointer) with a function. It is primarily of use
+with invoking callback functionaliy, but to get started let's focus on a
+some simple cases:
 ```C++
-TODO
+    auto bind_fn = bind(bind_test, _1, _2, _3);
 ```
-TODO
+The funny syntax, _1 refers to an argument number is is fully called 
+std::placeholders::_1 but for obvious reasons people prefer to use:
 ```C++
-TODO
+    using namespace std::placeholders; // for _1, _2, _3...
 ```
-TODO
+to make things readable. Once a function is bound, you can invoke it
+like:
+```C++
+    bind_fn(1, 2, 3);
+```
+and bind_test with be called with (1, 2, 3). Nice.
 
+It can also be used in std::for_each loops e.g.:
+```C++
+    static void do_stuff (const std::string& arg1) {
+        std::cout << arg1 << std::endl;
+    }
+
+    std::list<std::string> l;
+    auto bind_fn = bind(do_stuff, _1);
+    std::for_each(l.begin(), l.end(), bind_fn);
+```
+And with std::transform (where you show intent to modify the list):
+```C++
+    static std::string do_stuff (std::string& arg1) {
+        return arg1 + " is modified";
+    }
+
+    std::list<std::string> l;
+    auto bind_fn = bind(do_stuff, _1);
+    std::transform(l.begin(), l.end(), l.begin(), bind_fn);
+```
 Here is the full example:
 ```C++
 NOTE-READ-CODE

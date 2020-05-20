@@ -1,0 +1,35 @@
+NOTE-BEGIN
+How to use std::bind to a method
+================================
+
+Sometimes we want to be able to bind to a method so we can call it directly,
+or more likely pass that function around. There are a few ways to do this.
+One is via a proxy function like:
+```C++
+    void proxy_function (int cash, BankAccount<int> &b)
+    {
+        b.deposit(cash);
+    }
+
+    auto f1 = std::bind(proxy_function, _1, account1);
+    f1(100);
+```
+Or without the proxy:
+```C++
+    auto f2 = std::bind(&BankAccount<int>::deposit, &account1, _1);
+    f2(100);
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

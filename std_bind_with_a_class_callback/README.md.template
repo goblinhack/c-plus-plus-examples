@@ -1,0 +1,54 @@
+NOTE-BEGIN
+How to use std::bind with a class callback
+==========================================
+
+Sometimes we want to be able to invoke callbacks from our class. This can be
+difficult in C++ as we need to have the context (i.e. the class object) somehow
+associated with the function.
+
+Thankfully, std::bind, can do this for us. Here we bind "account1" to one of
+its methods.
+```C++
+    auto method = std::bind(&BankAccount<int>::deposit, &account1, _1);
+    method(100);
+```
+This is identical to:
+```C++
+    account1.deposit(100);
+```
+So not too earth shattering. However, suppose we want to call a method in
+our class and have it call another method within the same class (or potentially
+another class) i.e. a callback.
+
+Here we define the ability for "check_transaction" to accept a callack
+function:
+```C++
+    using CheckTransactionCallback = std::function<void(T)>;
+    int check_transaction (int cash, CheckTransactionCallback fn) {
+        if (cash < 100) {
+            throw std::string("transaction is too small for Mr Money Bags");
+        } else {
+            fn(cash);
+        }
+        return cash;
+    }
+```
+And to invoke it:
+```C++
+    auto callback = std::bind(&BankAccount<int>::deposit, &account1, _1);
+    account1.check_transaction(99, callback);
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
