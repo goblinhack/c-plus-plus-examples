@@ -40,10 +40,9 @@ For newlines, like in C where we had "\n", you have in C++:
     use namespace std;
     ... << "aargh" << std::endl;
 ```
-Ok, so enough background. Here is the full example. The output should look like:
-
+Ok, so enough background. The output should look like:
 ![Alt text](https://github.com/goblinhack/c-plus-plus-examples/blob/master/hello_world_color/screenshot.png?raw=true "hello colorful world")
-
+And here is the full example.
 ```C++
 #include <iostream>
 #include <iomanip>
