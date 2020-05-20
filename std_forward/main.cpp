@@ -76,9 +76,9 @@ int main(int, char**)
         auto account1 = BankAccount<int>(0);
         process_deposit<int>(100, account1);
         std::cout << account1.to_string() << std::endl;
-        OK("account1 deposit succeeded!");
+        SUCCESS("account1 deposit succeeded!");
     } catch (const std::string &e) {
-        ERR("account1 deposit failed!: " + e);
+        FAILED("account1 deposit failed!: " + e);
     }
 
     try {
@@ -86,9 +86,9 @@ int main(int, char**)
         const auto account2 = BankAccount<int>(0);
         process_deposit<int>(100, account2);
         std::cout << account2.to_string() << std::endl;
-        OK("account2 deposit succeeded!");
+        SUCCESS("account2 deposit succeeded!");
     } catch (const std::string &e) {
-        ERR("account2 deposit failed!: " + e);
+        FAILED("account2 deposit failed!: " + e);
     }
 
     try {
@@ -96,8 +96,8 @@ int main(int, char**)
         auto account3 = BankAccount<int>(0);
         process_deposit<int>(100, std::move(account3));
         std::cout << account3.to_string() << std::endl;
-        OK("account3 deposit succeeded!");
+        SUCCESS("account3 deposit succeeded!");
     } catch (const std::string &e) {
-        ERR("account3 deposit failed!: " + e);
+        FAILED("account3 deposit failed!: " + e);
     }
 }

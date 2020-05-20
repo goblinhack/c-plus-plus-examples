@@ -10,7 +10,6 @@ of a basic leak detector.
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "../common/common.h"
 
 template <typename T> class MySharedPtr {
 private:
@@ -137,18 +136,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffeef446658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeef446688,Foo(0x7fcea1c029c8, data=foo1-data))
-delete Foo(0x7ffeef446658, data=foo1-data)
+new Foo(0x7ffee8f2f658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee8f2f688,Foo(0x7fc5314029c8, data=foo1-data))
+delete Foo(0x7ffee8f2f658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeef446688,Foo(0x7fcea1c029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee8f2f688,Foo(0x7fc5314029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeef446608,Foo(0x7fcea1c029c8, data=foo1-data))
-delete Foo(0x7fcea1c029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee8f2f608,Foo(0x7fc5314029c8, data=foo1-data))
+delete Foo(0x7fc5314029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeef446608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeef446688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee8f2f608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee8f2f688)
 </pre>

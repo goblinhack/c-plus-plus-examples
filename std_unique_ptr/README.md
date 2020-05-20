@@ -21,7 +21,6 @@ To change the ownership of a unique pointer, use std::move
 #include <memory>
 #include <iostream>
 #include <sstream>
-#include "../common/common.h"
 
 class Foo {
 private:
@@ -78,21 +77,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee7c7f088, data=foo1)
-copy constructor Foo(0x7f835ac029e0, data=)
-delete Foo(0x7ffee7c7f088, data=foo1)
+new Foo(0x7ffeeda2f088, data=foo1)
+copy constructor Foo(0x7fba5cc029e0, data=)
+delete Foo(0x7ffeeda2f088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7f835ac02a00, data=foo2)
+new Foo(0x7fba5cc02a00, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7f835ac029e0, data=foo1)
+uptr1 = Foo(0x7fba5cc029e0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7f835ac02a00, data=foo2)
+uptr3 = Foo(0x7fba5cc02a00, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7f835ac02a00, data=foo2)
-delete Foo(0x7f835ac029e0, data=foo1)
+delete Foo(0x7fba5cc02a00, data=foo2)
+delete Foo(0x7fba5cc029e0, data=foo1)
 </pre>

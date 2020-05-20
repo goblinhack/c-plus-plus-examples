@@ -42,7 +42,6 @@ Here is a full example:
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "../common/common.h"
 
 int main() {
     // Create a vector of strings:

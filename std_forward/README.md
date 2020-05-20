@@ -29,7 +29,6 @@ and this then throws an exception (the idea being this was a locked account!)
 #include <utility>
 #include <iostream>
 #include <functional>
-#include "../common/common.h"
 
 template<class T> class BankAccount {
 private:
@@ -100,9 +99,9 @@ int main(int, char**)
         auto account1 = BankAccount<int>(0);
         process_deposit<int>(100, account1);
         std::cout << account1.to_string() << std::endl;
-        OK("account1 deposit succeeded!");
+        // account1 deposit succeeded!
     } catch (const std::string &e) {
-        ERR("account1 deposit failed!: " + e);
+        FAILED("account1 deposit failed!: " + e);
     }
 
     try {
@@ -110,9 +109,9 @@ int main(int, char**)
         const auto account2 = BankAccount<int>(0);
         process_deposit<int>(100, account2);
         std::cout << account2.to_string() << std::endl;
-        OK("account2 deposit succeeded!");
+        // account2 deposit succeeded!
     } catch (const std::string &e) {
-        ERR("account2 deposit failed!: " + e);
+        FAILED("account2 deposit failed!: " + e);
     }
 
     try {
@@ -120,9 +119,9 @@ int main(int, char**)
         auto account3 = BankAccount<int>(0);
         process_deposit<int>(100, std::move(account3));
         std::cout << account3.to_string() << std::endl;
-        OK("account3 deposit succeeded!");
+        // account3 deposit succeeded!
     } catch (const std::string &e) {
-        ERR("account3 deposit failed!: " + e);
+        FAILED("account3 deposit failed!: " + e);
     }
 }
 ```
@@ -138,19 +137,19 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee1db96b0, cash $0)
-deposit cash called BankAccount(0x7ffee1db96b0, cash $100)
-BankAccount(0x7ffee1db96b0, cash $100)
-# account1 deposit succeeded!
-delete account BankAccount(0x7ffee1db96b0, cash $100)
+new cash BankAccount(0x7ffee90ca6b0, cash $0)
+deposit cash called BankAccount(0x7ffee90ca6b0, cash $100)
+BankAccount(0x7ffee90ca6b0, cash $100)
+# SUCCESS: account1 deposit succeeded!
+delete account BankAccount(0x7ffee90ca6b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee1db9670, cash $0)
-delete account BankAccount(0x7ffee1db9670, cash $0)
-# account2 deposit failed!: tried to write to a locked (const) account
+new cash BankAccount(0x7ffee90ca670, cash $0)
+delete account BankAccount(0x7ffee90ca670, cash $0)
+# FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee1db9630, cash $0)
-delete account BankAccount(0x7ffee1db9630, cash $0)
-# account3 deposit failed!: tried to write to a locked (const) account
+new cash BankAccount(0x7ffee90ca630, cash $0)
+delete account BankAccount(0x7ffee90ca630, cash $0)
+# FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
