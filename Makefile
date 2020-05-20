@@ -1,4 +1,6 @@
-SUBDIRS=range_based_for_loop \
+SUBDIRS=\
+	hello_world_color \
+	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
 	std_bind \
 	std_bind_with_a_method \

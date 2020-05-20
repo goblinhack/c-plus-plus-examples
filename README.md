@@ -11,6 +11,8 @@ individually or as a whole.
 Let me know if this is useful to anyone or if there are any areas you want
 covered. This is (probably forever) a work in progress.
 
+[How to print hello world in color in C++, because why not](hello_world_color/README.md)
+
 [How to use range based for loops](range_based_for_loop/README.md)
 
 [How to use range based for loops with your own iterator](range_based_for_loop_custom_begin_end/README.md)
@@ -39,6 +41,374 @@ To build all the examples and the documentation and run every examle, do:
 ```C++
    sh ./RUNME
 ```
+Hello world in color, because why not?
+======================================
+
+To get started let's do the usual "Hello World" kind of thing, but for C++.
+I use a lot of colors in the output of these tools to highlight errors and
+such, so it might be instructive to show how I do that before we move ahead.
+
+ANSI colors are really nothing to do with C++, but they are fun. Such sequences
+begin with the escape character (33) and act as instructions to your terminal to
+turn on colors, underline, bold etc. It all depends on what your terminal can
+do to get good results.
+
+For lots of detail on the types of ANSI codes you can use.
+See [this link](https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences)
+Many of these are used in the example below.
+
+Anyway, here we go:
+```C++
+    std::cout << "\033[31;1;4mHello world\033[0m" << std::endl;
+```
+This gives us red text (31), bold (1) and underlined (4). To reset back to
+the terminal default, we send the reset sequence.
+
+We also introduce the "std" namespace here. Some people opt to do
+```C++
+    use namespace std;
+```
+but it is considered bad practice. See [this link](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice)
+
+"std::cout" sends output to the stdout for this process. For errors, you
+would want to use "std::cerr". "std::endl" sends the newline character to 
+the terminal and is equivalent to "\n" in C.
+
+Here is the full example. The outut should look like:
+
+![Alt text](https://github.com/goblinhack/c-plus-plus-examples/hello_world_color/screenshot.png?raw=true "hello colorful world")
+
+```C++
+#include <iostream>
+#include <iomanip>
+#include <vector>
+
+class Ansi {
+public:
+    Ansi() {
+        //
+        // See
+        //
+        // https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences#4842438
+        //
+        // For a very thorough explanation of these escape codes
+        //
+        const std::initializer_list<std::string> code_strings = {
+            /* reset                        */ "[0m",
+            /* bold                         */ "[1m",
+            /* faint                        */ "[2m",
+            /* italic                       */ "[3m",
+            /* underline                    */ "[4m",
+            /* slow_blink                   */ "[5m",
+            /* rapid_blink                  */ "[6m",
+            /* reverse_video                */ "[7m",
+            /* conceal                      */ "[8m",
+            /* crossed_out                  */ "[9m",
+            /* primary_font                 */ "[10m",
+            /* alt_font1                    */ "[11m",
+            /* alt_font2                    */ "[12m",
+            /* alt_font3                    */ "[13m",
+            /* alt_font4                    */ "[14m",
+            /* alt_font5                    */ "[15m",
+            /* alt_font6                    */ "[16m",
+            /* alt_font7                    */ "[17m",
+            /* alt_font8                    */ "[18m",
+            /* alt_font9                    */ "[19m",
+            /* fraktur                      */ "[20m",
+            /* bold_off_or_double_underline */ "[21m",
+            /* normal_color                 */ "[22m",
+            /* not_italic                   */ "[23m",
+            /* underline_off                */ "[24m",
+            /* blink_off                    */ "[25m",
+            /* unused                       */ "[26m",
+            /* inverse_off                  */ "[27m",
+            /* reveal                       */ "[28m",
+            /* not_crossed_out              */ "[29m",
+            /* foreground_black             */ "[30m",
+            /* foreground_red               */ "[31m",
+            /* foreground_green             */ "[32m",
+            /* foreground_yellow            */ "[33m",
+            /* foreground_blue              */ "[34m",
+            /* foreground_magenta           */ "[35m",
+            /* foreground_cyan              */ "[36m",
+            /* foreground_white             */ "[37m",
+            /* foreground_color2            */ "[38m",
+            /* default_foreground_color     */ "[39m",
+            /* background_black             */ "[40m",
+            /* background_red               */ "[41m",
+            /* background_green             */ "[42m",
+            /* background_yellow            */ "[43m",
+            /* background_blue              */ "[44m",
+            /* background_magenta           */ "[45m",
+            /* background_cyan              */ "[46m",
+            /* background_white             */ "[47m",
+            /* background_color2            */ "[48m",
+            /* default_background_color     */ "[49m",
+            /* unused2                      */ "[49m",
+            /* framed                       */ "[51m",
+            /* encircled                    */ "[52m",
+            /* overlined                    */ "[53m",
+            /* not_framed_or_encircled      */ "[54m",
+            /* not_overlined                */ "[55m",
+            /* unused3                      */ "[56m",
+            /* unused4                      */ "[57m",
+            /* unused5                      */ "[58m",
+            /* unused6                      */ "[59m",
+            /* underline2                   */ "[60m",
+            /* double_underline             */ "[61m",
+            /* overline                     */ "[62m",
+            /* double_overline              */ "[63m",
+            /* stress_marking               */ "[64m",
+            /* attributes_off               */ "[65m",
+        };
+        codes = code_strings;
+
+        //
+        // Mapping of code back to descriptive name
+        //
+        const std::initializer_list<std::string> code_name_strings = {
+            "reset",
+            "bold",
+            "faint",
+            "italic",
+            "underline",
+            "slow_blink",
+            "rapid_blink",
+            "reverse_video",
+            "conceal",
+            "crossed_out",
+            "primary_font",
+            "alt_font1",
+            "alt_font2",
+            "alt_font3",
+            "alt_font4",
+            "alt_font5",
+            "alt_font6",
+            "alt_font7",
+            "alt_font8",
+            "alt_font9",
+            "fraktur",
+            "bold_off_or_double_underline",
+            "normal_color",
+            "not_italic",
+            "underline_off",
+            "blink_off",
+            "unused",
+            "inverse_off",
+            "reveal",
+            "not_crossed_out",
+            "foreground_black",
+            "foreground_red",
+            "foreground_green",
+            "foreground_yellow",
+            "foreground_blue",
+            "foreground_magenta",
+            "foreground_cyan",
+            "foreground_white",
+            "foreground_color2",
+            "default_foreground_color",
+            "background_black",
+            "background_red",
+            "background_green",
+            "background_yellow",
+            "background_blue",
+            "background_magenta",
+            "background_cyan",
+            "background_white",
+            "background_color2",
+            "default_background_color",
+            "unused2",
+            "framed",
+            "encircled",
+            "overlined",
+            "not_framed_or_encircled",
+            "not_overlined",
+            "unused3",
+            "unused4",
+            "unused5",
+            "unused6",
+            "underline2",
+            "double_underline",
+            "overline",
+            "double_overline",
+            "stress_marking",
+            "attributes_off",
+        };
+        code_names = code_name_strings;
+
+        //
+        // Codes for printing background and foreground together, and without
+        // needing to do any number to string conversions for fast lookups.
+        //
+        const std::initializer_list<std::string> bgfg_code_strings = {
+            "[40;30m", "[40;31m", "[40;32m", "[40;33m",
+            "[40;34m", "[40;35m", "[40;36m", "[40;37m",
+            "[41;30m", "[41;31m", "[41;32m", "[41;33m",
+            "[41;34m", "[41;35m", "[41;36m", "[41;37m",
+            "[42;30m", "[42;31m", "[42;32m", "[42;33m",
+            "[42;34m", "[42;35m", "[42;36m", "[42;37m",
+            "[43;30m", "[43;31m", "[43;32m", "[43;33m",
+            "[43;34m", "[43;35m", "[43;36m", "[43;37m",
+            "[44;30m", "[44;31m", "[44;32m", "[44;33m",
+            "[44;34m", "[44;35m", "[44;36m", "[44;37m",
+            "[45;30m", "[45;31m", "[45;32m", "[45;33m",
+            "[45;34m", "[45;35m", "[45;36m", "[45;37m",
+            "[46;30m", "[46;31m", "[46;32m", "[46;33m",
+            "[46;34m", "[46;35m", "[46;36m", "[46;37m",
+            "[47;30m", "[47;31m", "[47;32m", "[47;33m",
+            "[47;34m", "[47;35m", "[47;36m", "[47;37m",
+        };
+
+        bgfg_codes = bgfg_code_strings;
+    };
+
+    //
+    // Get the ansii escape sequence for the given code
+    //
+    std::string get_code (unsigned char code)
+    {
+        assert(code < codes.size());
+        return (codes[code]);
+    }
+
+    //
+    // Get the human readable name for the ansii escape sequence
+    //
+    std::string get_code_name (unsigned char code)
+    {
+        assert(code < codes.size());
+        return (code_names[code]);
+    }
+
+    //
+    // For speed and to avoid converting strings, we have a special lookup
+    // for background and foreground combinations.
+    //
+    std::string get_bgfg_code (unsigned char bg, unsigned char fg)
+    {
+        bg -= BACKGROUND_BLACK;
+        fg -= FOREGROUND_BLACK;
+        auto code = bg * 8 + fg;
+        assert(code < codes.size());
+        return (bgfg_codes[code]);
+    }
+
+    enum AnsiCode {
+        RESET                        = 0,
+        BOLD                         = 1,
+        FAINT                        = 2,
+        ITALIC                       = 3,
+        UNDERLINE                    = 4,
+        SLOW_BLINK                   = 5,
+        RAPID_BLINK                  = 6,
+        REVERSE_VIDEO                = 7,
+        CONCEAL                      = 8,
+        CROSSED_OUT                  = 9,
+        PRIMARY_FONT                 = 10,
+        ALT_FONT1                    = 11,
+        ALT_FONT2                    = 12,
+        ALT_FONT3                    = 13,
+        ALT_FONT4                    = 14,
+        ALT_FONT5                    = 15,
+        ALT_FONT6                    = 16,
+        ALT_FONT7                    = 17,
+        ALT_FONT8                    = 18,
+        ALT_FONT9                    = 19,
+        FRAKTUR                      = 20,
+        BOLD_OFF_OR_DOUBLE_UNDERLINE = 21,
+        NORMAL_COLOR                 = 22,
+        NOT_ITALIC                   = 23,
+        UNDERLINE_OFF                = 24,
+        BLINK_OFF                    = 25,
+        UNUSED                       = 25,
+        INVERSE_OFF                  = 27,
+        REVEAL                       = 28,
+        NOT_CROSSED_OUT              = 29,
+        FOREGROUND_BLACK             = 30,
+        FOREGROUND_RED               = 31,
+        FOREGROUND_GREEN             = 32,
+        FOREGROUND_YELLOW            = 33,
+        FOREGROUND_BLUE              = 34,
+        FOREGROUND_MAGENTA           = 35,
+        FOREGROUND_CYAN              = 36,
+        FOREGROUND_WHITE             = 37,
+        FOREGROUND_COLOR2            = 38,
+        DEFAULT_FOREGROUND_COLOR     = 39,
+        BACKGROUND_BLACK             = 40,
+        BACKGROUND_RED               = 41,
+        BACKGROUND_GREEN             = 42,
+        BACKGROUND_YELLOW            = 43,
+        BACKGROUND_BLUE              = 44,
+        BACKGROUND_MAGENTA           = 45,
+        BACKGROUND_CYAN              = 46,
+        BACKGROUND_WHITE             = 47,
+        BACKGROUND_COLOR2            = 48,
+        DEFAULT_BACKGROUND_COLOR     = 49,
+        UNUSED2                      = 49,
+        FRAMED                       = 51,
+        ENCIRCLED                    = 52,
+        OVERLINED                    = 53,
+        NOT_FRAMED_OR_ENCIRCLED      = 54,
+        NOT_OVERLINED                = 55,
+        UNUSED3                      = 56,
+        UNUSED4                      = 57,
+        UNUSED5                      = 58,
+        UNUSED6                      = 59,
+        UNDERLINE2                   = 60,
+        DOUBLE_UNDERLINE             = 61,
+        OVERLINE                     = 62,
+        DOUBLE_OVERLINE              = 63,
+        STRESS_MARKING               = 64,
+        ATTRIBUTES_OFF               = 65,
+    };
+private:
+    std::vector<std::string> codes;
+    std::vector<std::string> code_names;
+    std::vector<std::string> bgfg_codes;
+};
+
+int main (int argc, char *argv[])
+{
+    Ansi ansii;
+
+    //
+    // Print a nice message
+    //
+    std::cout << std::endl;
+    std::cout << ansii.get_code(ansii.FOREGROUND_RED);
+    std::cout << "hello ";
+
+    std::cout << ansii.get_code(ansii.FOREGROUND_GREEN);
+    std::cout << "beautiful";
+    std::cout << ansii.get_code(ansii.RESET);
+
+    std::cout << ansii.get_code(ansii.FOREGROUND_CYAN);
+    std::cout << " colorful";
+    std::cout << ansii.get_code(ansii.RESET);
+
+    std::cout << ansii.get_code(ansii.FOREGROUND_BLUE);
+    std::cout << " world";
+    std::cout << ansii.get_code(ansii.RESET);
+
+    std::cout << " from C++";
+    std::cout << std::endl;
+
+    return (0);
+}
+```
+To build:
+<pre>
+cd hello_world_color
+rm -f *.o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
+./example
+</pre>
+Expected output:
+<pre>
+
+# hello # beautiful# #  colorful# #  world#  from C++
+</pre>
 How to use a range based for loop
 =================================
 
@@ -292,10 +662,10 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7ffee8d42730, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffee8d42730, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffee8d42730, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffee8d42730, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffee592d730, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee592d730, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee592d730, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee592d730, currlen=3, maxlen=4 elems=[10,11,12])
 
 # Walk the custom vector with our iterator:
 vec1: walk 10
@@ -303,7 +673,7 @@ vec1: walk 11
 vec1: walk 12
 
 # End, expect vec1 destroy:
-delete MyVector(0x7ffee8d42730, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffee592d730, currlen=3, maxlen=4 elems=[10,11,12])
 </pre>
 How to use std::bind, the basic stuff
 =====================================
@@ -605,23 +975,23 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee2a90f68, cash $0)
+new cash BankAccount(0x7ffee4fa2f68, cash $0)
 
 # invoke a bind to a method via proxy
-copy cash constructor called for BankAccount(0x7ffee2a90f68, cash $0)
-copy cash constructor result is  BankAccount(0x7ffee2a90f60, cash $0)
-deposit cash called BankAccount(0x7ffee2a90f60, cash $100)
+copy cash constructor called for BankAccount(0x7ffee4fa2f68, cash $0)
+copy cash constructor result is  BankAccount(0x7ffee4fa2f60, cash $0)
+deposit cash called BankAccount(0x7ffee4fa2f60, cash $100)
 
 # invoke a bind to a method via proxy with std::ref
-deposit cash called BankAccount(0x7ffee2a90f68, cash $100)
+deposit cash called BankAccount(0x7ffee4fa2f68, cash $100)
 
 # invoke a bind to a method directly
-deposit cash called BankAccount(0x7ffee2a90f68, cash $200)
+deposit cash called BankAccount(0x7ffee4fa2f68, cash $200)
 
 # check the deposits succeeded
-delete account BankAccount(0x7ffee2a90f60, cash $100)
-delete account BankAccount(0x7ffee2a90f68, cash $200)
-# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffee2a90f68, cash $200) than expected 300
+delete account BankAccount(0x7ffee4fa2f60, cash $100)
+delete account BankAccount(0x7ffee4fa2f68, cash $200)
+# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffee4fa2f68, cash $200) than expected 300
 </pre>
 How to use std::bind with a class callback
 ==========================================
@@ -775,11 +1145,11 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffeeda69540, cash $0)
-deposit cash called BankAccount(0x7ffeeda69540, cash $100)
-deposit cash called BankAccount(0x7ffeeda69540, cash $200)
+new cash BankAccount(0x7ffeea227540, cash $0)
+deposit cash called BankAccount(0x7ffeea227540, cash $100)
+deposit cash called BankAccount(0x7ffeea227540, cash $200)
 # SUCCESS: account1 1st deposit succeeded!
-delete account BankAccount(0x7ffeeda69540, cash $200)
+delete account BankAccount(0x7ffeea227540, cash $200)
 # FAILED: account1 deposit failed!: transaction is too small for Mr Money Bags
 </pre>
 How to use std::move to avoid the cost of temporaries
@@ -946,37 +1316,37 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7fdd2cd02870, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7fdd2cd02870, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7fdd2cd02870, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7fd0a3c029b0, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7fd0a3c029b0, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7fd0a3c029b0, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7fdd2cd02870, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffee1b0e698, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7fd0a3c029b0, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffeec9c7698, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffee1b0e698, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffee1b0e698, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffeec9c7698, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffeec9c7698, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7fdd2cd02870, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffee1b0e678, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7fd0a3c029b0, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffeec9c7678, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffee1b0e678, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffee1b0e678, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffeec9c7678, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffeec9c7678, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7fdd2cd02870, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7fd0a3c029b0, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffee1b0e678, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffee1b0e698, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffeec9c7678, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffeec9c7698, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>
 How to use std::forward
 =======================
@@ -1122,20 +1492,20 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee503f6b0, cash $0)
-deposit cash called BankAccount(0x7ffee503f6b0, cash $100)
-BankAccount(0x7ffee503f6b0, cash $100)
+new cash BankAccount(0x7ffee06ce6b0, cash $0)
+deposit cash called BankAccount(0x7ffee06ce6b0, cash $100)
+BankAccount(0x7ffee06ce6b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee503f6b0, cash $100)
+delete account BankAccount(0x7ffee06ce6b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee503f670, cash $0)
-delete account BankAccount(0x7ffee503f670, cash $0)
+new cash BankAccount(0x7ffee06ce670, cash $0)
+delete account BankAccount(0x7ffee06ce670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee503f630, cash $0)
-delete account BankAccount(0x7ffee503f630, cash $0)
+new cash BankAccount(0x7ffee06ce630, cash $0)
+delete account BankAccount(0x7ffee06ce630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
 How to use std::unique_ptr
@@ -1218,23 +1588,23 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffeeac2d088, data=foo1)
-copy constructor Foo(0x7f82454029e0, data=)
-delete Foo(0x7ffeeac2d088, data=foo1)
+new Foo(0x7ffeee4bd088, data=foo1)
+copy constructor Foo(0x7fef96d00030, data=)
+delete Foo(0x7ffeee4bd088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7f8245402a00, data=foo2)
+new Foo(0x7fef96d00050, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7f82454029e0, data=foo1)
+uptr1 = Foo(0x7fef96d00030, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7f8245402a00, data=foo2)
+uptr3 = Foo(0x7fef96d00050, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7f8245402a00, data=foo2)
-delete Foo(0x7f82454029e0, data=foo1)
+delete Foo(0x7fef96d00050, data=foo2)
+delete Foo(0x7fef96d00030, data=foo1)
 </pre>
 How to use std::shared_ptr
 ==========================
@@ -1337,9 +1707,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffee1a80220, data=foo1)
-copy constructor Foo(0x7fa605c029f8, data=)
-delete Foo(0x7ffee1a80220, data=foo1)
+new Foo(0x7ffee3671220, data=foo1)
+copy constructor Foo(0x7fb4ab4029f8, data=)
+delete Foo(0x7ffee3671220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -1357,13 +1727,13 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7fa605c029f8, data=foo1)
+delete Foo(0x7fb4ab4029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fa605c029b0, data=foo0)
-sptr0 = Foo(0x7fa605c029b0, data=foo0)
-delete Foo(0x7fa605c029b0, data=foo0)
+new Foo(0x7fb4ab500000, data=foo0)
+sptr0 = Foo(0x7fb4ab500000, data=foo0)
+delete Foo(0x7fb4ab500000, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -1503,18 +1873,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffedfd66658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffedfd66688,Foo(0x7faa164029c8, data=foo1-data))
-delete Foo(0x7ffedfd66658, data=foo1-data)
+new Foo(0x7ffeeee25658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffeeee25688,Foo(0x7fe4104029c8, data=foo1-data))
+delete Foo(0x7ffeeee25658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffedfd66688,Foo(0x7faa164029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeee25688,Foo(0x7fe4104029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffedfd66608,Foo(0x7faa164029c8, data=foo1-data))
-delete Foo(0x7faa164029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffeeee25608,Foo(0x7fe4104029c8, data=foo1-data))
+delete Foo(0x7fe4104029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffedfd66608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffedfd66688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeee25608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffeeee25688)
 </pre>

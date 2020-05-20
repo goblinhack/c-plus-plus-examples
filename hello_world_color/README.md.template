@@ -1,0 +1,51 @@
+NOTE-BEGIN
+Hello world in color, because why not?
+======================================
+
+To get started let's do the usual "Hello World" kind of thing, but for C++.
+I use a lot of colors in the output of these tools to highlight errors and
+such, so it might be instructive to show how I do that before we move ahead.
+
+ANSI colors are really nothing to do with C++, but they are fun. Such sequences
+begin with the escape character (33) and act as instructions to your terminal to
+turn on colors, underline, bold etc. It all depends on what your terminal can
+do to get good results.
+
+For lots of detail on the types of ANSI codes you can use.
+See [this link](https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences)
+Many of these are used in the example below.
+
+Anyway, here we go:
+```C++
+    std::cout << "\033[31;1;4mHello world\033[0m" << std::endl;
+```
+This gives us red text (31), bold (1) and underlined (4). To reset back to
+the terminal default, we send the reset sequence.
+
+We also introduce the "std" namespace here. Some people opt to do
+```C++
+    use namespace std;
+```
+but it is considered bad practice. See [this link](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice)
+
+"std::cout" sends output to the stdout for this process. For errors, you
+would want to use "std::cerr". "std::endl" sends the newline character to 
+the terminal and is equivalent to "\n" in C.
+
+Here is the full example. The outut should look like:
+
+![Alt text](https://github.com/goblinhack/c-plus-plus-examples/hello_world_color/screenshot.png?raw=true "hello colorful world")
+
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

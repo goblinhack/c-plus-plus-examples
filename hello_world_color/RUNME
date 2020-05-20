@@ -1,0 +1,3 @@
+#!/bin/sh
+sh ../common/generate_readme.sh > README.md
+sh ../common/RUNME
