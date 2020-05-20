@@ -46,9 +46,7 @@ public:
         cash = o.cash;
         std::cout << "copy cash constructor result is  " << to_string() << std::endl;
     }
-    //
-    // Transfer of funds
-    //
+    // Transfer of funds?
     BankAccount<T> (BankAccount<T>&& o) {
         std::cout << "move cash called for " << o.to_string() << std::endl;
         cash = o.cash;
@@ -62,6 +60,16 @@ public:
         cash += deposit;
         std::cout << "deposit cash called " << to_string() << std::endl;
     }
+    friend int deposit (int cash, const BankAccount<int> &&account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, const BankAccount<int> &account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, BankAccount<int> &account) {
+        account.deposit(cash);
+        return account.cash;
+    }
     friend std::ostream& operator<<(std::ostream &os, const BankAccount<T>& o) {
         os << "$" << std::to_string(o.cash);
         return os;
@@ -71,19 +79,6 @@ public:
         std::stringstream ss;
         ss << address;
         return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
-    }
-    friend int deposit (int cash, const BankAccount<int> &&account)
-    {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, const BankAccount<int> &account)
-    {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, BankAccount<int> &account)
-    {
-        account.deposit(cash);
-        return account.cash;
     }
 };
 
@@ -137,19 +132,19 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee90ca6b0, cash $0)
-deposit cash called BankAccount(0x7ffee90ca6b0, cash $100)
-BankAccount(0x7ffee90ca6b0, cash $100)
+new cash BankAccount(0x7ffeec1a86b0, cash $0)
+deposit cash called BankAccount(0x7ffeec1a86b0, cash $100)
+BankAccount(0x7ffeec1a86b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee90ca6b0, cash $100)
+delete account BankAccount(0x7ffeec1a86b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee90ca670, cash $0)
-delete account BankAccount(0x7ffee90ca670, cash $0)
+new cash BankAccount(0x7ffeec1a8670, cash $0)
+delete account BankAccount(0x7ffeec1a8670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee90ca630, cash $0)
-delete account BankAccount(0x7ffee90ca630, cash $0)
+new cash BankAccount(0x7ffeec1a8630, cash $0)
+delete account BankAccount(0x7ffeec1a8630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>

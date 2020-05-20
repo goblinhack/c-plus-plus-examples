@@ -23,9 +23,7 @@ public:
         cash = o.cash;
         std::cout << "copy cash constructor result is  " << to_string() << std::endl;
     }
-    //
-    // Transfer of funds
-    //
+    // Transfer of funds?
     BankAccount<T> (BankAccount<T>&& o) {
         std::cout << "move cash called for " << o.to_string() << std::endl;
         cash = o.cash;
@@ -39,6 +37,16 @@ public:
         cash += deposit;
         std::cout << "deposit cash called " << to_string() << std::endl;
     }
+    friend int deposit (int cash, const BankAccount<int> &&account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, const BankAccount<int> &account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, BankAccount<int> &account) {
+        account.deposit(cash);
+        return account.cash;
+    }
     friend std::ostream& operator<<(std::ostream &os, const BankAccount<T>& o) {
         os << "$" << std::to_string(o.cash);
         return os;
@@ -48,19 +56,6 @@ public:
         std::stringstream ss;
         ss << address;
         return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
-    }
-    friend int deposit (int cash, const BankAccount<int> &&account)
-    {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, const BankAccount<int> &account)
-    {
-        throw std::string("tried to write to a locked (const) account");
-    }
-    friend int deposit (int cash, BankAccount<int> &account)
-    {
-        account.deposit(cash);
-        return account.cash;
     }
 };
 
