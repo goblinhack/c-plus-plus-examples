@@ -24,8 +24,8 @@ We also introduce the "std" namespace here. Some people opt to do
 ```
 but it is considered bad practice to use this. See
 [this link](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice).
-Personally I find code clearer when it uses "std:" as you are left in no
-doubt as to what namespace is being used.
+Personally I agree and find code clearer when it uses "std:" explicitly in the code as
+you are left in no doubt as to what namespace is being used.
 ```C++
     use namespace std;
     std::cout << ...
