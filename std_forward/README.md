@@ -17,10 +17,16 @@ template<typename A, typename Account> void f(A&& a, B&& b) {
     f(std::forward<Account>(a), std::forward<Account>(b));
 }
 ```
-I struggled to find a useful example of std::forward, but hit upon an example
-of a bank account. If we have a const version of an account we should expect
-when we pass it to our deposit template that the const function is called;
-and this then throws an exception (the idea being this was a locked account!)
+I struggled to find a useful non generic example of std::forward, but hit upon an
+example of a bank account that we pass along the cash to be deposited as an argument.
+
+So if we have a const version of an account we should expect when we pass it to our
+deposit template<> that the const function is called; and this then throws an exception 
+(the idea being this was a locked account!)
+
+If we have a non const account then we should be able to modify the account.
+
+Here is the full example:
 ```C++
 #include <iostream>
 #include <string>
@@ -132,19 +138,19 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee68d96b0, cash $0)
-deposit cash called BankAccount(0x7ffee68d96b0, cash $100)
-BankAccount(0x7ffee68d96b0, cash $100)
+new cash BankAccount(0x7ffee47a16b0, cash $0)
+deposit cash called BankAccount(0x7ffee47a16b0, cash $100)
+BankAccount(0x7ffee47a16b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee68d96b0, cash $100)
+delete account BankAccount(0x7ffee47a16b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee68d9670, cash $0)
-delete account BankAccount(0x7ffee68d9670, cash $0)
+new cash BankAccount(0x7ffee47a1670, cash $0)
+delete account BankAccount(0x7ffee47a1670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee68d9630, cash $0)
-delete account BankAccount(0x7ffee68d9630, cash $0)
+new cash BankAccount(0x7ffee47a1630, cash $0)
+delete account BankAccount(0x7ffee47a1630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
