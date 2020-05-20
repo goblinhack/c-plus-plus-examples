@@ -12,6 +12,7 @@ do to get good results. For lots of detail on the types of ANSI codes you can us
 See [this link](https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences)
 Many of these are used in the example below. Anyway, here we go:
 ```C++
+    use namespace std;
     std::cout << "\033[31;1;4mHello world\033[0m" << std::endl;
 ```
 This gives us red text (31), bold (1) and underlined (4). To reset back to
