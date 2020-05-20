@@ -19,12 +19,11 @@ SUBDIRS="\
 
 cp README.md.template README.md
 
-# Makes the main page too long:
-#
-# for i in $SUBDIRS
-# do
-#     echo
-#     log $i:
-#     (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
-#     cat $i/README.md >> README.md
-# done
+for i in $SUBDIRS
+do
+    echo
+  log $i:
+    (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
+    # Makes the main page too long:
+    # cat $i/README.md >> README.md
+done
