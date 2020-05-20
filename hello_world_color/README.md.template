@@ -22,15 +22,22 @@ We also introduce the "std" namespace here. Some people opt to do
 ```C++
     use namespace std;
 ```
-but it is considered bad practice to use this. See [this link](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice).
+but it is considered bad practice to use this. See
+[this link](https://stackoverflow.com/questions/1452721/why-is-using-namespace-std-considered-bad-practice).
 Personally I find code clearer when it uses "std:" as you are left in no
 doubt as to what namespace is being used.
-
-"std::cout" sends output to the stdout for this process. For errors, you
-would want to use "std::cerr". "std::endl" sends the newline character to
-the terminal and is equivalent to "\n" in C.
-
-Here is the full example. The output should look like:
+```C++
+    std::cout << ...
+```
+sends output to the stdout for this process. For errors, you would want to use instead:
+```C++
+    std::cerr << "aargh" << ...
+```
+For newlines, like in C where we had "\n", you have in C++:
+```C++
+    ... << "aargh" << std::endl;
+```
+Ok, so enough background. Here is the full example. The output should look like:
 
 ![Alt text](https://github.com/goblinhack/c-plus-plus-examples/blob/master/hello_world_color/screenshot.png?raw=true "hello colorful world")
 
