@@ -8,13 +8,9 @@ such, so it might be instructive to show how I do that before we move ahead.
 ANSI colors are really nothing to do with C++, but they are fun. Such sequences
 begin with the escape character (33) and act as instructions to your terminal to
 turn on colors, underline, bold etc. It all depends on what your terminal can
-do to get good results.
-
-For lots of detail on the types of ANSI codes you can use.
+do to get good results. For lots of detail on the types of ANSI codes you can use.
 See [this link](https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences)
-Many of these are used in the example below.
-
-Anyway, here we go:
+Many of these are used in the example below. Anyway, here we go:
 ```C++
     std::cout << "\033[31;1;4mHello world\033[0m" << std::endl;
 ```
@@ -33,7 +29,7 @@ doubt as to what namespace is being used.
 would want to use "std::cerr". "std::endl" sends the newline character to
 the terminal and is equivalent to "\n" in C.
 
-Here is the full example. The outut should look like:
+Here is the full example. The output should look like:
 
 ![Alt text](https://github.com/goblinhack/c-plus-plus-examples/blob/master/hello_world_color/screenshot.png?raw=true "hello colorful world")
 
