@@ -15,6 +15,8 @@ covered. This is (probably forever) a work in progress.
 
 [How to use range based for loops with your own iterator](custom_begin_end/README.md)
 
+[How to use std::bind](std_move/README.md)
+
 [How to use std::move](std_move/README.md)
 
 [How to use std::forward](std_forward/README.md)
@@ -286,10 +288,10 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7ffee883b730, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffee883b730, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffee883b730, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffee883b730, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffee597a730, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee597a730, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee597a730, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee597a730, currlen=3, maxlen=4 elems=[10,11,12])
 
 # Walk the custom vector with our iterator:
 vec1: walk 10
@@ -297,7 +299,160 @@ vec1: walk 11
 vec1: walk 12
 
 # End, expect vec1 destroy:
-delete MyVector(0x7ffee883b730, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffee597a730, currlen=3, maxlen=4 elems=[10,11,12])
+</pre>
+How to use std::bind
+====================
+
+TODO
+```C++
+TODO
+```
+TODO
+```C++
+TODO
+```
+TODO
+
+Here is the full example:
+```C++
+#include <algorithm>  // for std::move
+#include <functional> // for _1, _2
+#include <iostream>
+#include <memory>
+#include <random>
+#include <sstream>    // for std::stringstream
+#include <string>
+#include <utility>
+
+using namespace std::placeholders;  // for _1, _2, _3...
+
+template<class T> class BankAccount {
+private:
+    const T no_cash {};
+    T cash {};
+public:
+    BankAccount<T> () {
+        std::cout << "default constructor " << to_string() << std::endl;
+    }
+    BankAccount<T> (T cash) : cash (cash) {
+        std::cout << "new cash " << to_string() << std::endl;
+    }
+    BankAccount<T> (const BankAccount& o) {
+        std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
+        cash = o.cash;
+        std::cout << "copy cash constructor result is  " << to_string() << std::endl;
+    }
+    // Transfer of funds?
+    BankAccount<T> (BankAccount<T>&& o) {
+        std::cout << "move cash called for " << o.to_string() << std::endl;
+        cash = o.cash;
+        o.cash = no_cash;
+        std::cout << "move cash result is  " << to_string() << std::endl;
+    }
+    ~BankAccount<T> () {
+        std::cout << "delete account " << to_string() << std::endl;
+    }
+    void deposit (const T& deposit) {
+        cash += deposit;
+        std::cout << "deposit cash called " << to_string() << std::endl;
+    }
+    T balance (void) const {
+        return cash;
+    }
+    bool check_balance (T expected) const {
+        if (cash == expected) {
+            return true;
+        } else {
+            throw std::string("account has different funds " +
+                              to_string() + " than expected " +
+                              std::to_string(expected));
+        }
+    }
+    friend int deposit (int cash, const BankAccount<int> &&account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, const BankAccount<int> &account) {
+        throw std::string("tried to write to a locked (const) account");
+    }
+    friend int deposit (int cash, BankAccount<int> &account) {
+        account.deposit(cash);
+        return account.cash;
+    }
+    friend std::ostream& operator<<(std::ostream &os, const BankAccount<T>& o) {
+        os << "$" << std::to_string(o.cash);
+        return os;
+    }
+    std::string to_string (void) const {
+        auto address = static_cast<const void*>(this);
+        std::stringstream ss;
+        ss << address;
+        return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
+    }
+};
+
+void deposit_ammount (int cash, BankAccount<int> &b)
+{
+    b.deposit(cash);
+}
+
+int main(int, char**)
+{
+    try {
+        // create account1 and try to deposit into it
+        auto account1 = BankAccount<int>(0);
+
+        // create a bind to a static function that invokes a method
+        //
+        // std::ref is not normally needed unless it is something, like
+        // say a bitfield that cannot have a direct reference and needs
+        // to be wrapped by std::reference
+        //
+        auto f1 = std::bind(deposit_ammount, _1, std::ref(account1));
+        f1(100);
+
+        // create a bind to a method directly
+        auto f2 = std::bind(&BankAccount<int>::deposit, &account1,_1);
+        f2(100);
+
+        // check the deposits succeeded
+        account1.check_balance(200);
+
+        std::cout << "SUCCESS: account1 deposit succeeded!" << std::endl;
+        std::cout << account1.to_string() << std::endl;
+
+        // end
+    } catch (const std::string &e) {
+        std::cerr << "FAILED: account1 deposit failed!: " << e << std::endl;
+    }
+}
+```
+To build:
+<pre>
+cd std_bind
+rm -f *.o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
+./example
+</pre>
+Expected output:
+<pre>
+
+# create account1 and try to deposit into it
+new cash BankAccount(0x7ffeee1991c8, cash $0)
+
+# create a bind to a static function that invokes a method
+deposit cash called BankAccount(0x7ffeee1991c8, cash $100)
+
+# create a bind to a method directly
+deposit cash called BankAccount(0x7ffeee1991c8, cash $200)
+
+# check the deposits succeeded
+# SUCCESS: account1 deposit succeeded!
+BankAccount(0x7ffeee1991c8, cash $200)
+
+# end
+delete account BankAccount(0x7ffeee1991c8, cash $200)
 </pre>
 How to use std::move
 ====================
@@ -463,37 +618,37 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7fdf3b4029b0, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7fdf3b4029b0, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7fdf3b4029b0, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7ffa0ec029b0, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffa0ec029b0, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffa0ec029b0, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7fdf3b4029b0, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffee809d698, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7ffa0ec029b0, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffeef1f7698, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffee809d698, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffee809d698, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffeef1f7698, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffeef1f7698, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7fdf3b4029b0, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffee809d678, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7ffa0ec029b0, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffeef1f7678, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffee809d678, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffee809d678, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffeef1f7678, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffeef1f7678, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7fdf3b4029b0, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7ffa0ec029b0, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffee809d678, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffee809d698, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffeef1f7678, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffeef1f7698, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>
 How to use std::forward
 =======================
@@ -639,20 +794,20 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee903e6b0, cash $0)
-deposit cash called BankAccount(0x7ffee903e6b0, cash $100)
-BankAccount(0x7ffee903e6b0, cash $100)
+new cash BankAccount(0x7ffeebed56b0, cash $0)
+deposit cash called BankAccount(0x7ffeebed56b0, cash $100)
+BankAccount(0x7ffeebed56b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee903e6b0, cash $100)
+delete account BankAccount(0x7ffeebed56b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee903e670, cash $0)
-delete account BankAccount(0x7ffee903e670, cash $0)
+new cash BankAccount(0x7ffeebed5670, cash $0)
+delete account BankAccount(0x7ffeebed5670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee903e630, cash $0)
-delete account BankAccount(0x7ffee903e630, cash $0)
+new cash BankAccount(0x7ffeebed5630, cash $0)
+delete account BankAccount(0x7ffeebed5630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
 How to use std::unique_ptr
@@ -734,23 +889,23 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffeee8b8088, data=foo1)
-copy constructor Foo(0x7fbb79c029e0, data=)
-delete Foo(0x7ffeee8b8088, data=foo1)
+new Foo(0x7ffee1aba088, data=foo1)
+copy constructor Foo(0x7faaace00110, data=)
+delete Foo(0x7ffee1aba088, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7fbb79c02a00, data=foo2)
+new Foo(0x7faaace00130, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7fbb79c029e0, data=foo1)
+uptr1 = Foo(0x7faaace00110, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7fbb79c02a00, data=foo2)
+uptr3 = Foo(0x7faaace00130, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7fbb79c02a00, data=foo2)
-delete Foo(0x7fbb79c029e0, data=foo1)
+delete Foo(0x7faaace00130, data=foo2)
+delete Foo(0x7faaace00110, data=foo1)
 </pre>
 How to use std::shared_ptr
 ==========================
@@ -852,9 +1007,9 @@ Expected output:
 <pre>
 
 # Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffee89e5220, data=foo1)
-copy constructor Foo(0x7fe2604029f8, data=)
-delete Foo(0x7ffee89e5220, data=foo1)
+new Foo(0x7ffee6f69220, data=foo1)
+copy constructor Foo(0x7fad5c4029f8, data=)
+delete Foo(0x7ffee6f69220, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -872,13 +1027,13 @@ sptr2 ref count now 2
 
 # Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x7fe2604029f8, data=foo1)
+delete Foo(0x7fad5c4029f8, data=foo1)
 sptr2 ref count now 0
 
 # You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fe2604029b0, data=foo0)
-sptr0 = Foo(0x7fe2604029b0, data=foo0)
-delete Foo(0x7fe2604029b0, data=foo0)
+new Foo(0x7fad5c4029b0, data=foo0)
+sptr0 = Foo(0x7fad5c4029b0, data=foo0)
+delete Foo(0x7fad5c4029b0, data=foo0)
 </pre>
 How to make your own wrapper around std::shared_ptr
 ===================================================
@@ -1018,18 +1173,18 @@ Expected output:
 <pre>
 
 # create a class and share it between two pointers:
-new Foo(0x7ffee3ea4658, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee3ea4688,Foo(0x7f81b74029c8, data=foo1-data))
-delete Foo(0x7ffee3ea4658, data=foo1-data)
+new Foo(0x7ffee6130658, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffee6130688,Foo(0x7fe69e4029c8, data=foo1-data))
+delete Foo(0x7ffee6130658, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 # release the shared sptrs, expect foo1 to be destroyed:
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee3ea4688,Foo(0x7f81b74029c8, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee6130688,Foo(0x7fe69e4029c8, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee3ea4608,Foo(0x7f81b74029c8, data=foo1-data))
-delete Foo(0x7f81b74029c8, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffee6130608,Foo(0x7fe69e4029c8, data=foo1-data))
+delete Foo(0x7fe69e4029c8, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee3ea4608)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee3ea4688)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee6130608)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffee6130688)
 </pre>

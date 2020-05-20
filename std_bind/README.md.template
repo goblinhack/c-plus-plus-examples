@@ -1,0 +1,28 @@
+NOTE-BEGIN
+How to use std::bind
+====================
+
+TODO
+```C++
+TODO
+```
+TODO
+```C++
+TODO
+```
+TODO
+
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
