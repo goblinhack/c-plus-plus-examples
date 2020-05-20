@@ -94,9 +94,9 @@ int main(int, char**)
         auto account1 = BankAccount<int>(0);
         process_deposit<int>(100, account1);
         std::cout << account1.to_string() << std::endl;
-        // account1 deposit succeeded!
+        std::cout << "SUCCESS: account1 deposit succeeded!" << std::endl;
     } catch (const std::string &e) {
-        FAILED("account1 deposit failed!: " + e);
+        std::cerr << "FAILED: account1 deposit failed!: " << e << std::endl;
     }
 
     try {
@@ -104,9 +104,9 @@ int main(int, char**)
         const auto account2 = BankAccount<int>(0);
         process_deposit<int>(100, account2);
         std::cout << account2.to_string() << std::endl;
-        // account2 deposit succeeded!
+        std::cout << "SUCCESS: account2 deposit succeeded!" << std::endl;
     } catch (const std::string &e) {
-        FAILED("account2 deposit failed!: " + e);
+        std::cerr << "FAILED: account2 deposit failed!: " << e << std::endl;
     }
 
     try {
@@ -114,9 +114,9 @@ int main(int, char**)
         auto account3 = BankAccount<int>(0);
         process_deposit<int>(100, std::move(account3));
         std::cout << account3.to_string() << std::endl;
-        // account3 deposit succeeded!
+        std::cout << "SUCCESS: account3 deposit succeeded!" << std::endl;
     } catch (const std::string &e) {
-        FAILED("account3 deposit failed!: " + e);
+        std::cerr << "FAILED: account3 deposit failed!: " << e << std::endl;
     }
 }
 ```
@@ -132,19 +132,19 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffeec1a86b0, cash $0)
-deposit cash called BankAccount(0x7ffeec1a86b0, cash $100)
-BankAccount(0x7ffeec1a86b0, cash $100)
+new cash BankAccount(0x7ffee68d96b0, cash $0)
+deposit cash called BankAccount(0x7ffee68d96b0, cash $100)
+BankAccount(0x7ffee68d96b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffeec1a86b0, cash $100)
+delete account BankAccount(0x7ffee68d96b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffeec1a8670, cash $0)
-delete account BankAccount(0x7ffeec1a8670, cash $0)
+new cash BankAccount(0x7ffee68d9670, cash $0)
+delete account BankAccount(0x7ffee68d9670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffeec1a8630, cash $0)
-delete account BankAccount(0x7ffeec1a8630, cash $0)
+new cash BankAccount(0x7ffee68d9630, cash $0)
+delete account BankAccount(0x7ffee68d9630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
