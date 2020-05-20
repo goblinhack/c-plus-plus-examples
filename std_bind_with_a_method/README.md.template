@@ -1,6 +1,6 @@
 NOTE-BEGIN
-How to use std::bind to a method
-================================
+How to use std::bind with methods or proxy functions
+====================================================
 
 Sometimes we want to be able to bind to a method so we can call it directly,
 or more likely pass that function around. There are a few ways to do this.
