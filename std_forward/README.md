@@ -26,6 +26,10 @@ deposit template<> that the const function is called; and this then throws an ex
 
 If we have a non const account then we should be able to modify the account.
 
+As a final aside, std::forward is more or less eqivalent to static_cast<U&&>
+althought there are apparently some corner cases where this is not true; but
+I'm not aware of them, so please let me know :)
+
 Here is the full example:
 ```C++
 #include <iostream>
@@ -138,19 +142,19 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee47a16b0, cash $0)
-deposit cash called BankAccount(0x7ffee47a16b0, cash $100)
-BankAccount(0x7ffee47a16b0, cash $100)
+new cash BankAccount(0x7ffee903e6b0, cash $0)
+deposit cash called BankAccount(0x7ffee903e6b0, cash $100)
+BankAccount(0x7ffee903e6b0, cash $100)
 # SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee47a16b0, cash $100)
+delete account BankAccount(0x7ffee903e6b0, cash $100)
 
 # create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee47a1670, cash $0)
-delete account BankAccount(0x7ffee47a1670, cash $0)
+new cash BankAccount(0x7ffee903e670, cash $0)
+delete account BankAccount(0x7ffee903e670, cash $0)
 # FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
 # create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee47a1630, cash $0)
-delete account BankAccount(0x7ffee47a1630, cash $0)
+new cash BankAccount(0x7ffee903e630, cash $0)
+delete account BankAccount(0x7ffee903e630, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>

@@ -27,6 +27,10 @@ deposit template<> that the const function is called; and this then throws an ex
 
 If we have a non const account then we should be able to modify the account.
 
+As a final aside, std::forward is more or less eqivalent to static_cast<U&&>
+althought there are apparently some corner cases where this is not true; but
+I'm not aware of them, so please let me know :)
+
 Here is the full example:
 ```C++
 NOTE-READ-CODE
