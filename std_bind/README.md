@@ -1,5 +1,5 @@
-How to use std::bind with a method
-==================================
+How to use std::bind, the basic stuff
+=====================================
 
 std::bind is a useful construct that allows you to associate some context
 (i.e. a classes "this" pointer) with a function. It is primarily of use

@@ -15,21 +15,21 @@ covered. This is (probably forever) a work in progress.
 
 [How to use range based for loops with your own iterator](custom_begin_end/README.md)
 
-[How to use std::bind simple example](std_bind/README.md)
+[How to use std::bind with simple example](std_bind/README.md)
 
 [How to use std::bind with methods or proxy functions](std_bind_with_a_method/README.md)
 
 [How to use std::bind with callback inside a class](std_bind_with_a_class_callback/README.md)
 
-[How to use std::move](std_move/README.md)
+[How to use std::move to avoid the cost of temporaries](std_move/README.md)
 
-[How to use std::forward](std_forward/README.md)
+[How to use std::forward to invoke the exactly correct function through a template](std_forward/README.md)
 
-[How to use std::unique_ptr](std_unique_ptr/README.md)
+[How to create and use std::unique_ptr](std_unique_ptr/README.md)
 
-[How to use std::shared_ptr](std_shared_ptr/README.md)
+[How to create and use std::shared_ptr](std_shared_ptr/README.md)
 
-[How to make your own wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
+[How to make a wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
 
 To build all the examples, just do:
 ```C++

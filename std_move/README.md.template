@@ -1,6 +1,6 @@
 NOTE-BEGIN
-How to use std::move
-====================
+How to use std::move to avoid the cost of temporaries
+=====================================================
 
 std::move is a nifty way to avoid the use of temporaries when doing copies
 of data. For example if you do:
