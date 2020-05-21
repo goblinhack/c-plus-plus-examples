@@ -20,12 +20,10 @@ However they have limits. You can do all the below with *just* const:
     const auto of = 7;
     const auto life = what_is_the(meaning, of);
 
-    // int the_universe[life]; variable length array declaration not allowed
-
     int main(void) {
         std::cout << "the meaning is " << life << std::endl;
         return 0;
-}
+    }
 ```
 But you would *not* be allowed to do this:
 ```C++
@@ -43,19 +41,18 @@ However if you add "constexpr" then bingo:
     }
     const int life = what_is_the(meaning, of);
 ```
-One final note, if you wish a constexpr to be visible to other modules
-at link time then you must do the following at the point of declaration
-of the constexpr:
+If you wish a constexpr to be visible to other modules at link time then you 
+must do the following at the point of declaration of the constexpr:
 ```C++
     extern constexpr auto the_universe = TheUniverse(sizeof(the_earth) * planets);
 ```
-If you then do the following you should see the symbol:
+If you try the below you should see the symbol:
 ```
     c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
     c++ main.o  -o example
     0000000100001ea4 S _the_universe
 ```
-However if you want to have a constexpr in a header file made visible to other
+If you want to have a constexpr in a header file made visible to other
 files you are compiling you can use the concept of "C++17 inline variables":
 ```C++
     inline constexpr int the_meaning_of = 42;
