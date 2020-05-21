@@ -61,6 +61,8 @@ And vectors e.g.:
     use namespace std;
     std::vector<std::string> = { "hello", "there" };
 ```
+Other more complex things we'll conver later, like initializer lists.
+
 Ok, so enough background. The output should look like:
 
 ![Alt text](https://github.com/goblinhack/c-plus-plus-examples/blob/master/hello_world_color/screenshot.png?raw=true "hello colorful world")
