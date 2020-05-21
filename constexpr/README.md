@@ -47,9 +47,10 @@ must do the following at the point of declaration of the constexpr:
     extern constexpr auto the_universe = TheUniverse(sizeof(the_earth) * planets);
 ```
 If you try the below you should see the symbol:
-```
+```bash
     c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
     c++ main.o  -o example
+    nm -gU example | grep _the_universe
     0000000100001ea4 S _the_universe
 ```
 If you want to have a constexpr in a header file made visible to other

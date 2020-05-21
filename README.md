@@ -12,7 +12,7 @@ individually or as a whole.
 Let me know if this is useful to anyone or if there are any areas you want
 covered. Suggestions, enhancements and errata welcome.
 
-This is (probably perpetual) work in progress!
+This is a (probably perpetual) work in progress!
 
 [How to print hello world in color in C++, because why not](hello_world_color/README.md)
 
