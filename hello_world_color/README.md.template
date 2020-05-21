@@ -51,7 +51,7 @@ A couple of other things are introduced here, namely strings:
     #include <iostream>
     #include <string>
     use namespace std;
-    std::string what = "hello there";
+    const std::string what = "hello there"; // consts cannot be modified
 ```
 And vectors e.g.:
 ```C++
@@ -62,7 +62,9 @@ And vectors e.g.:
     std::vector<std::string> = { "hello", "there" };
 ```
 Ok, so enough background. The output should look like:
+
 ![Alt text](https://github.com/goblinhack/c-plus-plus-examples/blob/master/hello_world_color/screenshot.png?raw=true "hello colorful world")
+
 And here is the full example.
 ```C++
 NOTE-READ-CODE
