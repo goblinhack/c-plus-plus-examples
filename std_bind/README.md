@@ -120,34 +120,34 @@ To build:
 <pre>
 cd std_bind
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# call bind_fn1(_1, _2, _3)
+[31;1;4mcall bind_fn1(_1, _2, _3)[0m
 argument 1 is cat
 argument 2 is dog
 argument 3 is ork
 
-# call bind_fn1(_2, _1, _3)
+[31;1;4mcall bind_fn1(_2, _1, _3)[0m
 argument 1 is dog
 argument 2 is cat
 argument 3 is ork
 
-# call bind_fn1(_3, _2, _1)
+[31;1;4mcall bind_fn1(_3, _2, _1)[0m
 argument 1 is ork
 argument 2 is cat
 argument 3 is dog
 
-# call our bind function via std::for_each to modify a list of strings
+[31;1;4mcall our bind function via std::for_each to modify a list of strings[0m
 l1 list-elem is now cat
 l1 list-elem is now dog
 l1 list-elem is now ork
 
-# call our bind function via std::transform to modify a list of strings
+[31;1;4mcall our bind function via std::transform to modify a list of strings[0m
 l2 list-elem is now cat and is modified
 l2 list-elem is now dog and is modified
 l2 list-elem is now ork and is modified

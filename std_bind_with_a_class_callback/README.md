@@ -142,18 +142,18 @@ To build:
 <pre>
 cd std_bind_with_a_class_callback
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# create account1 and try to deposit into it
-new cash BankAccount(0x7ffeef275540, cash $0)
-deposit cash called BankAccount(0x7ffeef275540, cash $100)
-deposit cash called BankAccount(0x7ffeef275540, cash $200)
-# SUCCESS: account1 1st deposit succeeded!
-delete account BankAccount(0x7ffeef275540, cash $200)
+[31;1;4mcreate account1 and try to deposit into it[0m
+new cash BankAccount(0x7ffd3b10d4a8, cash $0)
+deposit cash called BankAccount(0x7ffd3b10d4a8, cash $100)
+deposit cash called BankAccount(0x7ffd3b10d4a8, cash $200)
+[0;35mSUCCESS: account1 1st deposit succeeded![0m
+delete account BankAccount(0x7ffd3b10d4a8, cash $200)
 # FAILED: account1 deposit failed!: transaction is too small for Mr Money Bags
 </pre>

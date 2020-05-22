@@ -27,7 +27,7 @@ make clean all
 # Now add the executable output
 #
 grep -q NOTE-RUN-CODE $TEMPLATE
-if [[ $? -eq 0 ]]; then
+if [ $? -eq 0 ]; then
     echo "./example"
     cat $TEMPLATE | sed '/NOTE-BUILD-CODE/,/NOTE-RUN-CODE/!d' | grep -v "^NOTE-"
 

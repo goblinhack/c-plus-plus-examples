@@ -154,43 +154,43 @@ To build:
 <pre>
 cd std_move
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a custom vector class:
-new MyVector(0x7f89c64029b0, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7f89c64029b0, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7f89c64029b0, currlen=2, maxlen=2 elems=[10,11])
+[31;1;4mCreate a custom vector class:[0m
+new MyVector(0x55e4ef3d6e80, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x55e4ef3d6e80, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x55e4ef3d6e80, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
-# Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7f89c64029b0, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffeee6ab698, currlen=2, maxlen=2 elems=[10,11])
+[31;1;4mCreate a new copy of vec1, vec2 via copy constructor (&):[0m
+copy constructor called for MyVector(0x55e4ef3d6e80, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffdb5fc2dd0, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
-# Check we can append onto the copied vector:
-push_back called MyVector(0x7ffeee6ab698, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffeee6ab698, currlen=4, maxlen=4 elems=[10,11,12,13])
+[31;1;4mCheck we can append onto the copied vector:[0m
+push_back called MyVector(0x7ffdb5fc2dd0, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffdb5fc2dd0, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
-# Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7f89c64029b0, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffeee6ab678, currlen=2, maxlen=2 elems=[10,11])
+[31;1;4mCreate a new vector from vec1, vec3 via the move constructor (&&):[0m
+std::move called for MyVector(0x55e4ef3d6e80, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffdb5fc2df0, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
-# Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffeee6ab678, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffeee6ab678, currlen=4, maxlen=4 elems=[10,11,14,15])
+[31;1;4mCheck we can append onto the std:move'd vector:[0m
+push_back called MyVector(0x7ffdb5fc2df0, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffdb5fc2df0, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
-# Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7f89c64029b0, currlen=0, maxlen=0 elems=[])
+[31;1;4mDestroy the old vector, vec1. It has no invalid elems:[0m
+delete MyVector(0x55e4ef3d6e80, currlen=0, maxlen=0 elems=[])
 
-# End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffeee6ab678, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffeee6ab698, currlen=4, maxlen=4 elems=[10,11,12,13])
+[31;1;4mEnd, expect vec2 and vec3 destroy:[0m
+delete MyVector(0x7ffdb5fc2df0, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffdb5fc2dd0, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>

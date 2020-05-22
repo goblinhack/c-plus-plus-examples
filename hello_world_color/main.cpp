@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <assert.h>
 
 class Ansi {
 public:

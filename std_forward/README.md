@@ -134,27 +134,27 @@ To build:
 <pre>
 cd std_forward
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# create account1 and try to deposit into it
-new cash BankAccount(0x7ffee03a36b0, cash $0)
-deposit cash called BankAccount(0x7ffee03a36b0, cash $100)
-BankAccount(0x7ffee03a36b0, cash $100)
-# SUCCESS: account1 deposit succeeded!
-delete account BankAccount(0x7ffee03a36b0, cash $100)
+[31;1;4mcreate account1 and try to deposit into it[0m
+new cash BankAccount(0x7ffcf5115c58, cash $0)
+deposit cash called BankAccount(0x7ffcf5115c58, cash $100)
+BankAccount(0x7ffcf5115c58, cash $100)
+[0;35mSUCCESS: account1 deposit succeeded![0m
+delete account BankAccount(0x7ffcf5115c58, cash $100)
 
-# create locked account2 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee03a3670, cash $0)
-delete account BankAccount(0x7ffee03a3670, cash $0)
-# FAILED: account2 deposit failed!: tried to write to a locked (const) account
+[31;1;4mcreate locked account2 and try to deposit into it; this should fail[0m
+new cash BankAccount(0x7ffcf5115c58, cash $0)
+delete account BankAccount(0x7ffcf5115c58, cash $0)
+[0;34mFAILED: account2 deposit failed!: tried to write to a locked (const) account[0m
 
-# create locked account3 and try to deposit into it; this should fail
-new cash BankAccount(0x7ffee03a3630, cash $0)
-delete account BankAccount(0x7ffee03a3630, cash $0)
+[31;1;4mcreate locked account3 and try to deposit into it; this should fail[0m
+new cash BankAccount(0x7ffcf5115c58, cash $0)
+delete account BankAccount(0x7ffcf5115c58, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>
