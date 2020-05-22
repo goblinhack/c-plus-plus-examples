@@ -1,0 +1,34 @@
+NOTE-BEGIN
+How to use a std::initializer_list with a custom class
+======================================================
+
+Would it be nice to use initializer_list in your own class? Of course it
+would! All you need to do is add the following to your container class:
+In days of old, to populate a list or a vector in C++ you had to do:
+```C++
+    #include <initializer_list>
+    #include <vector>
+    #include <string>
+
+    template <typename T> class MyClass {
+    private:
+        std::vector<T> stuff;
+    public:
+        MyClass(std::initializer_list<T> l) {
+            for (auto i : l) { stuff.push_back(i); }
+    };
+```
+Here is a full example of a custome vector class doing just that:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
