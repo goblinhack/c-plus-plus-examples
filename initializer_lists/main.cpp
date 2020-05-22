@@ -61,9 +61,7 @@ int main() {
     }
 
     DOC("Create another vector with an inline initializer list");
-    //
     // This will not work
-    //
     // std::vector< MyString > vec2 (
     //     MyString(std::string("elem3")), MyString(std::string("elem4"))
     // );
