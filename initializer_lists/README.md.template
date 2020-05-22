@@ -4,7 +4,11 @@ How to use a std::initializer_list
 
 In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
-    std::vector< std::string > orbiting;
+    #include <vector>
+    #include <stream>
+    #include <initializer_list>
+
+    std::vector<std::string> orbiting;
     orbiting.push_back(std::string("space"));
     orbiting.push_back(std::string("station"));
 ```
@@ -29,18 +33,7 @@ even just do:
 ```
 Which is nice and concise.
 
-If you wish your own container-like class to accept an initializer list, 
-it is simple:
-```C++
-    template <typename T> class MyClass {
-    private:
-        std::vector<T> stuff;
-    public:
-        MyClass(std::initializer_list<T> l) {
-            for (auto i : l) { stuff.push_back(i); }
-    };
-```
-However there can be some hidden costs. When the initializer list is 
+However there can be some hidden costs. When the initializer list is
 assigned to a container, the copy constructor is invoked. So you are
 still doing a push_back onto the container for each element.
 ```C++

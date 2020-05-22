@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <initializer_list>
 #include "../common/common.h"
 
 class MyString {
@@ -45,7 +46,7 @@ int main() {
     DOC("Assign this initializer_list to a vector:");
     std::vector< MyString > vec1(init1);
 
-    DOC("Walk the vector with 'const auto i': (this will invole copies)");
+    DOC("Walk the vector with 'const auto i': (this will involve copies)");
     for (const auto i : vec1) {
         std::cout << i << std::endl;
     }
