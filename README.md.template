@@ -17,6 +17,8 @@ This is a (probably perpetual) work in progress!
 
 [How to print hello world in color in C++, because why not](hello_world_color/README.md)
 
+[How to initializer lists](initializer_lists/README.md)
+
 [How to use constexpr for fame and profit](constexpr/README.md)
 
 [How to use range based for loops](range_based_for_loop/README.md)

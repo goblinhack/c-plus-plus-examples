@@ -1,5 +1,6 @@
 SUBDIRS=\
 	hello_world_color \
+	initializer_lists \
 	constexpr \
 	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \

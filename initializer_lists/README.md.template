@@ -1,0 +1,60 @@
+NOTE-BEGIN
+How to use a std::initializer_list
+==================================
+
+In days of old, to populate a list or a vector in C++ you had to do:
+```C++
+    std::vector<std::string> orbiting;
+    orbiting.push_back(std::string("space"));
+    orbiting.push_back(std::string("station"));
+```
+Which is rather tedious.
+
+C++11 introduces initializer lists which are lightweight proxies to help
+in the construction of containers. They use the bracketed { } syntax. For
+example:
+```C++
+    std::initializer_list<std::string> objects =
+        { std::string("space"), std::string("station") };
+    std::vector<std::string> orbiting(objects);
+```
+That is not too bad, but it can be shorter with inline syntax for the
+initializer list e.g.:
+```C++
+    std::vector<std::string> orbiting =
+        { std::string("space"), std::string("station") };
+```
+For most containers as they have a constructor for std::string you can
+even just do:
+```C++
+    std::vector<std::string> orbiting = { "space", "station" };
+```
+Which is nice and concise.
+
+If you wish your own container-like class to accept an initializer list, 
+it is simple:
+```C++
+    template <typename T> class MyClass {
+    private:
+        std::vector<T> stuff;
+    public:
+        MyClass(std::initializer_list<T> l) {
+            for (auto i : l) { stuff.push_back(i); }
+    };
+```
+However there can be some hidden costs. When the initializer list is 
+assigned to a container, the copy constructor is invoked. So you are
+still doing a push_back onto the container for each element.
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
