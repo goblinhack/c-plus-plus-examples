@@ -261,8 +261,5 @@ c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
 ./example
 </pre>
-Expected output:
-<pre>
 
 # hello # beautiful# #  colorful# #  world#  from C++
-</pre>
