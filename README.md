@@ -19,6 +19,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::initializer_list](initializer_lists/README.md)
 
+[How to use std::initializer_list with your own container like class](initializer_lists_with_custom_vector/README.md)
+
 [How to use constexpr for fame and profit](constexpr/README.md)
 
 [How to use range based for loops](range_based_for_loop/README.md)
