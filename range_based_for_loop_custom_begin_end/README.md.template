@@ -1,8 +1,8 @@
 NOTE-BEGIN
-How to use a range based for loop with your own class iterator
+How to use a range-based for loop with your own class iterator
 ==============================================================
 
-By now you will have seen the following range based for loop e.g.:
+By now you will have seen the following range-based for loop e.g.:
 ```C++
     for (i : container) { }
 ```

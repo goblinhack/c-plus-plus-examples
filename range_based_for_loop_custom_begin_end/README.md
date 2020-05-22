@@ -1,7 +1,7 @@
-How to use a range based for loop with your own class iterator
+How to use a range-based for loop with your own class iterator
 ==============================================================
 
-By now you will have seen the following range based for loop e.g.:
+By now you will have seen the following range-based for loop e.g.:
 ```C++
     for (i : container) { }
 ```
@@ -158,10 +158,10 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7ffeef9b3730, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffeef9b3730, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffeef9b3730, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffeef9b3730, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffee90ff730, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffee90ff730, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffee90ff730, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffee90ff730, currlen=3, maxlen=4 elems=[10,11,12])
 
 # Walk the custom vector with our iterator:
 vec1: walk 10
@@ -169,5 +169,5 @@ vec1: walk 11
 vec1: walk 12
 
 # End, expect vec1 destroy:
-delete MyVector(0x7ffeef9b3730, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffee90ff730, currlen=3, maxlen=4 elems=[10,11,12])
 </pre>
