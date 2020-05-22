@@ -4,7 +4,6 @@ How to use a std::initializer_list with a custom class
 
 Would it be nice to use initializer_list in your own class? Of course it
 would! All you need to do is add the following to your container class:
-In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
     #include <initializer_list>
     #include <vector>

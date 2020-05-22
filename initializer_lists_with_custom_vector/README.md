@@ -3,7 +3,6 @@ How to use a std::initializer_list with a custom class
 
 Would it be nice to use initializer_list in your own class? Of course it
 would! All you need to do is add the following to your container class:
-In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
     #include <initializer_list>
     #include <vector>
@@ -161,13 +160,13 @@ Expected output:
 # Create an std::initializer_list of std::string:
 
 # Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffee966e630, currlen=1, maxlen=1 elems=[elem1])
-push_back called MyVector(0x7ffee966e630, currlen=2, maxlen=2 elems=[elem1,elem2])
+push_back called MyVector(0x7ffee1498630, currlen=1, maxlen=1 elems=[elem1])
+push_back called MyVector(0x7ffee1498630, currlen=2, maxlen=2 elems=[elem1,elem2])
 
 # Walk the vector with 'const auto &i': (to avoid copies)
 elem1
 elem2
 
 # End:
-delete MyVector(0x7ffee966e630, currlen=2, maxlen=2 elems=[elem1,elem2])
+delete MyVector(0x7ffee1498630, currlen=2, maxlen=2 elems=[elem1,elem2])
 </pre>
