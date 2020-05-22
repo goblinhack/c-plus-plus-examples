@@ -5,9 +5,9 @@
 
 template<class T> class MyVector {
 private:
-    T *data;
-    size_t maxlen;
-    size_t currlen;
+    T *data {};
+    size_t maxlen {};
+    size_t currlen {};
 public:
     MyVector<T> () : data (nullptr), maxlen(0), currlen(0) {
         std::cout << "default constructor " << to_string() << std::endl;

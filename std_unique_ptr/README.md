@@ -70,29 +70,29 @@ To build:
 <pre>
 cd std_unique_ptr
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-[31;1;4mNOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:[0m
-new Foo(0x7ffe764f8560, data=foo1)
-copy constructor Foo(0x556165173e80, data=)
-delete Foo(0x7ffe764f8560, data=foo1)
+# NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
+new Foo(0x7ffee04cc088, data=foo1)
+copy constructor Foo(0x7f88f64029e0, data=)
+delete Foo(0x7ffee04cc088, data=foo1)
 
-[31;1;4mNOTE: to avoid the copy, do this:[0m
-new Foo(0x556165173eb0, data=foo2)
+# NOTE: to avoid the copy, do this:
+new Foo(0x7f88f6402a00, data=foo2)
 
-[31;1;4mAs you cannot copy unique pointers, reassign it with move[0m
+# As you cannot copy unique pointers, reassign it with move
 
-[31;1;4mLet's print all the unique ptrs now[0m
-uptr1 = Foo(0x556165173e80, data=foo1)
+# Let's print all the unique ptrs now
+uptr1 = Foo(0x7f88f64029e0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x556165173eb0, data=foo2)
+uptr3 = Foo(0x7f88f6402a00, data=foo2)
 
-[31;1;4mExpect the unique ptr data to be destroyed now[0m
-delete Foo(0x556165173eb0, data=foo2)
-delete Foo(0x556165173e80, data=foo1)
+# Expect the unique ptr data to be destroyed now
+delete Foo(0x7f88f6402a00, data=foo2)
+delete Foo(0x7f88f64029e0, data=foo1)
 </pre>

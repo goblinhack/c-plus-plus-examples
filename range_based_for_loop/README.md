@@ -70,24 +70,24 @@ To build:
 <pre>
 cd range_based_for_loop
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-[31;1;4mCreate a vector of strings:[0m
+# Create a vector of strings:
 
-[31;1;4mRange based for loop iterator with a const:[0m
+# Range based for loop iterator with a const:
 vec1: walk elem1
 vec1: walk elem1
 
-[31;1;4mRange based for loop iterator with a modifiable reference:[0m
+# Range based for loop iterator with a modifiable reference:
 vec1: walk elem1+ stuff
 vec1: walk elem1+ stuff
 
-[31;1;4mRange based for loop iterator with forward reference:[0m
+# Range based for loop iterator with forward reference:
 vec1: walk elem1+ stuff+ more stuff
 vec1: walk elem1+ stuff+ more stuff
 </pre>

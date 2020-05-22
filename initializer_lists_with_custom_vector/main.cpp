@@ -7,7 +7,7 @@
 
 template<class T> class MyVector {
 private:
-    T *data;
+    T *data {};
     size_t maxlen {};
     size_t currlen {};
 public:

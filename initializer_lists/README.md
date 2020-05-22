@@ -114,50 +114,50 @@ To build:
 <pre>
 cd initializer_lists
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-[31;1;4mCreate an std::initializer_list of MyString:[0m
-0x7ffd73067540 MyString(std::string &&) elem1
-0x7ffd73067560 MyString(std::string &&) elem2
+# Create an std::initializer_list of MyString:
+0x7ffee637f768 MyString(std::string &&) elem1
+0x7ffee637f780 MyString(std::string &&) elem2
 
-[31;1;4mAssign this initializer_list to a vector:[0m
-0x558de4728e80 MyString(const std::string &) elem1
-0x558de4728ea0 MyString(const std::string &) elem2
+# Assign this initializer_list to a vector:
+0x7fd6f64029b0 MyString(const std::string &) elem1
+0x7fd6f64029c8 MyString(const std::string &) elem2
 
-[31;1;4mWalk the vector with 'const auto i': (this will involve copies)[0m
-0x7ffd73067580 MyString(const std::string &) elem1
+# Walk the vector with 'const auto i': (this will involve copies)
+0x7ffee637f0a8 MyString(const std::string &) elem1
 elem1
-0x7ffd73067580 ~MyString() elem1
-0x7ffd73067580 MyString(const std::string &) elem2
+0x7ffee637f0a8 ~MyString() elem1
+0x7ffee637f0a8 MyString(const std::string &) elem2
 elem2
-0x7ffd73067580 ~MyString() elem2
+0x7ffee637f0a8 ~MyString() elem2
 
-[31;1;4mWalk the vector with 'const auto &i': (should see no copies)[0m
-elem1
-elem2
-
-[31;1;4mWalk the vector with forward reference 'auto &&i': (should see no copies)[0m
+# Walk the vector with 'const auto &i': (should see no copies)
 elem1
 elem2
 
-[31;1;4mCreate another vector with an inline initializer list[0m
-0x7ffd73067580 MyString(std::string &&) elem3
-0x7ffd730675a0 MyString(std::string &&) elem4
-0x558de4728ed0 MyString(const std::string &) elem3
-0x558de4728ef0 MyString(const std::string &) elem4
-0x7ffd730675a0 ~MyString() elem4
-0x7ffd73067580 ~MyString() elem3
+# Walk the vector with forward reference 'auto &&i': (should see no copies)
+elem1
+elem2
 
-[31;1;4mEnd:[0m
-0x558de4728ed0 ~MyString() elem3
-0x558de4728ef0 ~MyString() elem4
-0x558de4728e80 ~MyString() elem1
-0x558de4728ea0 ~MyString() elem2
-0x7ffd73067560 ~MyString() elem2
-0x7ffd73067540 ~MyString() elem1
+# Create another vector with an inline initializer list
+0x7ffee637f738 MyString(std::string &&) elem3
+0x7ffee637f750 MyString(std::string &&) elem4
+0x7fd6f64029e0 MyString(const std::string &) elem3
+0x7fd6f64029f8 MyString(const std::string &) elem4
+0x7ffee637f750 ~MyString() elem4
+0x7ffee637f738 ~MyString() elem3
+
+# End:
+0x7fd6f64029f8 ~MyString() elem4
+0x7fd6f64029e0 ~MyString() elem3
+0x7fd6f64029c8 ~MyString() elem2
+0x7fd6f64029b0 ~MyString() elem1
+0x7ffee637f780 ~MyString() elem2
+0x7ffee637f768 ~MyString() elem1
 </pre>

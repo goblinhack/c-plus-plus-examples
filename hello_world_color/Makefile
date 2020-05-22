@@ -3,11 +3,11 @@ COMPILER_FLAGS=-std=c++2a -Werror -g -ggdb3 # AUTOGEN
 CLANG_COMPILER_WARNINGS=-Wall # AUTOGEN
 GCC_COMPILER_WARNINGS=-Wall # AUTOGEN
 GXX_COMPILER_WARNINGS=-Wall # AUTOGEN
-COMPILER_WARNINGS=$(CLANG_COMPILER_WARNINGS) # AUTOGEN
-COMPILER_WARNINGS=$(GXX_COMPILER_WARNINGS) # AUTOGEN
 COMPILER_WARNINGS=$(GCC_COMPILER_WARNINGS) # AUTOGEN
-# CC=clang # AUTOGEN
-CC=gcc # AUTOGEN
+COMPILER_WARNINGS=$(GXX_COMPILER_WARNINGS) # AUTOGEN
+COMPILER_WARNINGS=$(CLANG_COMPILER_WARNINGS) # AUTOGEN
+CC=clang # AUTOGEN
+# CC=gcc # AUTOGEN
 # CC=cc # AUTOGEN
 # CC=g++ # AUTOGEN
     
@@ -45,5 +45,6 @@ clobber: clean
 all: $(TARGET) 
 # DO NOT DELETE
 
-.o/main.o: /usr/include/assert.h /usr/include/features.h
-.o/main.o: /usr/include/stdc-predef.h
+.o/main.o: /usr/include/assert.h /usr/include/sys/cdefs.h
+.o/main.o: /usr/include/sys/_symbol_aliasing.h
+.o/main.o: /usr/include/sys/_posix_availability.h

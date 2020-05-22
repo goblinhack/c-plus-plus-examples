@@ -111,19 +111,19 @@ To build:
 <pre>
 cd constexpr
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-[31;1;4mWhat is the meaning...:[0m
+# What is the meaning...:
 the meaning is 42
 
-[31;1;4mHow big is the earth...:[0m
+# How big is the earth...:
 42
 
-[31;1;4mHow big is the universe...:[0m
+# How big is the universe...:
 4200000
 </pre>
