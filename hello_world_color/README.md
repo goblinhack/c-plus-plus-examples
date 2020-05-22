@@ -75,13 +75,6 @@ And here is the full example.
 class Ansi {
 public:
     Ansi() {
-        //
-        // See
-        //
-        // https://stackoverflow.com/questions/4842424/list-of-ansi-color-escape-sequences#4842438
-        //
-        // For a very thorough explanation of these escape codes
-        //
         const std::initializer_list<std::string> code_strings = {
             /* reset                        */ "[0m",
             /* bold                         */ "[1m",
@@ -151,104 +144,6 @@ public:
             /* attributes_off               */ "[65m",
         };
         codes = code_strings;
-
-        //
-        // Mapping of code back to descriptive name
-        //
-        const std::initializer_list<std::string> code_name_strings = {
-            "reset",
-            "bold",
-            "faint",
-            "italic",
-            "underline",
-            "slow_blink",
-            "rapid_blink",
-            "reverse_video",
-            "conceal",
-            "crossed_out",
-            "primary_font",
-            "alt_font1",
-            "alt_font2",
-            "alt_font3",
-            "alt_font4",
-            "alt_font5",
-            "alt_font6",
-            "alt_font7",
-            "alt_font8",
-            "alt_font9",
-            "fraktur",
-            "bold_off_or_double_underline",
-            "normal_color",
-            "not_italic",
-            "underline_off",
-            "blink_off",
-            "unused",
-            "inverse_off",
-            "reveal",
-            "not_crossed_out",
-            "foreground_black",
-            "foreground_red",
-            "foreground_green",
-            "foreground_yellow",
-            "foreground_blue",
-            "foreground_magenta",
-            "foreground_cyan",
-            "foreground_white",
-            "foreground_color2",
-            "default_foreground_color",
-            "background_black",
-            "background_red",
-            "background_green",
-            "background_yellow",
-            "background_blue",
-            "background_magenta",
-            "background_cyan",
-            "background_white",
-            "background_color2",
-            "default_background_color",
-            "unused2",
-            "framed",
-            "encircled",
-            "overlined",
-            "not_framed_or_encircled",
-            "not_overlined",
-            "unused3",
-            "unused4",
-            "unused5",
-            "unused6",
-            "underline2",
-            "double_underline",
-            "overline",
-            "double_overline",
-            "stress_marking",
-            "attributes_off",
-        };
-        code_names = code_name_strings;
-
-        //
-        // Codes for printing background and foreground together, and without
-        // needing to do any number to string conversions for fast lookups.
-        //
-        const std::initializer_list<std::string> bgfg_code_strings = {
-            "[40;30m", "[40;31m", "[40;32m", "[40;33m",
-            "[40;34m", "[40;35m", "[40;36m", "[40;37m",
-            "[41;30m", "[41;31m", "[41;32m", "[41;33m",
-            "[41;34m", "[41;35m", "[41;36m", "[41;37m",
-            "[42;30m", "[42;31m", "[42;32m", "[42;33m",
-            "[42;34m", "[42;35m", "[42;36m", "[42;37m",
-            "[43;30m", "[43;31m", "[43;32m", "[43;33m",
-            "[43;34m", "[43;35m", "[43;36m", "[43;37m",
-            "[44;30m", "[44;31m", "[44;32m", "[44;33m",
-            "[44;34m", "[44;35m", "[44;36m", "[44;37m",
-            "[45;30m", "[45;31m", "[45;32m", "[45;33m",
-            "[45;34m", "[45;35m", "[45;36m", "[45;37m",
-            "[46;30m", "[46;31m", "[46;32m", "[46;33m",
-            "[46;34m", "[46;35m", "[46;36m", "[46;37m",
-            "[47;30m", "[47;31m", "[47;32m", "[47;33m",
-            "[47;34m", "[47;35m", "[47;36m", "[47;37m",
-        };
-
-        bgfg_codes = bgfg_code_strings;
     };
 
     //
@@ -258,28 +153,6 @@ public:
     {
         assert(code < codes.size());
         return (codes[code]);
-    }
-
-    //
-    // Get the human readable name for the ansii escape sequence
-    //
-    std::string get_code_name (unsigned char code)
-    {
-        assert(code < codes.size());
-        return (code_names[code]);
-    }
-
-    //
-    // For speed and to avoid converting strings, we have a special lookup
-    // for background and foreground combinations.
-    //
-    std::string get_bgfg_code (unsigned char bg, unsigned char fg)
-    {
-        bg -= BACKGROUND_BLACK;
-        fg -= FOREGROUND_BLACK;
-        auto code = bg * 8 + fg;
-        assert(code < codes.size());
-        return (bgfg_codes[code]);
     }
 
     enum AnsiCode {
@@ -352,17 +225,12 @@ public:
     };
 private:
     std::vector<std::string> codes;
-    std::vector<std::string> code_names;
-    std::vector<std::string> bgfg_codes;
 };
 
 int main (int argc, char *argv[])
 {
     Ansi ansii;
 
-    //
-    // Print a nice message
-    //
     std::cout << std::endl;
     std::cout << ansii.get_code(ansii.FOREGROUND_RED);
     std::cout << "hello ";

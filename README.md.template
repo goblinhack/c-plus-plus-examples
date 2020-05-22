@@ -1,8 +1,9 @@
-Modern C++ (C++11 ... C++20) examples
-=====================================
+Modern C++ examples
+===================
 
-Are you looking for a collection of short snippets of modern C++ code
-covering core features in C++11 and beyond? Of course you are!
+Are you looking for a collection of short straightforward snippets of
+modern C++ covering the core features in C++11 and beyond? Of course 
+you are!
 
 As I'm constantly learning C++ myself (disclaimer, I'm not an expert,
 just enthusiastic), I wanted to create some simple examples of each
