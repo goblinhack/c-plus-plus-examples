@@ -26,17 +26,22 @@ make clean all
 #
 # Now add the executable output
 #
-echo "./example"
-cat $TEMPLATE | sed '/NOTE-BUILD-CODE/,/NOTE-RUN-CODE/!d' | grep -v "^NOTE-"
+grep -q NOTE-RUN-CODE $TEMPLATE
+if [[ $? -eq 0 ]]; then
+    echo "./example"
+    cat $TEMPLATE | sed '/NOTE-BUILD-CODE/,/NOTE-RUN-CODE/!d' | grep -v "^NOTE-"
 
-#
-# remove ansi colors in the output and convert to bold for gitub markdown
-#
-# use $'...' when you want escape sequences to be interpreted by the shell.
-# as bsd sed cannot grok \x01b
-#
-./example | sed -e $'s,[\x01-\x1F\x7F]\[[0-9;]*[a-zA-Z],# ,g' \
-                -e 's/# *$//g'
+    #
+    # remove ansi colors in the output and convert to bold for gitub markdown
+    #
+    # use $'...' when you want escape sequences to be interpreted by the shell.
+    # as bsd sed cannot grok \x01b
+    #
+    ./example | sed -e $'s,[\x01-\x1F\x7F]\[[0-9;]*[a-zA-Z],# ,g' \
+                    -e 's/# *$//g'
+else
+    cat $TEMPLATE | sed '/NOTE-BUILD-CODE/,/NOTE-END/!d' | grep -v "^NOTE-"
+fi
 
 #
 # Remove the markers

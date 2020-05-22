@@ -259,7 +259,4 @@ cd hello_world_color
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
-./example
 </pre>
-
-# hello # beautiful# #  colorful# #  world#  from C++
