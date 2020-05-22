@@ -3,7 +3,7 @@ How to use a std::initializer_list
 
 In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
-    std::vector<std::string> orbiting;
+    std::vector< std::string > orbiting;
     orbiting.push_back(std::string("space"));
     orbiting.push_back(std::string("station"));
 ```
@@ -13,15 +13,13 @@ C++11 introduces initializer lists which are lightweight proxies to help
 in the construction of containers. They use the bracketed { } syntax. For
 example:
 ```C++
-    std::initializer_list<std::string> objects =
-        { std::string("space"), std::string("station") };
+    std::initializer_list<std::string> objects = { std::string("space"), std::string("station") };
     std::vector<std::string> orbiting(objects);
 ```
 That is not too bad, but it can be shorter with inline syntax for the
 initializer list e.g.:
 ```C++
-    std::vector<std::string> orbiting =
-        { std::string("space"), std::string("station") };
+    std::vector<std::string> orbiting = { std::string("space"), std::string("station") };
 ```
 For most containers as they have a constructor for std::string you can
 even just do:
@@ -132,20 +130,20 @@ Expected output:
 <pre>
 
 # Create an std::initializer_list of MyString:
-0x7ffee577d768 MyString(std::string &&) elem1
-0x7ffee577d780 MyString(std::string &&) elem2
+0x7ffee9cb0768 MyString(std::string &&) elem1
+0x7ffee9cb0780 MyString(std::string &&) elem2
 
 # Assign this initializer_list to a vector:
-0x7fcaaec029b0 MyString(const std::string &) elem1
-0x7fcaaec029c8 MyString(const std::string &) elem2
+0x7fe1f3c029b0 MyString(const std::string &) elem1
+0x7fe1f3c029c8 MyString(const std::string &) elem2
 
 # Walk the vector with 'const auto i': (this will invole copies)
-0x7ffee577d0a8 MyString(const std::string &) elem1
+0x7ffee9cb00a8 MyString(const std::string &) elem1
 elem1
-0x7ffee577d0a8 ~MyString() elem1
-0x7ffee577d0a8 MyString(const std::string &) elem2
+0x7ffee9cb00a8 ~MyString() elem1
+0x7ffee9cb00a8 MyString(const std::string &) elem2
 elem2
-0x7ffee577d0a8 ~MyString() elem2
+0x7ffee9cb00a8 ~MyString() elem2
 
 # Walk the vector with 'const auto &i': (should see no copies)
 elem1
@@ -156,18 +154,18 @@ elem1
 elem2
 
 # Create another vector with an inline initializer list
-0x7ffee577d738 MyString(std::string &&) elem3
-0x7ffee577d750 MyString(std::string &&) elem4
-0x7fcaaec029e0 MyString(const std::string &) elem3
-0x7fcaaec029f8 MyString(const std::string &) elem4
-0x7ffee577d750 ~MyString() elem4
-0x7ffee577d738 ~MyString() elem3
+0x7ffee9cb0738 MyString(std::string &&) elem3
+0x7ffee9cb0750 MyString(std::string &&) elem4
+0x7fe1f3c029e0 MyString(const std::string &) elem3
+0x7fe1f3c029f8 MyString(const std::string &) elem4
+0x7ffee9cb0750 ~MyString() elem4
+0x7ffee9cb0738 ~MyString() elem3
 
 # End:
-0x7fcaaec029f8 ~MyString() elem4
-0x7fcaaec029e0 ~MyString() elem3
-0x7fcaaec029c8 ~MyString() elem2
-0x7fcaaec029b0 ~MyString() elem1
-0x7ffee577d780 ~MyString() elem2
-0x7ffee577d768 ~MyString() elem1
+0x7fe1f3c029f8 ~MyString() elem4
+0x7fe1f3c029e0 ~MyString() elem3
+0x7fe1f3c029c8 ~MyString() elem2
+0x7fe1f3c029b0 ~MyString() elem1
+0x7ffee9cb0780 ~MyString() elem2
+0x7ffee9cb0768 ~MyString() elem1
 </pre>

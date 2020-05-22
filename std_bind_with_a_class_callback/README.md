@@ -150,10 +150,10 @@ Expected output:
 <pre>
 
 # create account1 and try to deposit into it
-new cash BankAccount(0x7ffee722e540, cash $0)
-deposit cash called BankAccount(0x7ffee722e540, cash $100)
-deposit cash called BankAccount(0x7ffee722e540, cash $200)
+new cash BankAccount(0x7ffee134f540, cash $0)
+deposit cash called BankAccount(0x7ffee134f540, cash $100)
+deposit cash called BankAccount(0x7ffee134f540, cash $200)
 # SUCCESS: account1 1st deposit succeeded!
-delete account BankAccount(0x7ffee722e540, cash $200)
+delete account BankAccount(0x7ffee134f540, cash $200)
 # FAILED: account1 deposit failed!: transaction is too small for Mr Money Bags
 </pre>

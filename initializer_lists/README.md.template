@@ -4,7 +4,7 @@ How to use a std::initializer_list
 
 In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
-    std::vector<std::string> orbiting;
+    std::vector< std::string > orbiting;
     orbiting.push_back(std::string("space"));
     orbiting.push_back(std::string("station"));
 ```
@@ -14,15 +14,13 @@ C++11 introduces initializer lists which are lightweight proxies to help
 in the construction of containers. They use the bracketed { } syntax. For
 example:
 ```C++
-    std::initializer_list<std::string> objects =
-        { std::string("space"), std::string("station") };
+    std::initializer_list<std::string> objects = { std::string("space"), std::string("station") };
     std::vector<std::string> orbiting(objects);
 ```
 That is not too bad, but it can be shorter with inline syntax for the
 initializer list e.g.:
 ```C++
-    std::vector<std::string> orbiting =
-        { std::string("space"), std::string("station") };
+    std::vector<std::string> orbiting = { std::string("space"), std::string("station") };
 ```
 For most containers as they have a constructor for std::string you can
 even just do:
