@@ -38,7 +38,7 @@ public:
 };
 
 int main() {
-    DOC("Create an std::initializer_list of MyString:");
+    DOC("Create a std::initializer_list of MyString:");
     std::initializer_list< MyString > init1 = {
         MyString(std::string("elem1")), MyString(std::string("elem2"))
     };

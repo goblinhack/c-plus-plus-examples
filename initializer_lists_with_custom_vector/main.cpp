@@ -112,7 +112,7 @@ public:
 };
 
 int main() {
-    DOC("Create an std::initializer_list of std::string:");
+    DOC("Create a std::initializer_list of std::string:");
     std::initializer_list< std::string > init1 = { "elem1", "elem2" };
 
     DOC("Assign this initializer_list to a vector:");

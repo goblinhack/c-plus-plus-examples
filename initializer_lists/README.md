@@ -75,7 +75,7 @@ public:
 };
 
 int main() {
-    // Create an std::initializer_list of MyString:
+    // Create a std::initializer_list of MyString:
     std::initializer_list< MyString > init1 = {
         MyString(std::string("elem1")), MyString(std::string("elem2"))
     };
@@ -121,21 +121,21 @@ c++ main.o  -o example
 Expected output:
 <pre>
 
-# Create an std::initializer_list of MyString:
-0x7ffee637f768 MyString(std::string &&) elem1
-0x7ffee637f780 MyString(std::string &&) elem2
+# Create a std::initializer_list of MyString:
+0x7ffee7abf728 MyString(std::string &&) elem1
+0x7ffee7abf740 MyString(std::string &&) elem2
 
 # Assign this initializer_list to a vector:
-0x7fd6f64029b0 MyString(const std::string &) elem1
-0x7fd6f64029c8 MyString(const std::string &) elem2
+0x7fc3d8402990 MyString(const std::string &) elem1
+0x7fc3d84029a8 MyString(const std::string &) elem2
 
 # Walk the vector with 'const auto i': (this will involve copies)
-0x7ffee637f0a8 MyString(const std::string &) elem1
+0x7ffee7abf068 MyString(const std::string &) elem1
 elem1
-0x7ffee637f0a8 ~MyString() elem1
-0x7ffee637f0a8 MyString(const std::string &) elem2
+0x7ffee7abf068 ~MyString() elem1
+0x7ffee7abf068 MyString(const std::string &) elem2
 elem2
-0x7ffee637f0a8 ~MyString() elem2
+0x7ffee7abf068 ~MyString() elem2
 
 # Walk the vector with 'const auto &i': (should see no copies)
 elem1
@@ -146,18 +146,18 @@ elem1
 elem2
 
 # Create another vector with an inline initializer list
-0x7ffee637f738 MyString(std::string &&) elem3
-0x7ffee637f750 MyString(std::string &&) elem4
-0x7fd6f64029e0 MyString(const std::string &) elem3
-0x7fd6f64029f8 MyString(const std::string &) elem4
-0x7ffee637f750 ~MyString() elem4
-0x7ffee637f738 ~MyString() elem3
+0x7ffee7abf6f8 MyString(std::string &&) elem3
+0x7ffee7abf710 MyString(std::string &&) elem4
+0x7fc3d84029c0 MyString(const std::string &) elem3
+0x7fc3d84029d8 MyString(const std::string &) elem4
+0x7ffee7abf710 ~MyString() elem4
+0x7ffee7abf6f8 ~MyString() elem3
 
 # End:
-0x7fd6f64029f8 ~MyString() elem4
-0x7fd6f64029e0 ~MyString() elem3
-0x7fd6f64029c8 ~MyString() elem2
-0x7fd6f64029b0 ~MyString() elem1
-0x7ffee637f780 ~MyString() elem2
-0x7ffee637f768 ~MyString() elem1
+0x7fc3d84029d8 ~MyString() elem4
+0x7fc3d84029c0 ~MyString() elem3
+0x7fc3d84029a8 ~MyString() elem2
+0x7fc3d8402990 ~MyString() elem1
+0x7ffee7abf740 ~MyString() elem2
+0x7ffee7abf728 ~MyString() elem1
 </pre>
