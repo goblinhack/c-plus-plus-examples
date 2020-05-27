@@ -7,7 +7,7 @@ Implementing support for algorithms like std::sort is not as simple as might
 be imagined. After all, it is C++ :)
 
 For a start, you need to implement your own iterator that can be used to
-walk your container. There are 4 types of iterators that we need to implement
+walk your container. There are 4 types of iterators that we need to support
 std::sort
 
 - normal, random access
@@ -15,29 +15,29 @@ std::sort
 - reverse, random access
 - reverse constant, random access
 
-To avoid having to implement this over and over for each container we create
-we can use a templatized iterator e.g.:
+Each iterator needs its own implementation, but to avoid this we can use
+a templatized iterator e.g.:
 ```C++
     template<typename T> class MyIterator { ... }
     template<typename T> class MyReverseIterator { ... }
 ```
 And then later we can save some typing by having the const and non const
-be instantiations of this template e.g.:
+versions be instantiations of this template e.g.:
 ```C++
     typedef MyIterator<T>              iterator;
     typedef MyIterator<const T>        const_iterator;
     typedef MyReverseIterator<T>       reverse_iterator;
     typedef MyReverseIterator<const T> const_reverse_iterator;
 ```
-Note that we have one template each for forward and reverse containers.
-The only real difference is that things like ++ will increment in the
+Note that we have one template each for forward and reverse iterators.
+The only real difference is that operations like ++ will increment in the
 forward container and decrement in the reverse container e.g.:
 ```C++
     MyIterator<T>        operator++ (int) { auto temp(*this); ++dataptr; return temp; }
     MyReverseIterator<T> operator++ (int) { auto temp(*this); --dataptr; return temp; }
 ```
-We must provide all operators for moving around the container, +,-,++,--,==.!= etc...
-It is quite a lot!:
+We must also provide all operators for moving around the 
+container, +,-,++,--,==.!= etc...:
 ```C++
     MyReverseIterator<T> operator+ (const difference_type& delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
     MyReverseIterator<T> operator+ (int delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
@@ -56,8 +56,8 @@ It is quite a lot!:
     bool operator!=(const MyReverseIterator<T>& it) const { return (dataptr != it.get_const_ptr()); }
     bool operator==(const MyReverseIterator<T>& it) const { return (dataptr == it.get_const_ptr()); }
 ```
-One other note, that the STL will expect the following traits to be provided within 
-your iterator. It you don't provide these, lots of errors :)
+One other note, is that the STL will expect the following traits to be 
+provided within your iterator:
 ```C++
 template<typename T> class MyIterator {
     ...
@@ -72,8 +72,8 @@ template<typename T> class MyIterator {
     using pointer = T*;
     using reference = T&;
 ```
-Now we are able to use these iterators in our own container. To do that
-we need to instantiate the templates e.g.:
+Now we are able to use MyIterator in our own container. To do so we must
+first instantiate the templates e.g.:
 ```C++
 template<typename T> class MyVector {
     ...
@@ -82,7 +82,8 @@ template<typename T> class MyVector {
     typedef MyReverseIterator<T>       reverse_iterator;
     typedef MyReverseIterator<const T> const_reverse_iterator;
 ```
-And then also provide the normal container traversing functions that we expect:
+And then also provide the normal container traversing functions that we
+expect:
 ```C++
     iterator begin() { return iterator(&dataptr[0]); }
     iterator end() { return iterator(&dataptr[len]); }
@@ -93,7 +94,8 @@ And then also provide the normal container traversing functions that we expect:
     const_reverse_iterator crbegin() { return const_reverse_iterator(&dataptr[len - 1]); }
     const_reverse_iterator crend() { return const_reverse_iterator(&dataptr[-1]); }
 ```
-Now, finally, that we have done all that we are able to sort and walk our custom container e.g.:
+Now, finally, that we have done all that we are able to sort and walk our 
+custom container e.g.:
 ```C++
     std::initializer_list< std::string > init1 = {
         "zaphod",
@@ -106,7 +108,7 @@ Now, finally, that we have done all that we are able to sort and walk our custom
 
     MyVector< std::string > vec1(init1);
 
-    std::sort(vec1.rbegin(), vec1.rend(), [](const std::string &a, const std::string &b) {
+    std::sort(vec1.begin(), vec1.end(), [](const std::string &a, const std::string &b) {
         return a < b;
     });
 ```
@@ -115,23 +117,12 @@ Here is a full example.
 #include <algorithm>
 #include <initializer_list>
 #include <iostream>
-#include <cstddef>
 #include <sstream>
 #include <vector>
 #include <string>
 
 template<typename T> class MyIterator {
 public:
-    //
-    // The following iterator traits are expected to be supplied by
-    // the implementor.
-    //
-    // typedef typename _Iter::difference_type   difference_type;
-    // typedef typename _Iter::value_type        value_type;
-    // typedef typename _Iter::pointer           pointer;
-    // typedef typename _Iter::reference         reference;
-    // typedef typename _Iter::iterator_category iterator_category;
-    //
     using iterator_category = std::random_access_iterator_tag;
     using difference_type = std::ptrdiff_t;
     using value_type = T;
@@ -360,12 +351,12 @@ Expected output:
 # Create a std::initializer_list of std::string:
 
 # Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffeec3b13e0, len=1, maxlen=1 elems=[zaphod])
-push_back called MyVector(0x7ffeec3b13e0, len=2, maxlen=2 elems=[zaphod,universe])
-push_back called MyVector(0x7ffeec3b13e0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
-push_back called MyVector(0x7ffeec3b13e0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
-push_back called MyVector(0x7ffeec3b13e0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
-push_back called MyVector(0x7ffeec3b13e0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
+push_back called MyVector(0x7ffeeb1dc3e0, len=1, maxlen=1 elems=[zaphod])
+push_back called MyVector(0x7ffeeb1dc3e0, len=2, maxlen=2 elems=[zaphod,universe])
+push_back called MyVector(0x7ffeeb1dc3e0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
+push_back called MyVector(0x7ffeeb1dc3e0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
+push_back called MyVector(0x7ffeeb1dc3e0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
+push_back called MyVector(0x7ffeeb1dc3e0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
 
 # Pre sort:
 zaphod
@@ -392,5 +383,5 @@ marvin
 arthur
 
 # End:
-delete MyVector(0x7ffeec3b13e0, len=6, maxlen=8 elems=[zaphod,vogon,universe,mice,marvin,arthur])
+delete MyVector(0x7ffeeb1dc3e0, len=6, maxlen=8 elems=[zaphod,vogon,universe,mice,marvin,arthur])
 </pre>
