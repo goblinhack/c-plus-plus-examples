@@ -15,7 +15,7 @@ std::sort
 - reverse, random access
 - reverse constant, random access
 
-To avoid having to implement this over and over for each class we create
+To avoid having to implement this over and over for each container we create
 we can use a templatized iterator e.g.:
 ```C++
     template<typename T> class MyIterator { ... }
@@ -24,8 +24,8 @@ we can use a templatized iterator e.g.:
 And then later we can save some typing by having the const and non const
 be instantiations of this template e.g.:
 ```C++
-    typedef MyIterator<T>        iterator;
-    typedef MyIterator<const T>  const_iterator;
+    typedef MyIterator<T>              iterator;
+    typedef MyIterator<const T>        const_iterator;
     typedef MyReverseIterator<T>       reverse_iterator;
     typedef MyReverseIterator<const T> const_reverse_iterator;
 ```
@@ -34,7 +34,6 @@ The only real difference is that things like ++ will increment in the
 forward container and decrement in the reverse container e.g.:
 ```C++
     MyIterator<T>        operator++ (int) { auto temp(*this); ++dataptr; return temp; }
-
     MyReverseIterator<T> operator++ (int) { auto temp(*this); --dataptr; return temp; }
 ```
 We must provide all operators for moving around the container, +,-,++,--,==.!= etc...
@@ -58,7 +57,7 @@ It is quite a lot!:
     bool operator==(const MyReverseIterator<T>& it) const { return (dataptr == it.get_const_ptr()); }
 ```
 One other note, that the STL will expect the following traits to be provided within 
-your iterator. It you don't provide these. lots of errors :)
+your iterator. It you don't provide these, lots of errors :)
 ```C++
 template<typename T> class MyIterator {
     ...
@@ -361,12 +360,12 @@ Expected output:
 # Create a std::initializer_list of std::string:
 
 # Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffeeec413e0, len=1, maxlen=1 elems=[zaphod])
-push_back called MyVector(0x7ffeeec413e0, len=2, maxlen=2 elems=[zaphod,universe])
-push_back called MyVector(0x7ffeeec413e0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
-push_back called MyVector(0x7ffeeec413e0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
-push_back called MyVector(0x7ffeeec413e0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
-push_back called MyVector(0x7ffeeec413e0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
+push_back called MyVector(0x7ffee8f1b3e0, len=1, maxlen=1 elems=[zaphod])
+push_back called MyVector(0x7ffee8f1b3e0, len=2, maxlen=2 elems=[zaphod,universe])
+push_back called MyVector(0x7ffee8f1b3e0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
+push_back called MyVector(0x7ffee8f1b3e0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
+push_back called MyVector(0x7ffee8f1b3e0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
+push_back called MyVector(0x7ffee8f1b3e0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
 
 # Pre sort:
 zaphod
@@ -393,5 +392,5 @@ marvin
 arthur
 
 # End:
-delete MyVector(0x7ffeeec413e0, len=6, maxlen=8 elems=[zaphod,vogon,universe,mice,marvin,arthur])
+delete MyVector(0x7ffee8f1b3e0, len=6, maxlen=8 elems=[zaphod,vogon,universe,mice,marvin,arthur])
 </pre>
