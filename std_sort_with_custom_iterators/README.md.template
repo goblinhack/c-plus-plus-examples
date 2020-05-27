@@ -1,5 +1,5 @@
 NOTE-BEGIN
-How to use std::sort with a custom conatiner and iterators
+How to use std::sort with a custom container and iterators
 ==========================================================
 
 (Much of the below was learned from [this link](https://github.com/navyenzo/blIteratorAPI))
