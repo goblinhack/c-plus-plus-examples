@@ -1,5 +1,5 @@
-How to use a std::initializer_list
-==================================
+How to use std::initializer_list
+================================
 
 In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
@@ -122,20 +122,20 @@ Expected output:
 <pre>
 
 # Create a std::initializer_list of MyString:
-0x7ffeeca03728 MyString(std::string &&) elem1
-0x7ffeeca03740 MyString(std::string &&) elem2
+0x7ffee51d8728 MyString(std::string &&) elem1
+0x7ffee51d8740 MyString(std::string &&) elem2
 
 # Assign this initializer_list to a vector:
-0x7fab14500000 MyString(const std::string &) elem1
-0x7fab14500018 MyString(const std::string &) elem2
+0x7f9162c02990 MyString(const std::string &) elem1
+0x7f9162c029a8 MyString(const std::string &) elem2
 
 # Walk the vector with 'const auto i': (this will involve copies)
-0x7ffeeca03068 MyString(const std::string &) elem1
+0x7ffee51d8068 MyString(const std::string &) elem1
 elem1
-0x7ffeeca03068 ~MyString() elem1
-0x7ffeeca03068 MyString(const std::string &) elem2
+0x7ffee51d8068 ~MyString() elem1
+0x7ffee51d8068 MyString(const std::string &) elem2
 elem2
-0x7ffeeca03068 ~MyString() elem2
+0x7ffee51d8068 ~MyString() elem2
 
 # Walk the vector with 'const auto &i': (should see no copies)
 elem1
@@ -146,18 +146,18 @@ elem1
 elem2
 
 # Create another vector with an inline initializer list
-0x7ffeeca036f8 MyString(std::string &&) elem3
-0x7ffeeca03710 MyString(std::string &&) elem4
-0x7fab14500030 MyString(const std::string &) elem3
-0x7fab14500048 MyString(const std::string &) elem4
-0x7ffeeca03710 ~MyString() elem4
-0x7ffeeca036f8 ~MyString() elem3
+0x7ffee51d86f8 MyString(std::string &&) elem3
+0x7ffee51d8710 MyString(std::string &&) elem4
+0x7f9162c029c0 MyString(const std::string &) elem3
+0x7f9162c029d8 MyString(const std::string &) elem4
+0x7ffee51d8710 ~MyString() elem4
+0x7ffee51d86f8 ~MyString() elem3
 
 # End:
-0x7fab14500048 ~MyString() elem4
-0x7fab14500030 ~MyString() elem3
-0x7fab14500018 ~MyString() elem2
-0x7fab14500000 ~MyString() elem1
-0x7ffeeca03740 ~MyString() elem2
-0x7ffeeca03728 ~MyString() elem1
+0x7f9162c029d8 ~MyString() elem4
+0x7f9162c029c0 ~MyString() elem3
+0x7f9162c029a8 ~MyString() elem2
+0x7f9162c02990 ~MyString() elem1
+0x7ffee51d8740 ~MyString() elem2
+0x7ffee51d8728 ~MyString() elem1
 </pre>

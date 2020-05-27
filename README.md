@@ -27,7 +27,7 @@ This is a (probably perpetual) work in progress!
 
 [How to use range-based for loops with your own iterator](range_based_for_loop_custom_begin_end/README.md)
 
-[How to use std::sort with your own custom container](std_sort_with_custom_iterators/README.md)
+[How to use std::sort with a custom container and iterators](std_sort_with_custom_iterators/README.md)
 
 [How to use std::bind with simple example](std_bind/README.md)
 

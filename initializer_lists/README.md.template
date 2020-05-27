@@ -1,6 +1,6 @@
 NOTE-BEGIN
-How to use a std::initializer_list
-==================================
+How to use std::initializer_list
+================================
 
 In days of old, to populate a list or a vector in C++ you had to do:
 ```C++
