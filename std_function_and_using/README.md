@@ -33,6 +33,10 @@ Or with inline syntax:
 ```C++
     callback_wrapper(([](int a, int b) { return a + b; }), 1, 2);
 ```
+Or for clarity or if the return type is in doubt:
+```C++
+    callback_wrapper(([] -> int (int a, int b) { return a + b; }), 1, 2);
+```
 Here is the full example:
 ```C++
 #include <algorithm>  // for std::move
@@ -63,6 +67,8 @@ static int old_function (old_style_callback cb, const int a, const int b) {
 //
 using new_style_callback = std::function< int(const int, const int) >;
 
+std::function< int(const int, const int) > this_is_ok_too;
+
 static int new_function (new_style_callback cb, const int a, const int b) {
     auto result = cb(a, b);
     std::cout << "cb(" << a << ", " << b << ") = " << result << std::endl;
@@ -77,12 +83,15 @@ int main(int, char**)
     // invoke new C++ style std::function callback
     new_function(add_two_numbers_callback, 1, 2);
 
-    // invoke with a lambda (inline syntax)
+    // invoke with a lambda (non inline syntax)
     auto lambda_add_two_numbers_callback = ([](int a, int b) { return a + b; });
     new_function(lambda_add_two_numbers_callback, 1, 2);
 
-    // invoke with a lambda (non inline syntax)
-    new_function([](int a, int b) { return a + b; }, 1, 2);
+    // invoke with a lambda (inline syntax)
+    new_function([] (int a, int b) { return a + b; }, 1, 2);
+
+    // invoke with a lambda (inline longer syntax)
+    new_function([] -> int (int a, int b) { return a + b; }, 1, 2);
 
     // end
 }
@@ -92,23 +101,8 @@ To build:
 cd std_function_and_using
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
-
-# invoke old C style typedef callback
-cb(1, 2) = 3
-
-# invoke new C++ style std::function callback
-cb(1, 2) = 3
-
-# invoke with a lambda (inline syntax)
-cb(1, 2) = 3
-
-# invoke with a lambda (non inline syntax)
-cb(1, 2) = 3
-
-# end
 </pre>

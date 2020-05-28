@@ -34,6 +34,10 @@ Or with inline syntax:
 ```C++
     callback_wrapper(([](int a, int b) { return a + b; }), 1, 2);
 ```
+Or for clarity or if the return type is in doubt:
+```C++
+    callback_wrapper(([] -> int (int a, int b) { return a + b; }), 1, 2);
+```
 Here is the full example:
 ```C++
 NOTE-READ-CODE
