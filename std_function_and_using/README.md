@@ -21,32 +21,26 @@ normally define a function. C++11 makes this simpler and more consistent.
 Notice that the "using" keyword has replaced the weird typedef syntax and
 looks much cleaner:
 ```C++
-    using add_two_numbers_callback = std::function< int(const int, const int) > sumFunc;
+    using add_two_numbers_callback = std::function< int(const int, const int) >;
     int callback_wrapper(add_two_numbers_callback cb, void *userdata);
     callback_wrapper(cb, 1, 2);
 ```
 Lambdas can also be supplied identically to such callbacks e.g.:
 ```C++
-    auto add_two_numbers_callback = ([](int a, int b) { return a + b; });
+    auto add_two_numbers_callback = ([](const int a, const int b) { return a + b; });
     callback_wrapper(add_two_numbers_callback, 1, 2);
 ```
 Or with inline lambda syntax:
 ```C++
-    callback_wrapper(([](int a, int b) { return a + b; }), 1, 2);
+    callback_wrapper(([](const int a, const int b) { return a + b; }), 1, 2);
 ```
 Or for clarity or if the return type is in doubt:
 ```C++
-    callback_wrapper(([] (int a, int b) -> int { return a + b; }), 1, 2);
+    callback_wrapper(([] (const int a, const int b) -> int { return a + b; }), 1, 2);
 ```
 Here is the full example:
 ```C++
-#include <algorithm>  // for std::move
-#include <functional> // for _1, _2
 #include <iostream>
-#include <memory>
-#include <sstream>    // for std::stringstream
-#include <string>
-#include <utility>
 
 static int add_two_numbers_callback (const int a, const int b) {
     return a + b;
@@ -85,17 +79,17 @@ int main(int, char**)
     new_function(add_two_numbers_callback, 1, 2);
 
     // invoke with a lambda (non inline syntax)
-    auto lambda_add_two_numbers_callback = ([](int a, int b) { return a + b; });
+    auto lambda_add_two_numbers_callback = ([](const int a, const int b) { return a + b; });
     new_function(lambda_add_two_numbers_callback, 1, 2);
 
     // invoke with a lambda (inline syntax)
-    new_function([] (int a, int b) { return a + b; }, 1, 2);
+    new_function([] (const int a, const int b) { return a + b; }, 1, 2);
 
     // invoke with a lambda (inline longer syntax)
-    new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+    new_function([] (const int a, const int b) -> int { return a + b; }, 1, 2);
 
     // invoke the old typedef handler with a lambda, this should be equivalent
-    old_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+    old_function([] (const int a, const int b) -> int { return a + b; }, 1, 2);
 
     // end
 }

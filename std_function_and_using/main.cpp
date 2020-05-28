@@ -1,10 +1,4 @@
-#include <algorithm>  // for std::move
-#include <functional> // for _1, _2
 #include <iostream>
-#include <memory>
-#include <sstream>    // for std::stringstream
-#include <string>
-#include <utility>
 #include "../common/common.h"
 
 static int add_two_numbers_callback (const int a, const int b) {
@@ -44,17 +38,17 @@ int main(int, char**)
     new_function(add_two_numbers_callback, 1, 2);
 
     DOC("invoke with a lambda (non inline syntax)");
-    auto lambda_add_two_numbers_callback = ([](int a, int b) { return a + b; });
+    auto lambda_add_two_numbers_callback = ([](const int a, const int b) { return a + b; });
     new_function(lambda_add_two_numbers_callback, 1, 2);
 
     DOC("invoke with a lambda (inline syntax)");
-    new_function([] (int a, int b) { return a + b; }, 1, 2);
+    new_function([] (const int a, const int b) { return a + b; }, 1, 2);
 
     DOC("invoke with a lambda (inline longer syntax)");
-    new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+    new_function([] (const int a, const int b) -> int { return a + b; }, 1, 2);
 
     DOC("invoke the old typedef handler with a lambda, this should be equivalent");
-    old_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+    old_function([] (const int a, const int b) -> int { return a + b; }, 1, 2);
 
     DOC("end");
 }
