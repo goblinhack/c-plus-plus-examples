@@ -1,5 +1,5 @@
-How to use std::initializer_list
-================================
+How to use scoped enums
+=======================
 
 In days of old, C would allow this:
 ```C++
@@ -32,8 +32,9 @@ public:
     };
 };
 ```
-To reference you would do ClassColors::RED, or for the global enum,
-GlobalColors::RED or ::RED or just RED.
+To reference "RED" you now need to specify which instance. So 
+"ClassColors::RED", or for the global enum, "GlobalColors::RED" or "::RED"
+or just plain old "RED".
 
 Here is a full example:
 ```C++
