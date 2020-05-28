@@ -3,7 +3,7 @@ How to use std::function and using
 ==================================
 
 This example combines two things commonly used together, function
-prototypes and the new "using" keyword. The reason for this is that
+prototypes / std::function and the new "using" keyword. The reason for this is that
 function declarations have always been notoriously long winded in C e.g.:
 ```C++
     int callback_wrapper(int (*callback)(const int a, const int b) cb, void *userdata);

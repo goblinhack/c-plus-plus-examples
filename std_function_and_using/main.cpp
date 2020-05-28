@@ -53,5 +53,8 @@ int main(int, char**)
     DOC("invoke with a lambda (inline longer syntax)");
     new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
 
+    DOC("invoke the old typedef handler with a lambda, this should be equivalent");
+    old_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+
     DOC("end");
 }

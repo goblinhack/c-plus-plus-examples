@@ -93,6 +93,9 @@ int main(int, char**)
     // invoke with a lambda (inline longer syntax)
     new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
 
+    // invoke the old typedef handler with a lambda, this should be equivalent
+    old_function([] (int a, int b) -> int { return a + b; }, 1, 2);
+
     // end
 }
 ```
@@ -120,6 +123,9 @@ cb(1, 2) = 3
 cb(1, 2) = 3
 
 # invoke with a lambda (inline longer syntax)
+cb(1, 2) = 3
+
+# invoke the old typedef handler with a lambda, this should be equivalent
 cb(1, 2) = 3
 
 # end
