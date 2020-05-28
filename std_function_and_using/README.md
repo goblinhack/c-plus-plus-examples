@@ -1,5 +1,5 @@
-How to use std::function and using
-==================================
+How to use std::function and "using"
+====================================
 
 This example combines two things commonly seen together, std::function and
 the new C++11 "using" keyword. The reason they are often seen together is

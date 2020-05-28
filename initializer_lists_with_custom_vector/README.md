@@ -160,13 +160,13 @@ Expected output:
 # Create a std::initializer_list of std::string:
 
 # Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffee6c9a5f0, currlen=1, maxlen=1 elems=[elem1])
-push_back called MyVector(0x7ffee6c9a5f0, currlen=2, maxlen=2 elems=[elem1,elem2])
+push_back called MyVector(0x7ffeef3d35f0, currlen=1, maxlen=1 elems=[elem1])
+push_back called MyVector(0x7ffeef3d35f0, currlen=2, maxlen=2 elems=[elem1,elem2])
 
 # Walk the vector with 'const auto &i': (to avoid copies)
 elem1
 elem2
 
 # End:
-delete MyVector(0x7ffee6c9a5f0, currlen=2, maxlen=2 elems=[elem1,elem2])
+delete MyVector(0x7ffeef3d35f0, currlen=2, maxlen=2 elems=[elem1,elem2])
 </pre>
