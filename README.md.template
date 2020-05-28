@@ -17,6 +17,8 @@ This is a (probably perpetual) work in progress!
 
 [How to print hello world in color in C++, because why not](hello_world_color/README.md)
 
+[How to use scoped enums](scoped_enums/README.md)
+
 [How to use std::initializer_list](initializer_lists/README.md)
 
 [How to use std::initializer_list with your own container like class](initializer_lists_with_custom_vector/README.md)

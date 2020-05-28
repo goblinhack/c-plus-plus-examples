@@ -1,5 +1,6 @@
 SUBDIRS=\
 	hello_world_color \
+	scoped_enums \
 	initializer_lists \
 	initializer_lists_with_custom_vector \
 	constexpr \
