@@ -1,0 +1,50 @@
+NOTE-BEGIN
+How to use std::function and using
+==================================
+
+This example combines two things commonly used together, function
+prototypes and the new "using" keyword. The reason for this is that
+function declarations have always been notoriously long winded in C e.g.:
+```C++
+    int callback_wrapper(int (*callback)(const int a, const int b) cb, void *userdata);
+```
+Splitting it up into a typedef helps with sanity:
+```C++
+    typedef int (*add_two_numbers_callback)(const int a, const int b);
+    int callback_wrapper(add_two_numbers_callback cb, void *userdata);
+    callback_wrapper(cb, nullptr);
+```
+But it's still a bit unintuitive and different syntax from how you would
+normally define a function.
+
+C++ makes this simpler and more consistent:
+```C++
+    using add_two_numbers_callback = std::function< int(const int, const int) > sumFunc;
+    int callback_wrapper(add_two_numbers_callback cb, void *userdata);
+    callback_wrapper(cb, nullptr);
+```
+Notice that "using" has replaced the weird typedef syntax and looks much cleaner.
+
+Lambdas can also supplied identically to such callbacks e.g.:
+```C++
+    auto add_two_numbers_callback = ([](int a, int b) { return a + b; });
+    callback_wrapper(add_two_numbers_callback, 1, 2);
+```
+Or with inline syntax:
+```C++
+    callback_wrapper(([](int a, int b) { return a + b; }), 1, 2);
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

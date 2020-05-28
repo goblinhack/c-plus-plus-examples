@@ -29,7 +29,7 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::sort with a custom container and iterators](std_sort_with_custom_iterators/README.md)
 
-[How to use std::bind with simple example](std_bind/README.md)
+[How to use std::function, and for good measure also the new 'using' keyword](std_function_and_using/README.md)
 
 [How to use std::bind with methods or proxy functions](std_bind_with_a_method/README.md)
 

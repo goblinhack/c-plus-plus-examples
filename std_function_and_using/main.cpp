@@ -1,0 +1,52 @@
+#include <algorithm>  // for std::move
+#include <functional> // for _1, _2
+#include <iostream>
+#include <memory>
+#include <sstream>    // for std::stringstream
+#include <string>
+#include <utility>
+#include "../common/common.h"
+
+static int add_two_numbers_callback (const int a, const int b) {
+    return a + b;
+}
+
+//
+// Old C style
+//
+typedef int (*old_style_callback)(const int a, const int b);
+
+static int old_function (old_style_callback cb, const int a, const int b) {
+    auto result = cb(a, b);
+    std::cout << "cb(" << a << ", " << b << ") = " << result << std::endl;
+    return result;
+}
+
+//
+// New C++ style
+//
+using new_style_callback = std::function< int(const int, const int) >;
+
+static int new_function (new_style_callback cb, const int a, const int b) {
+    auto result = cb(a, b);
+    std::cout << "cb(" << a << ", " << b << ") = " << result << std::endl;
+    return result;
+}
+
+int main(int, char**)
+{
+    DOC("invoke old C style typedef callback");
+    old_function(add_two_numbers_callback, 1, 2);
+
+    DOC("invoke new C++ style std::function callback");
+    new_function(add_two_numbers_callback, 1, 2);
+
+    DOC("invoke with a lambda (inline syntax)");
+    auto lambda_add_two_numbers_callback = ([](int a, int b) { return a + b; });
+    new_function(lambda_add_two_numbers_callback, 1, 2);
+
+    DOC("invoke with a lambda (non inline syntax)");
+    new_function([](int a, int b) { return a + b; }, 1, 2);
+
+    DOC("end");
+}
