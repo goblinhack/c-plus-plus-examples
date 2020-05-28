@@ -39,9 +39,9 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::forward to invoke the exactly correct function through a template](std_forward/README.md)
 
-[How to create and use std::unique_ptr](std_unique_ptr/README.md)
+[How to use std::unique_ptr](std_unique_ptr/README.md)
 
-[How to create and use std::shared_ptr](std_shared_ptr/README.md)
+[How to use std::shared_ptr](std_shared_ptr/README.md)
 
 [How to make a wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
 
