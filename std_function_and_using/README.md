@@ -35,7 +35,7 @@ Or with inline syntax:
 ```
 Or for clarity or if the return type is in doubt:
 ```C++
-    callback_wrapper(([] -> int (int a, int b) { return a + b; }), 1, 2);
+    callback_wrapper(([] (int a, int b) -> int { return a + b; }), 1, 2);
 ```
 Here is the full example:
 ```C++
@@ -91,7 +91,7 @@ int main(int, char**)
     new_function([] (int a, int b) { return a + b; }, 1, 2);
 
     // invoke with a lambda (inline longer syntax)
-    new_function([] -> int (int a, int b) { return a + b; }, 1, 2);
+    new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
 
     // end
 }
@@ -101,8 +101,26 @@ To build:
 cd std_function_and_using
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
+
+# invoke old C style typedef callback
+cb(1, 2) = 3
+
+# invoke new C++ style std::function callback
+cb(1, 2) = 3
+
+# invoke with a lambda (non inline syntax)
+cb(1, 2) = 3
+
+# invoke with a lambda (inline syntax)
+cb(1, 2) = 3
+
+# invoke with a lambda (inline longer syntax)
+cb(1, 2) = 3
+
+# end
 </pre>

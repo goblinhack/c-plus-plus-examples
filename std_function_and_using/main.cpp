@@ -51,7 +51,7 @@ int main(int, char**)
     new_function([] (int a, int b) { return a + b; }, 1, 2);
 
     DOC("invoke with a lambda (inline longer syntax)");
-    new_function([] -> int (int a, int b) { return a + b; }, 1, 2);
+    new_function([] (int a, int b) -> int { return a + b; }, 1, 2);
 
     DOC("end");
 }

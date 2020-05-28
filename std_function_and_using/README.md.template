@@ -36,7 +36,7 @@ Or with inline syntax:
 ```
 Or for clarity or if the return type is in doubt:
 ```C++
-    callback_wrapper(([] -> int (int a, int b) { return a + b; }), 1, 2);
+    callback_wrapper(([] (int a, int b) -> int { return a + b; }), 1, 2);
 ```
 Here is the full example:
 ```C++
