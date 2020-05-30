@@ -25,11 +25,25 @@ For adding to a map, you must insert:
     Bank thebank;
 ```
 So now we have our key as AccountNumber and Account being our value.
-Lets add an account. Note that to make a key value pair you use std::make_tuple:
+Lets add an account. Note that to make a key value pair you use 
+std::make_pair:
 ```C++
     AccountNumber account1(101);
     Account       balance1(10000);
-    thebank.insert(std::make_tuple(account1, balance1));
+    thebank.insert(std::make_pair(account1, balance1));
+```
+Alternatively you can insert via []
+```C++
+    AccountNumber account2(102);
+    Account       balance2(20000);
+    thebank[account2] = balance2;
+```
+And finally, emplace can be used which avoids the copy for large objects:
+Alternatively you can insert via []
+```C++
+    AccountNumber account3(103);
+    Account       balance3(30000);
+    thebank.emplace(std::make_pair(account3, balance3));
 ```
 To check if an account exists, use find. The return value is an iterator,
 so to check for fail just compare to the end() iterator:
@@ -79,7 +93,6 @@ template<class T> class BankAccount;
 
 template<class T> class BankAccount {
 private:
-    const T no_cash {};
     T cash {};
 public:
     BankAccount<T> () {
@@ -92,13 +105,6 @@ public:
         std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
         cash = o.cash;
         std::cout << "copy cash constructor result is  " << to_string() << std::endl;
-    }
-    // Transfer of funds?
-    BankAccount<T> (BankAccount<T>&& o) {
-        std::cout << "move cash called for " << o.to_string() << std::endl;
-        cash = o.cash;
-        o.cash = no_cash;
-        std::cout << "move cash result is  " << to_string() << std::endl;
     }
     ~BankAccount<T> () {
         std::cout << "delete account " << to_string() << std::endl;
@@ -144,7 +150,7 @@ int main(int, char**)
 {
     // Create a std::map of AccountNumber -> Account
     using Account = BankAccount<int>;
-    using Bank = std::map< AccountNumber, Account >;
+    using Bank = std::map< const AccountNumber, Account >;
     Bank thebank;
 
     //
@@ -169,9 +175,18 @@ int main(int, char**)
     AccountNumber account3(104);
     Account       balance3(30000);
 
-    // Add some bank accounts
-    thebank.insert(std::make_tuple(account1, balance1));
-    thebank.insert(std::make_tuple(account2, balance2));
+    AccountNumber account4(104);
+    Account       balance4(30000);
+
+    // Add an account with insert()
+    thebank.insert(std::make_pair(account1, balance1));
+
+    // Add an account with map[k] = v
+    thebank[account2] = balance2;
+
+    // Add an account with emplace()
+    thebank.emplace(std::make_pair(account3, balance3));
+
     show_all_bank_accounts(thebank);
 
     // Does account1 exist?
@@ -181,17 +196,10 @@ int main(int, char**)
         // Yes
     }
 
-    // Does account2 exist?
-    if (thebank.find(account2) == thebank.end()) {
-        // No
-    } else {
-        // Yes
-    }
-
-    // Does account3 exist?
-    if (thebank.find(account3) == thebank.end()) {
+    // Does account4 exist?
+    if (thebank.find(account4) == thebank.end()) {
         // No. Add it quick!
-        thebank.insert(std::make_tuple(account3, balance3));
+        thebank.insert(std::make_pair(account4, balance4));
     } else {
         // Yes
     }
@@ -225,42 +233,40 @@ Expected output:
 # Create a std::map of AccountNumber -> Account
 
 # Create some accounts
-new cash BankAccount(0x7ffee758ed48, cash $10000)
-new cash BankAccount(0x7ffee758ed38, cash $20000)
-new cash BankAccount(0x7ffee758ed28, cash $30000)
+new cash BankAccount(0x7ffee2908fc0, cash $10000)
+new cash BankAccount(0x7ffee2908fb0, cash $20000)
+new cash BankAccount(0x7ffee2908fa0, cash $30000)
+new cash BankAccount(0x7ffee2908f90, cash $30000)
 
-# Add some bank accounts
-copy cash constructor called for BankAccount(0x7ffee758ed48, cash $10000)
-copy cash constructor result is  BankAccount(0x7ffee758ed1c, cash $10000)
-move cash called for BankAccount(0x7ffee758ed1c, cash $10000)
-move cash result is  BankAccount(0x7fdf55d00980, cash $10000)
-delete account BankAccount(0x7ffee758ed1c, cash $0)
-copy cash constructor called for BankAccount(0x7ffee758ed38, cash $20000)
-copy cash constructor result is  BankAccount(0x7ffee758ecfc, cash $20000)
-move cash called for BankAccount(0x7ffee758ecfc, cash $20000)
-move cash result is  BankAccount(0x7fdf55d009b0, cash $20000)
-delete account BankAccount(0x7ffee758ecfc, cash $0)
+# Add an account with insert()
+copy cash constructor called for BankAccount(0x7ffee2908fc0, cash $10000)
+copy cash constructor result is  BankAccount(0x7ffee2908f8c, cash $10000)
+copy cash constructor called for BankAccount(0x7ffee2908f8c, cash $10000)
+copy cash constructor result is  BankAccount(0x7f9b29c029b0, cash $10000)
+delete account BankAccount(0x7ffee2908f8c, cash $10000)
+
+# Add an account with map[k] = v
+default constructor BankAccount(0x7f9b29c029e0, cash $0)
+
+# Add an account with emplace()
+copy cash constructor called for BankAccount(0x7ffee2908fa0, cash $30000)
+copy cash constructor result is  BankAccount(0x7ffee2908f74, cash $30000)
+copy cash constructor called for BankAccount(0x7ffee2908f74, cash $30000)
+copy cash constructor result is  BankAccount(0x7f9b29c02a10, cash $30000)
+delete account BankAccount(0x7ffee2908f74, cash $30000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(102) $20000
+AccountNumber(104) $30000
 
 # Does account1 exist?
 
 # Yes
 
-# Does account2 exist?
+# Does account4 exist?
 
 # Yes
-
-# Does account3 exist?
-
-# No. Add it quick!
-copy cash constructor called for BankAccount(0x7ffee758ed28, cash $30000)
-copy cash constructor result is  BankAccount(0x7ffee758ecac, cash $30000)
-move cash called for BankAccount(0x7ffee758ecac, cash $30000)
-move cash result is  BankAccount(0x7fdf55d009e0, cash $30000)
-delete account BankAccount(0x7ffee758ecac, cash $0)
 
 # Show all bank accounts
 AccountNumber(101) $10000
@@ -268,25 +274,26 @@ AccountNumber(102) $20000
 AccountNumber(104) $30000
 
 # Remove account2
-delete account BankAccount(0x7fdf55d009b0, cash $20000)
+delete account BankAccount(0x7f9b29c029e0, cash $20000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30000
 
 # Modify account3
-deposit cash called BankAccount(0x7fdf55d009e0, cash $30100)
+deposit cash called BankAccount(0x7f9b29c02a10, cash $30100)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30100
 
 # Close the bank
-delete account BankAccount(0x7fdf55d00980, cash $10000)
-delete account BankAccount(0x7fdf55d009e0, cash $30100)
+delete account BankAccount(0x7f9b29c029b0, cash $10000)
+delete account BankAccount(0x7f9b29c02a10, cash $30100)
 
 # End
-delete account BankAccount(0x7ffee758ed28, cash $30000)
-delete account BankAccount(0x7ffee758ed38, cash $20000)
-delete account BankAccount(0x7ffee758ed48, cash $10000)
+delete account BankAccount(0x7ffee2908f90, cash $30000)
+delete account BankAccount(0x7ffee2908fa0, cash $30000)
+delete account BankAccount(0x7ffee2908fb0, cash $20000)
+delete account BankAccount(0x7ffee2908fc0, cash $10000)
 </pre>

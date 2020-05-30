@@ -26,11 +26,25 @@ For adding to a map, you must insert:
     Bank thebank;
 ```
 So now we have our key as AccountNumber and Account being our value.
-Lets add an account. Note that to make a key value pair you use std::make_tuple:
+Lets add an account. Note that to make a key value pair you use 
+std::make_pair:
 ```C++
     AccountNumber account1(101);
     Account       balance1(10000);
-    thebank.insert(std::make_tuple(account1, balance1));
+    thebank.insert(std::make_pair(account1, balance1));
+```
+Alternatively you can insert via []
+```C++
+    AccountNumber account2(102);
+    Account       balance2(20000);
+    thebank[account2] = balance2;
+```
+And finally, emplace can be used which avoids the copy for large objects:
+Alternatively you can insert via []
+```C++
+    AccountNumber account3(103);
+    Account       balance3(30000);
+    thebank.emplace(std::make_pair(account3, balance3));
 ```
 To check if an account exists, use find. The return value is an iterator,
 so to check for fail just compare to the end() iterator:

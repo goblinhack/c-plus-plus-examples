@@ -28,7 +28,6 @@ template<class T> class BankAccount;
 
 template<class T> class BankAccount {
 private:
-    const T no_cash {};
     T cash {};
 public:
     BankAccount<T> () {
@@ -41,13 +40,6 @@ public:
         std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
         cash = o.cash;
         std::cout << "copy cash constructor result is  " << to_string() << std::endl;
-    }
-    // Transfer of funds?
-    BankAccount<T> (BankAccount<T>&& o) {
-        std::cout << "move cash called for " << o.to_string() << std::endl;
-        cash = o.cash;
-        o.cash = no_cash;
-        std::cout << "move cash result is  " << to_string() << std::endl;
     }
     ~BankAccount<T> () {
         std::cout << "delete account " << to_string() << std::endl;
@@ -93,7 +85,7 @@ int main(int, char**)
 {
     DOC("Create a std::map of AccountNumber -> Account");
     using Account = BankAccount<int>;
-    using Bank = std::map< AccountNumber, Account >;
+    using Bank = std::map< const AccountNumber, Account >;
     Bank thebank;
 
     //
@@ -118,9 +110,18 @@ int main(int, char**)
     AccountNumber account3(104);
     Account       balance3(30000);
 
-    DOC("Add some bank accounts");
-    thebank.insert(std::make_tuple(account1, balance1));
-    thebank.insert(std::make_tuple(account2, balance2));
+    AccountNumber account4(104);
+    Account       balance4(30000);
+
+    DOC("Add an account with insert()");
+    thebank.insert(std::make_pair(account1, balance1));
+
+    DOC("Add an account with map[k] = v");
+    thebank[account2] = balance2;
+
+    DOC("Add an account with emplace()");
+    thebank.emplace(std::make_pair(account3, balance3));
+
     show_all_bank_accounts(thebank);
 
     DOC("Does account1 exist?");
@@ -130,17 +131,10 @@ int main(int, char**)
         DOC("Yes");
     }
 
-    DOC("Does account2 exist?");
-    if (thebank.find(account2) == thebank.end()) {
-        DOC("No");
-    } else {
-        DOC("Yes");
-    }
-
-    DOC("Does account3 exist?");
-    if (thebank.find(account3) == thebank.end()) {
+    DOC("Does account4 exist?");
+    if (thebank.find(account4) == thebank.end()) {
         DOC("No. Add it quick!");
-        thebank.insert(std::make_tuple(account3, balance3));
+        thebank.insert(std::make_pair(account4, balance4));
     } else {
         DOC("Yes");
     }
