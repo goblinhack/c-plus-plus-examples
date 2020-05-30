@@ -39,6 +39,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::function and the 'using' keyword](std_function_and_using/README.md)
 
+[How to use std::bind](std_bind/README.md)
+
 [How to use std::bind with methods or proxy functions](std_bind_with_a_method/README.md)
 
 [How to use std::bind with callback inside a class](std_bind_with_a_class_callback/README.md)
