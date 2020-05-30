@@ -31,6 +31,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::map with a custom key](std_map_with_custom_key/README.md)
 
+[How to use std::map for reverse sorting](std_map_reverse_sort/README.md)
+
 [How to use std::sort with a custom container and iterators](std_sort_with_custom_iterators/README.md)
 
 [How to use std::function and the 'using' keyword](std_function_and_using/README.md)

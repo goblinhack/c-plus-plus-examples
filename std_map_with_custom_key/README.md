@@ -2,11 +2,11 @@ How to use std::map with a custom key
 =====================================
 
 std::map provides a key to value mapping, where the key is sorted.
-On the back end std::map could be implemented as a tree or hashtable,
+Behind the scenes std::map could be implemented as a tree or hashtable,
 but the point is you don't need to worry about that. All you need to
-do is provide a means to sort the keys and for that via the < operator.
+do is provide a means to sort the keys via the "<" operator.
 
-Now many classes come with this operator already, hence you can do:
+Now, many classes come with this operator already, hence you can do:
 ```C++
     std::map< std::string, int > m;
     // std::map< std::string, int, std::greater<int>>
@@ -14,10 +14,10 @@ Now many classes come with this operator already, hence you can do:
 But if you want to provide your own sorter, that is easy too:
 ```C++
     bool operator< (const AccountNumber& rhs) const {
-        return (val < rhs.val); 
+        return (val < rhs.val);
     }
 ```
-For our example, lets make use of "using" to make things more readable:
+For our example, let's make use of "using" to make things more readable:
 For adding to a map, you must insert:
 ```C++
     using Account = BankAccount<int>;
@@ -25,7 +25,7 @@ For adding to a map, you must insert:
     Bank thebank;
 ```
 So now we have our key as AccountNumber and Account being our value.
-Lets add an account. Note that to make a key value pair you use 
+Let's add an account. Note that to make a key value pair you use
 std::make_pair:
 ```C++
     AccountNumber account1(101);
@@ -39,14 +39,13 @@ Alternatively you can insert via []
     thebank[account2] = balance2;
 ```
 And finally, emplace can be used which avoids the copy for large objects:
-Alternatively you can insert via []
 ```C++
     AccountNumber account3(103);
     Account       balance3(30000);
     thebank.emplace(std::make_pair(account3, balance3));
 ```
-To check if an account exists, use find. The return value is an iterator,
-so to check for fail just compare to the end() iterator:
+To check if an account exists, use find(). The return value is an iterator,
+so to check for failure just compare to the end() iterator:
 ```C++
     if (thebank.find(account1) == thebank.end()) {
         DOC("No");
@@ -58,7 +57,7 @@ Removing an account is via erase:
 ```C++
     thebank.erase(account2);
 ```
-And finally to remove everything in the map:
+And finally to remove everything and rob the bank, do:
 ```C++
     thebank.clear();
 ```
@@ -213,7 +212,7 @@ int main(int, char**)
     thebank[account3].deposit(100);
     show_all_bank_accounts(thebank);
 
-    // Close the bank
+    // Rob the bank
     thebank.clear();
 
     // End
@@ -233,27 +232,27 @@ Expected output:
 # Create a std::map of AccountNumber -> Account
 
 # Create some accounts
-new cash BankAccount(0x7ffee2908fc0, cash $10000)
-new cash BankAccount(0x7ffee2908fb0, cash $20000)
-new cash BankAccount(0x7ffee2908fa0, cash $30000)
-new cash BankAccount(0x7ffee2908f90, cash $30000)
+new cash BankAccount(0x7ffee7c34fc0, cash $10000)
+new cash BankAccount(0x7ffee7c34fb0, cash $20000)
+new cash BankAccount(0x7ffee7c34fa0, cash $30000)
+new cash BankAccount(0x7ffee7c34f90, cash $30000)
 
 # Add an account with insert()
-copy cash constructor called for BankAccount(0x7ffee2908fc0, cash $10000)
-copy cash constructor result is  BankAccount(0x7ffee2908f8c, cash $10000)
-copy cash constructor called for BankAccount(0x7ffee2908f8c, cash $10000)
-copy cash constructor result is  BankAccount(0x7f9b29c029b0, cash $10000)
-delete account BankAccount(0x7ffee2908f8c, cash $10000)
+copy cash constructor called for BankAccount(0x7ffee7c34fc0, cash $10000)
+copy cash constructor result is  BankAccount(0x7ffee7c34f8c, cash $10000)
+copy cash constructor called for BankAccount(0x7ffee7c34f8c, cash $10000)
+copy cash constructor result is  BankAccount(0x7ff0cce009f0, cash $10000)
+delete account BankAccount(0x7ffee7c34f8c, cash $10000)
 
 # Add an account with map[k] = v
-default constructor BankAccount(0x7f9b29c029e0, cash $0)
+default constructor BankAccount(0x7ff0cce00a20, cash $0)
 
 # Add an account with emplace()
-copy cash constructor called for BankAccount(0x7ffee2908fa0, cash $30000)
-copy cash constructor result is  BankAccount(0x7ffee2908f74, cash $30000)
-copy cash constructor called for BankAccount(0x7ffee2908f74, cash $30000)
-copy cash constructor result is  BankAccount(0x7f9b29c02a10, cash $30000)
-delete account BankAccount(0x7ffee2908f74, cash $30000)
+copy cash constructor called for BankAccount(0x7ffee7c34fa0, cash $30000)
+copy cash constructor result is  BankAccount(0x7ffee7c34f74, cash $30000)
+copy cash constructor called for BankAccount(0x7ffee7c34f74, cash $30000)
+copy cash constructor result is  BankAccount(0x7ff0cce00a50, cash $30000)
+delete account BankAccount(0x7ffee7c34f74, cash $30000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
@@ -274,26 +273,26 @@ AccountNumber(102) $20000
 AccountNumber(104) $30000
 
 # Remove account2
-delete account BankAccount(0x7f9b29c029e0, cash $20000)
+delete account BankAccount(0x7ff0cce00a20, cash $20000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30000
 
 # Modify account3
-deposit cash called BankAccount(0x7f9b29c02a10, cash $30100)
+deposit cash called BankAccount(0x7ff0cce00a50, cash $30100)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30100
 
-# Close the bank
-delete account BankAccount(0x7f9b29c029b0, cash $10000)
-delete account BankAccount(0x7f9b29c02a10, cash $30100)
+# Rob the bank
+delete account BankAccount(0x7ff0cce009f0, cash $10000)
+delete account BankAccount(0x7ff0cce00a50, cash $30100)
 
 # End
-delete account BankAccount(0x7ffee2908f90, cash $30000)
-delete account BankAccount(0x7ffee2908fa0, cash $30000)
-delete account BankAccount(0x7ffee2908fb0, cash $20000)
-delete account BankAccount(0x7ffee2908fc0, cash $10000)
+delete account BankAccount(0x7ffee7c34f90, cash $30000)
+delete account BankAccount(0x7ffee7c34fa0, cash $30000)
+delete account BankAccount(0x7ffee7c34fb0, cash $20000)
+delete account BankAccount(0x7ffee7c34fc0, cash $10000)
 </pre>

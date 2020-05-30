@@ -7,6 +7,7 @@ SUBDIRS=\
 	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
 	std_map_with_custom_key \
+	std_map_reverse_sort \
 	std_sort_with_custom_iterators \
 	std_function_and_using \
 	std_bind \

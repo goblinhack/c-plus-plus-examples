@@ -148,7 +148,7 @@ int main(int, char**)
     thebank[account3].deposit(100);
     show_all_bank_accounts(thebank);
 
-    DOC("Close the bank");
+    DOC("Rob the bank");
     thebank.clear();
 
     DOC("End");
