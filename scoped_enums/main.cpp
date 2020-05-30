@@ -20,7 +20,7 @@ public:
 };
 
 int main() {
-    DOC("Create some enums with some uncertainty as to which value GREEN will have");
+    DOC("Various enum accessors:");
     std::cout << "ClassColors::GREEN     = " << ClassColors::GREEN << std::endl;
     std::cout << "GlobalColors::GREEN    = " << GlobalColors::GREEN << std::endl;
     std::cout << "GREEN                  = " << GREEN << std::endl;

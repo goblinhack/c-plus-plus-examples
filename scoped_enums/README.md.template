@@ -33,9 +33,9 @@ public:
     };
 };
 ```
-To reference "RED" you now need to specify which instance. So 
-"ClassColors::RED", or for the global enum, "GlobalColors::RED" or "::RED"
-or just plain old "RED".
+To reference "GREEN" you now need to specify which instance. So
+"ClassColors::GREEN", or for the global enum, "GlobalColors::GREEN" or "::GREEN"
+or just plain old "GREEN".
 
 Here is a full example:
 ```C++

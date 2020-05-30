@@ -32,9 +32,9 @@ public:
     };
 };
 ```
-To reference "RED" you now need to specify which instance. So 
-"ClassColors::RED", or for the global enum, "GlobalColors::RED" or "::RED"
-or just plain old "RED".
+To reference "GREEN" you now need to specify which instance. So
+"ClassColors::GREEN", or for the global enum, "GlobalColors::GREEN" or "::GREEN"
+or just plain old "GREEN".
 
 Here is a full example:
 ```C++
@@ -59,7 +59,7 @@ public:
 };
 
 int main() {
-    // Create some enums with some uncertainty as to which value GREEN will have
+    // Various enum accessors:
     std::cout << "ClassColors::GREEN     = " << ClassColors::GREEN << std::endl;
     std::cout << "GlobalColors::GREEN    = " << GlobalColors::GREEN << std::endl;
     std::cout << "GREEN                  = " << GREEN << std::endl;
@@ -77,7 +77,7 @@ c++ main.o  -o example
 Expected output:
 <pre>
 
-# Create some enums with some uncertainty as to which value GREEN will have
+# Various enum accessors:
 ClassColors::GREEN     = 5
 GlobalColors::GREEN    = 2
 GREEN                  = 2
