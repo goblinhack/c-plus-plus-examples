@@ -9,7 +9,6 @@ do is provide a means to sort the keys via the "<" operator.
 Now, many classes come with this operator already, hence you can do:
 ```C++
     std::map< std::string, int > m;
-    // std::map< std::string, int, std::greater<int>>
 ```
 But if you want to provide your own sorter, that is easy too:
 ```C++
@@ -232,27 +231,27 @@ Expected output:
 # Create a std::map of AccountNumber -> Account
 
 # Create some accounts
-new cash BankAccount(0x7ffee03b4fc0, cash $10000)
-new cash BankAccount(0x7ffee03b4fb0, cash $20000)
-new cash BankAccount(0x7ffee03b4fa0, cash $30000)
-new cash BankAccount(0x7ffee03b4f90, cash $30000)
+new cash BankAccount(0x7ffeec2f8fc0, cash $10000)
+new cash BankAccount(0x7ffeec2f8fb0, cash $20000)
+new cash BankAccount(0x7ffeec2f8fa0, cash $30000)
+new cash BankAccount(0x7ffeec2f8f90, cash $30000)
 
 # Add an account with insert()
-copy cash constructor called for BankAccount(0x7ffee03b4fc0, cash $10000)
-copy cash constructor result is  BankAccount(0x7ffee03b4f8c, cash $10000)
-copy cash constructor called for BankAccount(0x7ffee03b4f8c, cash $10000)
-copy cash constructor result is  BankAccount(0x7f9f92c029b0, cash $10000)
-delete account BankAccount(0x7ffee03b4f8c, cash $10000)
+copy cash constructor called for BankAccount(0x7ffeec2f8fc0, cash $10000)
+copy cash constructor result is  BankAccount(0x7ffeec2f8f8c, cash $10000)
+copy cash constructor called for BankAccount(0x7ffeec2f8f8c, cash $10000)
+copy cash constructor result is  BankAccount(0x7fbcfec029b0, cash $10000)
+delete account BankAccount(0x7ffeec2f8f8c, cash $10000)
 
 # Add an account with map[k] = v
-default constructor BankAccount(0x7f9f92c029e0, cash $0)
+default constructor BankAccount(0x7fbcfec029e0, cash $0)
 
 # Add an account with emplace()
-copy cash constructor called for BankAccount(0x7ffee03b4fa0, cash $30000)
-copy cash constructor result is  BankAccount(0x7ffee03b4f74, cash $30000)
-copy cash constructor called for BankAccount(0x7ffee03b4f74, cash $30000)
-copy cash constructor result is  BankAccount(0x7f9f92c02a10, cash $30000)
-delete account BankAccount(0x7ffee03b4f74, cash $30000)
+copy cash constructor called for BankAccount(0x7ffeec2f8fa0, cash $30000)
+copy cash constructor result is  BankAccount(0x7ffeec2f8f74, cash $30000)
+copy cash constructor called for BankAccount(0x7ffeec2f8f74, cash $30000)
+copy cash constructor result is  BankAccount(0x7fbcfec02a10, cash $30000)
+delete account BankAccount(0x7ffeec2f8f74, cash $30000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
@@ -273,26 +272,26 @@ AccountNumber(102) $20000
 AccountNumber(104) $30000
 
 # Remove account2
-delete account BankAccount(0x7f9f92c029e0, cash $20000)
+delete account BankAccount(0x7fbcfec029e0, cash $20000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30000
 
 # Modify account3
-deposit cash called BankAccount(0x7f9f92c02a10, cash $30100)
+deposit cash called BankAccount(0x7fbcfec02a10, cash $30100)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30100
 
 # Rob the bank
-delete account BankAccount(0x7f9f92c029b0, cash $10000)
-delete account BankAccount(0x7f9f92c02a10, cash $30100)
+delete account BankAccount(0x7fbcfec029b0, cash $10000)
+delete account BankAccount(0x7fbcfec02a10, cash $30100)
 
 # End
-delete account BankAccount(0x7ffee03b4f90, cash $30000)
-delete account BankAccount(0x7ffee03b4fa0, cash $30000)
-delete account BankAccount(0x7ffee03b4fb0, cash $20000)
-delete account BankAccount(0x7ffee03b4fc0, cash $10000)
+delete account BankAccount(0x7ffeec2f8f90, cash $30000)
+delete account BankAccount(0x7ffeec2f8fa0, cash $30000)
+delete account BankAccount(0x7ffeec2f8fb0, cash $20000)
+delete account BankAccount(0x7ffeec2f8fc0, cash $10000)
 </pre>

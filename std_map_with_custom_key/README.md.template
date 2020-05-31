@@ -10,7 +10,6 @@ do is provide a means to sort the keys via the "<" operator.
 Now, many classes come with this operator already, hence you can do:
 ```C++
     std::map< std::string, int > m;
-    // std::map< std::string, int, std::greater<int>>
 ```
 But if you want to provide your own sorter, that is easy too:
 ```C++
