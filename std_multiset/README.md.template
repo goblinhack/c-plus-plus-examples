@@ -64,6 +64,25 @@ And we can then print all accounts easily:
 
     show_all_bank_accounts(customers);
 ```
+Now what if you want to find something in a multiset? This is a little
+bit more tricky as we have to be able to handle multiple values. For this,
+std::equal_range comes to the rescue. We give this search criteria and
+get back a pair of iterators e.g.:
+```C++
+    using Iter = std::multiset<Customer>::iterator;
+    std::pair<Iter,Iter> ret = customers.equal_range(Customer("Zaphod"));
+    for (auto iter = ret.first; iter != ret.second; iter++) {
+        std::cout << "Zaphod has been found! " << *iter << std::endl;
+    }
+```
+Removing a customer is via erase:
+```C++
+    customers.erase(account2);
+```
+And finally to remove everything and get rid of all your customers!:
+```C++
+    customers.clear();
+```
 Here is the full example:
 ```C++
 NOTE-READ-CODE

@@ -35,7 +35,7 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::unordered_map](std_unordered_map/README.md)
 
-[How to use std::multiset](std_multiset/README.md)
+[How to use std::multiset and std::multiset::equal_range](std_multiset/README.md)
 
 [How to use std::sort with a custom container and iterators](std_sort_with_custom_iterators/README.md)
 

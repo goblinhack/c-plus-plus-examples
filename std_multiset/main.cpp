@@ -83,7 +83,7 @@ public:
     }
     friend bool operator<(const class BankCustomer<T> & lhs,
                           const class BankCustomer<T> & rhs) {
-        return lhs.account.balance() > rhs.account.balance();
+        return lhs.name > rhs.name;
     }
 };
 
@@ -164,6 +164,21 @@ static void account_demo (void)
         } );
 
     show_all_bank_accounts(customers);
+
+    DOC("Find sneaky customers");
+    for (const auto& customer : customers) {
+        using Iter = std::multiset<Customer>::iterator;
+        std::pair<Iter,Iter> ret = customers.equal_range(customer);
+        auto account_count = 0;
+        for (auto iter = ret.first; iter != ret.second; iter++) {
+            if (account_count++) {
+                DOC("Customer has two accounts!");
+                std::cout << *iter << std::endl;
+            }
+        }
+    }
+
+    DOC("End");
 }
 
 int main(int, char**) {
