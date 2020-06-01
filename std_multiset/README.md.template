@@ -1,0 +1,69 @@
+NOTE-BEGIN
+How to use std::multiset
+========================
+
+Multisets do away with the restriction of uniqueness for their values,
+compared to std::set where a value can exist only a single time. This
+sounds a lot like std::map, and it is, with the big exception that maps
+can have separate keys and values. For sets we only have value.
+
+Multisets will have more of a performance impact than std::set as they
+do need to cater for duplicate values. Hence if you do not need this,
+consider std::set.
+
+Multisets will require a means of sorting with winning value being
+ordered closer to the 'start' of the set e.g.:
+```C++
+    std::multiset< std::string, std::greater<std::string> > m;
+
+    m.insert("zaphod");
+    m.insert("universe");
+    m.insert("arthur");
+    m.insert("marvin");
+    m.insert("mice");
+    m.insert("vogon");
+```
+which yields:
+```C++
+    zaphod
+    vogon
+    universe
+    mice
+    marvin
+    arthur
+```
+In our example we will provide the comparison operator so we can sort
+accounts by balance:
+```C++
+    friend bool operator<(const class BankCustomer<T> & lhs,
+                          const class BankCustomer<T> & rhs) {
+        return lhs.account.balance() > rhs.account.balance();
+    }
+```
+So the biggest accounts will appear first.
+
+Note also that we can insert the same value multiple times. Here, zaphod
+sneakily has two bank accounts:
+```
+    using Account = BankAccount<int>;
+    using Customer = BankCustomer<int>;
+    using TheBank = std::multiset<Customer>;
+
+    TheBank customers;
+    customers.insert(Customer("Zaphod",  Account(100000)));
+    customers.insert(Customer("Zaphod",  Account(999999)));
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

@@ -9,6 +9,7 @@ SUBDIRS=\
 	std_map_with_custom_key \
 	std_map_reverse_sort \
 	std_unordered_map \
+	std_multiset \
 	std_sort_with_custom_iterators \
 	std_function_and_using \
 	std_bind \
