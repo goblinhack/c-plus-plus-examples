@@ -70,10 +70,19 @@ private:
     std::string name {};
     BankAccount<T> account;
 public:
-    BankCustomer (void) { }
-    BankCustomer (const std::string& name) : name(name) { }
+    BankCustomer (void) { 
+        std::cout << "default customer " << to_string() << std::endl;
+    }
+    BankCustomer (const std::string& name) : name(name) {
+        std::cout << "new temporary customer " << to_string() << std::endl;
+    }
     BankCustomer (const std::string& name, const BankAccount<T>& account) :
-                    name(name), account(account) { }
+                    name(name), account(account) {
+        std::cout << "new customer " << to_string() << std::endl;
+    }
+    ~BankCustomer () {
+        std::cout << "delete customer " << to_string() << std::endl;
+    }
     std::string to_string (void) const {
         return "Customer(" + name + ", " + account.to_string() + ")";
     }
@@ -177,6 +186,12 @@ static void account_demo (void)
             }
         }
     }
+
+    DOC("Get rid of a customer");
+    customers.erase(Customer("Zaphod"));
+
+    DOC("Get rid of all customers");
+    customers.clear();
 
     DOC("End");
 }

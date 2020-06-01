@@ -54,7 +54,7 @@ sneakily has two bank accounts:
     customers.insert(Customer("Zaphod", Account(999999)));
 ```
 And we can then print all accounts easily:
-
+```C++
     auto show_all_bank_accounts = ([](const TheBank &customers)
         {
             for (const auto& b : customers) {
@@ -75,7 +75,7 @@ get back a pair of iterators e.g.:
         std::cout << "Zaphod has been found! " << *iter << std::endl;
     }
 ```
-Removing a customer is via erase:
+Removing a customer is easy via erase:
 ```C++
     customers.erase(account2);
 ```
