@@ -10,7 +10,7 @@ Multisets will have more of a performance impact than std::set as they
 do need to cater for duplicate values. Hence if you do not need this,
 consider std::set.
 
-Multisets will require a means of sorting with winning value being
+Multisets will require a means of sorting with winning comparisons being
 ordered closer to the 'start' of the set e.g.:
 ```C++
     std::multiset< std::string, std::greater<std::string> > m;
@@ -39,18 +39,29 @@ accounts by balance:
         return lhs.account.balance() > rhs.account.balance();
     }
 ```
-So the biggest accounts will appear first.
+So the biggest accounts will appear first!
 
 Note also that we can insert the same value multiple times. Here, zaphod
 sneakily has two bank accounts:
-```
+```C++
     using Account = BankAccount<int>;
     using Customer = BankCustomer<int>;
     using TheBank = std::multiset<Customer>;
 
     TheBank customers;
-    customers.insert(Customer("Zaphod",  Account(100000)));
-    customers.insert(Customer("Zaphod",  Account(999999)));
+    customers.insert(Customer("Zaphod", Account(100000)));
+    customers.insert(Customer("Zaphod", Account(999999)));
+```
+And we can then print all accounts easily:
+
+    auto show_all_bank_accounts = ([](const TheBank &customers)
+        {
+            for (const auto& b : customers) {
+                std::cout << b << std::endl;
+            }
+        } );
+
+    show_all_bank_accounts(customers);
 ```
 Here is the full example:
 ```C++
@@ -217,6 +228,7 @@ static void account_demo (void)
                 std::cout << b << std::endl;
             }
         } );
+
     show_all_bank_accounts(customers);
 }
 
@@ -263,68 +275,68 @@ vogon
 zaphod
 
 # Create a std::multiset of BankCustomer -> Account
-new cash BankAccount(0x7ffee7afa118, cash $100)
-copy cash constructor called for BankAccount(0x7ffee7afa118, cash $100)
-copy cash constructor result is  BankAccount(0x7ffee7afa158, cash $100)
-copy cash constructor called for BankAccount(0x7ffee7afa158, cash $100)
-copy cash constructor result is  BankAccount(0x7fe63ac029f8, cash $100)
-delete account BankAccount(0x7ffee7afa158, cash $100)
-delete account BankAccount(0x7ffee7afa118, cash $100)
-new cash BankAccount(0x7ffee7afa0d0, cash $100000)
-copy cash constructor called for BankAccount(0x7ffee7afa0d0, cash $100000)
-copy cash constructor result is  BankAccount(0x7ffee7afa108, cash $100000)
-copy cash constructor called for BankAccount(0x7ffee7afa108, cash $100000)
-copy cash constructor result is  BankAccount(0x7fe63ac02a38, cash $100000)
-delete account BankAccount(0x7ffee7afa108, cash $100000)
-delete account BankAccount(0x7ffee7afa0d0, cash $100000)
-new cash BankAccount(0x7ffee7afa088, cash $999999)
-copy cash constructor called for BankAccount(0x7ffee7afa088, cash $999999)
-copy cash constructor result is  BankAccount(0x7ffee7afa0c0, cash $999999)
-copy cash constructor called for BankAccount(0x7ffee7afa0c0, cash $999999)
-copy cash constructor result is  BankAccount(0x7fe63ac02a78, cash $999999)
-delete account BankAccount(0x7ffee7afa0c0, cash $999999)
-delete account BankAccount(0x7ffee7afa088, cash $999999)
-new cash BankAccount(0x7ffee7afa040, cash $0)
-copy cash constructor called for BankAccount(0x7ffee7afa040, cash $0)
-copy cash constructor result is  BankAccount(0x7ffee7afa078, cash $0)
-copy cash constructor called for BankAccount(0x7ffee7afa078, cash $0)
-copy cash constructor result is  BankAccount(0x7fe63ac02ab8, cash $0)
-delete account BankAccount(0x7ffee7afa078, cash $0)
-delete account BankAccount(0x7ffee7afa040, cash $0)
-new cash BankAccount(0x7ffee7af9ff8, cash $666)
-copy cash constructor called for BankAccount(0x7ffee7af9ff8, cash $666)
-copy cash constructor result is  BankAccount(0x7ffee7afa030, cash $666)
-copy cash constructor called for BankAccount(0x7ffee7afa030, cash $666)
-copy cash constructor result is  BankAccount(0x7fe63ac02af8, cash $666)
-delete account BankAccount(0x7ffee7afa030, cash $666)
-delete account BankAccount(0x7ffee7af9ff8, cash $666)
-new cash BankAccount(0x7ffee7af9fb0, cash $10)
-copy cash constructor called for BankAccount(0x7ffee7af9fb0, cash $10)
-copy cash constructor result is  BankAccount(0x7ffee7af9fe8, cash $10)
-copy cash constructor called for BankAccount(0x7ffee7af9fe8, cash $10)
-copy cash constructor result is  BankAccount(0x7fe63ac02b48, cash $10)
-delete account BankAccount(0x7ffee7af9fe8, cash $10)
-delete account BankAccount(0x7ffee7af9fb0, cash $10)
+new cash BankAccount(0x7ffee553a118, cash $100)
+copy cash constructor called for BankAccount(0x7ffee553a118, cash $100)
+copy cash constructor result is  BankAccount(0x7ffee553a158, cash $100)
+copy cash constructor called for BankAccount(0x7ffee553a158, cash $100)
+copy cash constructor result is  BankAccount(0x7fbdcfd028b8, cash $100)
+delete account BankAccount(0x7ffee553a158, cash $100)
+delete account BankAccount(0x7ffee553a118, cash $100)
+new cash BankAccount(0x7ffee553a0d0, cash $100000)
+copy cash constructor called for BankAccount(0x7ffee553a0d0, cash $100000)
+copy cash constructor result is  BankAccount(0x7ffee553a108, cash $100000)
+copy cash constructor called for BankAccount(0x7ffee553a108, cash $100000)
+copy cash constructor result is  BankAccount(0x7fbdcfd028f8, cash $100000)
+delete account BankAccount(0x7ffee553a108, cash $100000)
+delete account BankAccount(0x7ffee553a0d0, cash $100000)
+new cash BankAccount(0x7ffee553a088, cash $999999)
+copy cash constructor called for BankAccount(0x7ffee553a088, cash $999999)
+copy cash constructor result is  BankAccount(0x7ffee553a0c0, cash $999999)
+copy cash constructor called for BankAccount(0x7ffee553a0c0, cash $999999)
+copy cash constructor result is  BankAccount(0x7fbdcfd02938, cash $999999)
+delete account BankAccount(0x7ffee553a0c0, cash $999999)
+delete account BankAccount(0x7ffee553a088, cash $999999)
+new cash BankAccount(0x7ffee553a040, cash $0)
+copy cash constructor called for BankAccount(0x7ffee553a040, cash $0)
+copy cash constructor result is  BankAccount(0x7ffee553a078, cash $0)
+copy cash constructor called for BankAccount(0x7ffee553a078, cash $0)
+copy cash constructor result is  BankAccount(0x7fbdcfd02978, cash $0)
+delete account BankAccount(0x7ffee553a078, cash $0)
+delete account BankAccount(0x7ffee553a040, cash $0)
+new cash BankAccount(0x7ffee5539ff8, cash $666)
+copy cash constructor called for BankAccount(0x7ffee5539ff8, cash $666)
+copy cash constructor result is  BankAccount(0x7ffee553a030, cash $666)
+copy cash constructor called for BankAccount(0x7ffee553a030, cash $666)
+copy cash constructor result is  BankAccount(0x7fbdcfd029b8, cash $666)
+delete account BankAccount(0x7ffee553a030, cash $666)
+delete account BankAccount(0x7ffee5539ff8, cash $666)
+new cash BankAccount(0x7ffee5539fb0, cash $10)
+copy cash constructor called for BankAccount(0x7ffee5539fb0, cash $10)
+copy cash constructor result is  BankAccount(0x7ffee5539fe8, cash $10)
+copy cash constructor called for BankAccount(0x7ffee5539fe8, cash $10)
+copy cash constructor result is  BankAccount(0x7fbdcfd02a08, cash $10)
+delete account BankAccount(0x7ffee5539fe8, cash $10)
+delete account BankAccount(0x7ffee5539fb0, cash $10)
 
 # All customers, sorted by wealth
-Customer(Zaphod, BankAccount(0x7fe63ac02a78, cash $999999))
-Customer(Zaphod, BankAccount(0x7fe63ac02a38, cash $100000))
-Customer(TheMice, BankAccount(0x7fe63ac02af8, cash $666))
-Customer(Arthur, BankAccount(0x7fe63ac029f8, cash $100))
-Customer(Ford, BankAccount(0x7fe63ac02b48, cash $10))
-Customer(Marvin, BankAccount(0x7fe63ac02ab8, cash $0))
+Customer(Zaphod, BankAccount(0x7fbdcfd02938, cash $999999))
+Customer(Zaphod, BankAccount(0x7fbdcfd028f8, cash $100000))
+Customer(TheMice, BankAccount(0x7fbdcfd029b8, cash $666))
+Customer(Arthur, BankAccount(0x7fbdcfd028b8, cash $100))
+Customer(Ford, BankAccount(0x7fbdcfd02a08, cash $10))
+Customer(Marvin, BankAccount(0x7fbdcfd02978, cash $0))
 
 # All customers, sorted by wealth (lambda version)
-Customer(Zaphod, BankAccount(0x7fe63ac02a78, cash $999999))
-Customer(Zaphod, BankAccount(0x7fe63ac02a38, cash $100000))
-Customer(TheMice, BankAccount(0x7fe63ac02af8, cash $666))
-Customer(Arthur, BankAccount(0x7fe63ac029f8, cash $100))
-Customer(Ford, BankAccount(0x7fe63ac02b48, cash $10))
-Customer(Marvin, BankAccount(0x7fe63ac02ab8, cash $0))
-delete account BankAccount(0x7fe63ac02a78, cash $999999)
-delete account BankAccount(0x7fe63ac02af8, cash $666)
-delete account BankAccount(0x7fe63ac02b48, cash $10)
-delete account BankAccount(0x7fe63ac02ab8, cash $0)
-delete account BankAccount(0x7fe63ac029f8, cash $100)
-delete account BankAccount(0x7fe63ac02a38, cash $100000)
+Customer(Zaphod, BankAccount(0x7fbdcfd02938, cash $999999))
+Customer(Zaphod, BankAccount(0x7fbdcfd028f8, cash $100000))
+Customer(TheMice, BankAccount(0x7fbdcfd029b8, cash $666))
+Customer(Arthur, BankAccount(0x7fbdcfd028b8, cash $100))
+Customer(Ford, BankAccount(0x7fbdcfd02a08, cash $10))
+Customer(Marvin, BankAccount(0x7fbdcfd02978, cash $0))
+delete account BankAccount(0x7fbdcfd02938, cash $999999)
+delete account BankAccount(0x7fbdcfd029b8, cash $666)
+delete account BankAccount(0x7fbdcfd02a08, cash $10)
+delete account BankAccount(0x7fbdcfd02978, cash $0)
+delete account BankAccount(0x7fbdcfd028b8, cash $100)
+delete account BankAccount(0x7fbdcfd028f8, cash $100000)
 </pre>

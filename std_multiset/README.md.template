@@ -11,7 +11,7 @@ Multisets will have more of a performance impact than std::set as they
 do need to cater for duplicate values. Hence if you do not need this,
 consider std::set.
 
-Multisets will require a means of sorting with winning value being
+Multisets will require a means of sorting with winning comparisons being
 ordered closer to the 'start' of the set e.g.:
 ```C++
     std::multiset< std::string, std::greater<std::string> > m;
@@ -40,18 +40,29 @@ accounts by balance:
         return lhs.account.balance() > rhs.account.balance();
     }
 ```
-So the biggest accounts will appear first.
+So the biggest accounts will appear first!
 
 Note also that we can insert the same value multiple times. Here, zaphod
 sneakily has two bank accounts:
-```
+```C++
     using Account = BankAccount<int>;
     using Customer = BankCustomer<int>;
     using TheBank = std::multiset<Customer>;
 
     TheBank customers;
-    customers.insert(Customer("Zaphod",  Account(100000)));
-    customers.insert(Customer("Zaphod",  Account(999999)));
+    customers.insert(Customer("Zaphod", Account(100000)));
+    customers.insert(Customer("Zaphod", Account(999999)));
+```
+And we can then print all accounts easily:
+
+    auto show_all_bank_accounts = ([](const TheBank &customers)
+        {
+            for (const auto& b : customers) {
+                std::cout << b << std::endl;
+            }
+        } );
+
+    show_all_bank_accounts(customers);
 ```
 Here is the full example:
 ```C++

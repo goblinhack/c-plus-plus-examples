@@ -162,6 +162,7 @@ static void account_demo (void)
                 std::cout << b << std::endl;
             }
         } );
+
     show_all_bank_accounts(customers);
 }
 
