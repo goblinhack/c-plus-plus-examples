@@ -1,0 +1,114 @@
+NOTE-BEGIN
+How to use std::set
+===================
+
+Sets are containers for unique sorted values. Contrary to std::multiset,
+if you insert an identical value, that will result in failure.
+
+The actual implemenation of a std::set is likely to be an underlying tree
+possibly a red-black tree. Compare this to std::unordered_set that is likely
+to be a hashtable. Hence there may be performance advantages to one over the
+other depending on how well your data hashes.
+
+Hash tables are generally O(1) and trees O(log N), but there are some big
+caveats with hashes. If your hash table say had 10 elements and you added
+10, 100, 1000, 10000 and they happen all to hash to the same slot, then
+std::unordered_set is going to have linked list performance O(N). This is
+obviously a worse case scenario, but things like that happen.
+
+Compared to std::multiset, std::set likely has a performance gain as
+std::multiset has to potentially allocate sub trees for identical elements.
+
+Here is a simple example of insertion: Notice below the 2nd insert of 
+"Zaphod" is ignored as this value exists already:
+```C++
+    std::set< std::string, std::greater<std::string> > m;
+
+    m.insert("zaphod");
+    m.insert("zaphod"); // oops
+    m.insert("universe");
+    m.insert("arthur");
+    m.insert("marvin");
+    m.insert("mice");
+    m.insert("vogon");
+```
+which yields:
+```C++
+    zaphod
+    vogon
+    universe
+    mice
+    marvin
+    arthur
+```
+In our example below we will provide the comparison operator so we can sort
+accounts by balance. We will try and create two accounts of the same name
+and that should fail.
+```C++
+    friend bool operator<(const class BankCustomer<T> & lhs,
+                          const class BankCustomer<T> & rhs) {
+        return lhs.account.balance() > rhs.account.balance();
+    }
+```
+So the biggest accounts will appear first!
+
+Note also that we can insert the same value multiple times. Here, zaphod
+sneakily has two bank accounts:
+```C++
+    using Account = BankAccount<int>;
+    using Customer = BankCustomer<int>;
+    using TheBank = std::set<Customer>;
+
+    TheBank customers;
+    customers.insert(Customer("Zaphod", Account(100000)));
+    customers.insert(Customer("Zaphod", Account(999999)));
+```
+And we can then print all accounts easily:
+```C++
+    auto show_all_bank_accounts = ([](const TheBank &customers)
+        {
+            for (const auto& b : customers) {
+                std::cout << b << std::endl;
+            }
+        } );
+
+    show_all_bank_accounts(customers);
+```
+For finding elements, you can use surprisingly, find():
+```C++
+    auto f = customers.find(Customer("Zaphod"));
+    if (f != customers.end()) {
+        // found
+    }
+```
+There is also std::equal_range which is really there for std::multiset
+but all the set and map containers seem to support it, so here goes:
+```C++
+    using Iter = std::set<Customer>::iterator;
+    std::pair<Iter,Iter> ret = customers.equal_range(Customer("Zaphod"));
+    for (auto iter = ret.first; iter != ret.second; iter++) {
+        std::cout << "Zaphod has been found! " << *iter << std::endl;
+    }
+```
+Removing a customer is easy via erase:
+```C++
+    customers.erase(account2);
+```
+And finally to remove everything and get rid of all your customers!:
+```C++
+    customers.clear();
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
