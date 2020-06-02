@@ -52,18 +52,24 @@ and that should fail.
 ```
 So the biggest accounts will appear first!
 
-Note also that we can insert the same value multiple times. Here, zaphod
-sneakily has two bank accounts:
+If we try to insert an element more than once it will fail, but how do
+we detect this? Well insert returns a pair:
+```C++
+    pair<iterator,bool> insert ( const value_type& x );
+```
+So we can just check for false in pair.second e.g.:
 ```C++
     using Account = BankAccount<int>;
     using Customer = BankCustomer<int>;
     using TheBank = std::set<Customer>;
 
     TheBank customers;
-    customers.insert(Customer("Zaphod", Account(100000)));
-    customers.insert(Customer("Zaphod", Account(999999)));
+    customers.insert(Customer("Zaphod",  Account(100000)));
+    if (!customers.insert(Customer("Zaphod", Account(999999))).second) {
+        // Someone (Zaphod, let's face it) tried to add a 2nd account!
+    }
 ```
-And we can then print all accounts easily:
+We can then print all accounts via:
 ```C++
     auto show_all_bank_accounts = ([](const TheBank &customers)
         {

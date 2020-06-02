@@ -151,7 +151,9 @@ static void account_demo (void)
     TheBank customers;
     customers.insert(Customer("Arthur",  Account(100)));
     customers.insert(Customer("Zaphod",  Account(100000)));
-    customers.insert(Customer("Zaphod",  Account(999999)));
+    if (!customers.insert(Customer("Zaphod", Account(999999))).second) {
+        DOC("Someone (Zaphod, let's face it) tried to add a 2nd account!");
+    }
     customers.insert(Customer("Marvin",  Account(0)));
     customers.insert(Customer("TheMice", Account(666)));
     customers.insert(Customer("Ford",    Account(10)));
