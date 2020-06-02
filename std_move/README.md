@@ -162,35 +162,35 @@ Expected output:
 <pre>
 
 # Create a custom vector class:
-new MyVector(0x7f85c4c02990, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7f85c4c02990, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7f85c4c02990, currlen=2, maxlen=2 elems=[10,11])
+new MyVector(0x7fb55dc02990, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7fb55dc02990, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7fb55dc02990, currlen=2, maxlen=2 elems=[10,11])
 vec1: [10][11]
 
 # Create a new copy of vec1, vec2 via copy constructor (&):
-copy constructor called for MyVector(0x7f85c4c02990, currlen=2, maxlen=2 elems=[10,11])
-copy constructor result is  MyVector(0x7ffee7217668, currlen=2, maxlen=2 elems=[10,11])
+copy constructor called for MyVector(0x7fb55dc02990, currlen=2, maxlen=2 elems=[10,11])
+copy constructor result is  MyVector(0x7ffee8ecd668, currlen=2, maxlen=2 elems=[10,11])
 vec2: [10][11]
 
 # Check we can append onto the copied vector:
-push_back called MyVector(0x7ffee7217668, currlen=3, maxlen=4 elems=[10,11,12])
-push_back called MyVector(0x7ffee7217668, currlen=4, maxlen=4 elems=[10,11,12,13])
+push_back called MyVector(0x7ffee8ecd668, currlen=3, maxlen=4 elems=[10,11,12])
+push_back called MyVector(0x7ffee8ecd668, currlen=4, maxlen=4 elems=[10,11,12,13])
 vec2: [10][11][12][13]
 
 # Create a new vector from vec1, vec3 via the move constructor (&&):
-std::move called for MyVector(0x7f85c4c02990, currlen=2, maxlen=2 elems=[10,11])
-std::move result is  MyVector(0x7ffee7217648, currlen=2, maxlen=2 elems=[10,11])
+std::move called for MyVector(0x7fb55dc02990, currlen=2, maxlen=2 elems=[10,11])
+std::move result is  MyVector(0x7ffee8ecd648, currlen=2, maxlen=2 elems=[10,11])
 vec3: [10][11]
 
 # Check we can append onto the std:move'd vector:
-push_back called MyVector(0x7ffee7217648, currlen=3, maxlen=4 elems=[10,11,14])
-push_back called MyVector(0x7ffee7217648, currlen=4, maxlen=4 elems=[10,11,14,15])
+push_back called MyVector(0x7ffee8ecd648, currlen=3, maxlen=4 elems=[10,11,14])
+push_back called MyVector(0x7ffee8ecd648, currlen=4, maxlen=4 elems=[10,11,14,15])
 vec3: [10][11][14][15]
 
 # Destroy the old vector, vec1. It has no invalid elems:
-delete MyVector(0x7f85c4c02990, currlen=0, maxlen=0 elems=[])
+delete MyVector(0x7fb55dc02990, currlen=0, maxlen=0 elems=[])
 
 # End, expect vec2 and vec3 destroy:
-delete MyVector(0x7ffee7217648, currlen=4, maxlen=4 elems=[10,11,14,15])
-delete MyVector(0x7ffee7217668, currlen=4, maxlen=4 elems=[10,11,12,13])
+delete MyVector(0x7ffee8ecd648, currlen=4, maxlen=4 elems=[10,11,14,15])
+delete MyVector(0x7ffee8ecd668, currlen=4, maxlen=4 elems=[10,11,12,13])
 </pre>

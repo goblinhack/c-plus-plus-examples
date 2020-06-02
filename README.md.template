@@ -39,7 +39,7 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::set](std_set/README.md)
 
-[How to use std::set](std_unordered_set/README.md)
+[How to use std::unordered_set](std_unordered_set/README.md)
 
 [How to use std::sort with a custom container and iterators](std_sort_with_custom_iterators/README.md)
 
