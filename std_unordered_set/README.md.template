@@ -1,0 +1,126 @@
+NOTE-BEGIN
+How to use std::unordered_set
+=============================
+
+std::unordered_set is likely implemented as a hash table. So all the normal
+concerns for hash tables apply.
+
+Hash tables are generally O(1) and trees O(log N), but there are some big
+caveats with hashes. If your hash table say had 10 elements and you added
+10, 100, 1000, 10000 and they happen all to hash to the same slot, then
+std::unordered_set is going to have linked list performance O(N). This is
+obviously a worse case scenario, but things like that happen.
+
+As std::unordered_set is a hash table on the backend, we need to provide
+a hash function when inserting elements. That function will be invoked as
+std::hash<type>, so we need to define it within the std namespace e.g.:
+```C++
+namespace std {
+    template <class T> struct hash<BankCustomer<T> > {
+        size_t operator()(const BankCustomer<T> & x) const noexcept {
+            return std::hash<std::string>()(x.get_name());
+        }
+    };
+};
+```
+Additionally we will need to provide comparitors for our class so that
+the hasher can detect collisions. e.g.:
+```C++
+    friend bool operator==(const class BankCustomer<T> & lhs,
+                           const class BankCustomer<T> & rhs) {
+        return lhs.name == rhs.name;
+    }
+    friend bool operator!=(const class BankCustomer<T> & lhs,
+                           const class BankCustomer<T> & rhs) {
+        return lhs.name != rhs.name;
+    }
+```
+If you are not creating a custom class, then things are simpler. Here is
+such an example. Notice below the 2nd insert of "Zaphod" is ignored as this
+value exists already:
+```C++
+    std::unordered_set< std::string > m;
+
+    m.insert("zaphod");
+    m.insert("zaphod"); // oops
+    m.insert("universe");
+    m.insert("arthur");
+    m.insert("marvin");
+    m.insert("mice");
+    m.insert("vogon");
+```
+which yields:
+```C++
+    zaphod
+    vogon
+    universe
+    mice
+    marvin
+    arthur
+```
+If we try to insert an element more than once it will fail, but how do
+we detect this? Well insert returns a pair:
+```C++
+    pair<iterator,bool> insert ( const value_type& x );
+```
+So we can just check for false in pair.second e.g.:
+```C++
+    using Account = BankAccount<int>;
+    using Customer = BankCustomer<int>;
+    using TheBank = std::unordered_set<Customer>;
+
+    TheBank customers;
+    customers.insert(Customer("Zaphod",  Account(100000)));
+    if (!customers.insert(Customer("Zaphod", Account(999999))).second) {
+        // Someone (Zaphod, let's face it) tried to add a 2nd account!
+    }
+```
+We can then print all accounts via:
+```C++
+    auto show_all_bank_accounts = ([](const TheBank &customers)
+        {
+            for (const auto& b : customers) {
+                std::cout << b << std::endl;
+            }
+        } );
+
+    show_all_bank_accounts(customers);
+```
+For finding elements, you can use surprisingly, find():
+```C++
+    auto f = customers.find(Customer("Zaphod"));
+    if (f != customers.end()) {
+        // found
+    }
+```
+There is also std::equal_range which is really there for std::multiset
+but all the set and map containers seem to support it, so here goes:
+```C++
+    using Iter = std::unordered_set<Customer>::iterator;
+    std::pair<Iter,Iter> ret = customers.equal_range(Customer("Zaphod"));
+    for (auto iter = ret.first; iter != ret.second; iter++) {
+        std::cout << "Zaphod has been found! " << *iter << std::endl;
+    }
+```
+Removing a customer is easy via erase:
+```C++
+    customers.erase(account2);
+```
+And finally to remove everything and get rid of all your customers!:
+```C++
+    customers.clear();
+```
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
