@@ -69,7 +69,7 @@ So we can just check for false in pair.second e.g.:
         // Someone (Zaphod, let's face it) tried to add a 2nd account!
     }
 ```
-We can then print all accounts via:
+Iteration over a std::set is simple:
 ```C++
     auto show_all_bank_accounts = ([](const TheBank &customers)
         {

@@ -2,8 +2,9 @@ NOTE-BEGIN
 How to use std::unordered_set
 =============================
 
-std::unordered_set is likely implemented as a hash table. So all the normal
-concerns for hash tables apply.
+std::unordered_set allows insertion of unique elements but provides no
+sorting mechanism. It is likely implemented as a hash table on the back
+end. So all the normal concerns for hash tables apply.
 
 Hash tables are generally O(1) and trees O(log N), but there are some big
 caveats with hashes. If your hash table say had 10 elements and you added
@@ -11,9 +12,9 @@ caveats with hashes. If your hash table say had 10 elements and you added
 std::unordered_set is going to have linked list performance O(N). This is
 obviously a worse case scenario, but things like that happen.
 
-As std::unordered_set is a hash table on the backend, we need to provide
-a hash function when inserting elements. That function will be invoked as
-std::hash<type>, so we need to define it within the std namespace e.g.:
+For std::unordered_set we need to provide a hash function when inserting
+elements. That function will be invoked as std::hash<type>, so we need
+to define it within the std namespace e.g.:
 ```C++
 namespace std {
     template <class T> struct hash<BankCustomer<T> > {
@@ -58,8 +59,7 @@ which yields:
     marvin
     arthur
 ```
-If we try to insert an element more than once it will fail, but how do
-we detect this? Well insert returns a pair:
+How do we detect insert fails? Well insert returns a pair:
 ```C++
     pair<iterator,bool> insert ( const value_type& x );
 ```
@@ -75,7 +75,7 @@ So we can just check for false in pair.second e.g.:
         // Someone (Zaphod, let's face it) tried to add a 2nd account!
     }
 ```
-We can then print all accounts via:
+Iteration over a std::unordered_map is simple:
 ```C++
     auto show_all_bank_accounts = ([](const TheBank &customers)
         {
