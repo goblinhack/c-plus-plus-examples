@@ -10,6 +10,7 @@ SUBDIRS="\
          initializer_lists \
          initializer_lists_with_custom_vector \
          constexpr \
+         decltype \
          range_based_for_loop \
          range_based_for_loop_custom_begin_end \
          std_map_with_custom_key \

@@ -78,21 +78,21 @@ Expected output:
 <pre>
 
 # NOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:
-new Foo(0x7ffee6e72048, data=foo1)
-copy constructor Foo(0x7f8472500030, data=)
-delete Foo(0x7ffee6e72048, data=foo1)
+new Foo(0x7ffee2f5d048, data=foo1)
+copy constructor Foo(0x7febe24029c0, data=)
+delete Foo(0x7ffee2f5d048, data=foo1)
 
 # NOTE: to avoid the copy, do this:
-new Foo(0x7f8472500050, data=foo2)
+new Foo(0x7febe24029e0, data=foo2)
 
 # As you cannot copy unique pointers, reassign it with move
 
 # Let's print all the unique ptrs now
-uptr1 = Foo(0x7f8472500030, data=foo1)
+uptr1 = Foo(0x7febe24029c0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x7f8472500050, data=foo2)
+uptr3 = Foo(0x7febe24029e0, data=foo2)
 
 # Expect the unique ptr data to be destroyed now
-delete Foo(0x7f8472500050, data=foo2)
-delete Foo(0x7f8472500030, data=foo1)
+delete Foo(0x7febe24029e0, data=foo2)
+delete Foo(0x7febe24029c0, data=foo1)
 </pre>

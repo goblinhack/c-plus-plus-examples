@@ -25,6 +25,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use constexpr for fame and profit](constexpr/README.md)
 
+[How to use decltype](decltype/README.md)
+
 [How to use range-based for loops](range_based_for_loop/README.md)
 
 [How to use range-based for loops with your own iterator](range_based_for_loop_custom_begin_end/README.md)

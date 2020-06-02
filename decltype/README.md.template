@@ -1,0 +1,43 @@
+NOTE-BEGIN
+How to use decltype
+===================
+
+"auto" can be used to derive the type of many things, but it has limitations.
+For example, what is the type of this?:
+```C++
+template <typename T, typename V>
+auto add_two_template (const T a, const V b) {
+    return a + b;
+}
+```
+Is it T or V? It could be either, or some derived type. This is where decltype
+comes to the rescue"
+```C++
+template <typename T, typename V>
+auto add_two_template (const T a, const V b) -> decltype(a + b) {
+    return a + b;
+}
+```
+You can apply this to lambdas too:
+```C++
+    auto lambda_add_two = ( [](const int a, const int b) { return a + b; } );
+    std::cout << typeid(decltype(lambda_add_two)).name() << std::endl;
+```
+We are using typeid(...).name() here to print the information, however, this
+is compiler specific and so the output will be mangled by the compiler.
+
+In the following example we have a demangler (which you can ignore) but it
+prints slightly more verbose output using g++ abi interface:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
