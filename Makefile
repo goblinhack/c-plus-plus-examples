@@ -21,6 +21,7 @@ SUBDIRS=\
 	std_move \
 	std_forward \
 	std_unique_ptr \
+	std_unique_ptr_with_custom_deallocator \
 	std_shared_ptr \
 	std_shared_ptr_wrapper
 

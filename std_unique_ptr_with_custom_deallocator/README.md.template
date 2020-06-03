@@ -1,0 +1,41 @@
+NOTE-BEGIN
+How to use std::unique_ptr with a custom deleter
+================================================
+
+Often when dealing with legacy C code, memory is allocated for you which
+you would like to be able to manage to avoid leaks. One way of doing this
+is with a custom deleter.
+```C++
+    static void mydeleter (char* mem) noexcept {
+        auto addr = static_cast<const void*>(mem);
+        free((void*)mem);
+    }
+    std::unique_ptr<char, decltype(deleter) > retval(mem, deleter);
+```
+Or if you want, via a lambda:
+```C++
+    auto lambda_deleter = ( [](char *mem) {
+        if (mem) {
+            free((void*)mem);
+        }
+    } );
+
+    std::unique_ptr<char, decltype(lambda_deleter) > retval(mem, lambda_deleter);
+```
+Note that make_unique cannot be used with this approach as the whole point
+of make_unique is to automatically invoke a deleter for the managed object.
+In our case, C is managing the object so we cannot use it and must provide
+a deleter.
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

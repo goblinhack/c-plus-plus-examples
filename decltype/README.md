@@ -4,18 +4,18 @@ How to use decltype
 "auto" can be used to derive the type of many things, but it has limitations.
 For example, what is the type of this?:
 ```C++
-template <typename T, typename V>
-auto add_two_template (const T a, const V b) {
-    return a + b;
-}
+    template <typename T, typename V>
+    auto add_two_template (const T a, const V b) {
+        return a + b;
+    }
 ```
 Is it T or V? It could be either, or some derived type. This is where decltype
 comes to the rescue"
 ```C++
-template <typename T, typename V>
-auto add_two_template (const T a, const V b) -> decltype(a + b) {
-    return a + b;
-}
+    template <typename T, typename V>
+    auto add_two_template (const T a, const V b) -> decltype(a + b) {
+        return a + b;
+    }
 ```
 You can apply this to lambdas too:
 ```C++

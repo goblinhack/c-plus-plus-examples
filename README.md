@@ -59,6 +59,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::unique_ptr](std_unique_ptr/README.md)
 
+[How to use std::unique_ptr with a custom deallocator](std_unique_ptr_with_custom_deallocator/README.md)
+
 [How to use std::shared_ptr](std_shared_ptr/README.md)
 
 [How to make a wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
