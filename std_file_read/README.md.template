@@ -2,12 +2,12 @@ NOTE-BEGIN
 How to read a file in C++ in 967 different ways
 ===============================================
 
-Ok, a bit of an exageration but there are a number of different ways to
+Ok, a bit of an exaggeration but there are a number of different ways to
 read the data from files, depending on perforance needs and the form of
-data.
+the data (binary, text etc...)
 
 Opening a file is easy enough, but you should also consider if this is
-a binary file (ios::std::binary).
+a binary file (ios::std::binary):
 ```C++
     std::ifstream infile (filename, std::ios::in);
     std::ifstream infile (filename, std::ios::in | std::ios::binary);
@@ -16,22 +16,22 @@ To check the open succeeded:
 ```C++
     if (outfile.is_open()) {
 ```
-And to read from the data, it is preferred to check with the good()
-method as this encompasses eof and read/write errors. So do not do 
+And to read from the file, it is preferred to check with the good()
+method as this encompasses eof and read/write errors. So do not do
 this:
 ```C++
     while (!outfile.eof()) {
         // read data
     }
 ```
-Instead do:
+But instead do:
 ```C++
     while (outfile.good()) {
         // read data
     }
 ```
 Now as for the actual data, you can choose to read by chars, strings or lines. 
-By line will obviously be faster.
+By line will likely be faster.
 
 Here is arguably the simplest way to read. Note that operator<< for std::ifstream
 eats all delimiting spaces.
