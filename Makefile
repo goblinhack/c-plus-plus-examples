@@ -7,7 +7,7 @@ SUBDIRS=\
 	decltype \
 	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
-	std_file_io \
+	std_file_read \
 	std_map_with_custom_key \
 	std_map_reverse_sort \
 	std_unordered_map \

@@ -234,7 +234,7 @@ int main(void)
 ```
 To build:
 <pre>
-cd std_file_io
+cd std_file_read
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
