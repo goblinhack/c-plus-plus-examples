@@ -31,6 +31,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use range-based for loops with your own iterator](range_based_for_loop_custom_begin_end/README.md)
 
+[How to use read a file in far too many ways](std_file_io/README.md)
+
 [How to use std::map with a custom key](std_map_with_custom_key/README.md)
 
 [How to use std::map for reverse sorting](std_map_reverse_sort/README.md)
@@ -60,6 +62,8 @@ This is a (probably perpetual) work in progress!
 [How to use std::unique_ptr](std_unique_ptr/README.md)
 
 [How to use std::unique_ptr with a custom deallocator](std_unique_ptr_with_custom_deallocator/README.md)
+
+[How to use std::unique_ptr for file handling](std_unique_ptr_for_file_handling/README.md)
 
 [How to use std::shared_ptr](std_shared_ptr/README.md)
 

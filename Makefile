@@ -7,6 +7,7 @@ SUBDIRS=\
 	decltype \
 	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
+	std_file_io \
 	std_map_with_custom_key \
 	std_map_reverse_sort \
 	std_unordered_map \
@@ -22,6 +23,7 @@ SUBDIRS=\
 	std_forward \
 	std_unique_ptr \
 	std_unique_ptr_with_custom_deallocator \
+	std_unique_ptr_for_file_handling \
 	std_shared_ptr \
 	std_shared_ptr_wrapper
 

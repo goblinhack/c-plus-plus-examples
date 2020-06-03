@@ -1,0 +1,40 @@
+NOTE-BEGIN
+How to use std::unique_ptr for C API file handling
+==================================================
+
+This is a bit of an anti-example, as the best way to handle files in C++
+is to use std::ofstream and std::ifstream. However, supposing you do not
+want to do that and want to manage files yourself. For this we can use a
+unique_ptr to wrap the file handle. First, open the file via the C API:
+```C++
+    auto cfp = std::fopen(filename.c_str(), "r");
+```
+Now create a pointer to wrap it:
+```C++
+    std::unique_ptr<std::FILE, decltype(&close_file)> filep(cfp, &close_file);
+```
+And provide a deleter:
+```C++
+    static void close_file (std::FILE* fp) {
+        if (fp) {
+            std::fclose(fp);
+        }
+    }
+```
+Now magically, when "filep" goes out of scope the deleter is called and the
+file is closed!
+
+Here is the full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

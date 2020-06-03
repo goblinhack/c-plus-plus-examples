@@ -1,0 +1,88 @@
+NOTE-BEGIN
+How to read a file in C++ in 967 different ways
+===============================================
+
+Ok, a bit of an exageration but there are a number of different ways to
+read the data from files, depending on perforance needs and the form of
+data.
+
+Opening a file is easy enough, but you should also consider if this is
+a binary file (ios::std::binary).
+```C++
+    std::ifstream infile (filename, std::ios::in);
+    std::ifstream infile (filename, std::ios::in | std::ios::binary);
+```
+To check the open succeeded:
+```C++
+    if (outfile.is_open()) {
+```
+And to read from the data, it is preferred to check with the good()
+method as this encompasses eof and read/write errors. So do not do 
+this:
+```C++
+    while (!outfile.eof()) {
+        // read data
+    }
+```
+Instead do:
+```C++
+    while (outfile.good()) {
+        // read data
+    }
+```
+Now as for the actual data, you can choose to read by chars, strings or lines. 
+By line will obviously be faster.
+
+Here is arguably the simplest way to read. Note that operator<< for std::ifstream
+eats all delimiting spaces.
+```C++
+    std::ifstream infile (filename, std::ios::in);
+    if (infile.is_open()) {
+        while (infile.good()) {
+            infile >> s;
+        }
+    }
+```
+An alternative approach is to populate a vector by providing an iterator.
+However this still eats spaces.
+```C++
+    std::ifstream infile (filename, std::ios::in);
+    if (infile.is_open()) {
+        std::vector<char> data;
+        std::copy(std::istream_iterator<char>(infile),
+                  std::istream_iterator<char>(),
+                  std::back_inserter(data));
+    }
+```
+Here is a similar but better approach using an istreambuf_iterator instead
+of the istream_iterator above. Here spaces are not lost:
+```C++
+    std::ifstream infile (filename, std::ios::in);
+    if (infile.is_open()) {
+        std::vector<char> data1(std::istreambuf_iterator<char>(infile), {});
+    }
+```
+And finally, if you want to read line at a time:
+```C++
+    std::string line;
+    std::ifstream infile (filename, std::ios::in);
+    if (infile.is_open()) {
+        while (infile.good() && std::getline(infile, line)) {
+            std::cout << line << std::endl;
+        }
+    }
+```
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
