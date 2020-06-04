@@ -22,9 +22,31 @@ what kind of things are accessible within the lambda:
 - [&zaphod] means capture the lvalue zaphod by reference so it can be modified
 - [=zaphod] capture by value
 - "()" are the arguements to the lambda
-- "->" is used to specify the return type if that cannot be derived or is not 
-clear to the reader.
+- "->" is used to specify the return type if that cannot be derived or is not clear to the reader.
+- "mutable" to allow modification of pass-by-value; see further below.
 
+Here is an example of pass by reference and modification:
+```C++
+    auto zaphod_head = 1;
+    auto new_head = [&zaphod_head](){zaphod_head++;};
+    new_head();
+    std::cout << "Zaphod has " << zaphod_head << "heads" << std::endl;
+```
+However the following will NOT compile:
+```C++
+    auto marvin_head = 1;
+    auto new_head = [=]() {marvin_head++;};
+    new_head();
+    std::cout << "Marvin has " << marvin_head << " heads" << std::endl;
+```
+The compiler will detect we are trying to modify a pass-by-value and will
+complain. If we want to this, we must add "mutable"
+```C++
+    auto marvin_head = 1;
+    auto new_head = [=]() mutable {marvin_head++;};
+    new_head();
+    std::cout << "Marvin has " << marvin_head << " heads" << std::endl;
+```
 Lambas can also be generic. This is very similar to templating e.g.:
 ```C++
     auto lambda = [](auto x, auto y) {return x + y;};
@@ -98,6 +120,22 @@ int main() {
     std::sort(vec2.begin(), vec2.end(), lambda);
     for (auto &i : vec2) {
         std::cout << "vec2: walk " << std::setprecision(4) << i << std::endl;
+    }
+
+    // Lambda with modification:
+    {
+        auto zaphod_head = 1;
+        auto new_head = [&zaphod_head](){zaphod_head++;};
+        new_head();
+        std::cout << "Zaphod has " << zaphod_head << " heads" << std::endl;
+    }
+
+    // Lambda with modification:
+    {
+        auto marvin_head = 1;
+        auto new_head = [=]() mutable {marvin_head++;};
+        new_head();
+        std::cout << "Marvin has " << marvin_head << " heads" << std::endl;
     }
 
     // Lambda with modification in the capture:
@@ -191,6 +229,12 @@ vec2: walk 1
 vec2: walk 7.3
 vec2: walk 6.2
 vec2: walk 42.1
+
+# Lambda with modification:
+Zaphod has 2 heads
+
+# Lambda with modification:
+Marvin has 1 heads
 
 # Lambda with modification in the capture:
 life        = 38

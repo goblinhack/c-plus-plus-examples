@@ -56,6 +56,22 @@ int main() {
         std::cout << "vec2: walk " << std::setprecision(4) << i << std::endl;
     }
 
+    DOC("Lambda with modification:");
+    {
+        auto zaphod_head = 1;
+        auto new_head = [&zaphod_head](){zaphod_head++;};
+        new_head();
+        std::cout << "Zaphod has " << zaphod_head << " heads" << std::endl;
+    }
+
+    DOC("Lambda with modification:");
+    {
+        auto marvin_head = 1;
+        auto new_head = [=]() mutable {marvin_head++;};
+        new_head();
+        std::cout << "Marvin has " << marvin_head << " heads" << std::endl;
+    }
+
     DOC("Lambda with modification in the capture:");
     auto the_meaning = 36;
     auto deep_thought = [&life = the_meaning, the_meaning = the_meaning + 1] () {
