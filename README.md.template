@@ -73,6 +73,14 @@ This is a (probably perpetual) work in progress!
 
 [How to make a wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
 
+[TODO How to use std::thread](TODO/README.md)
+
+[TODO How to use std::mutex](TODO/README.md)
+
+[TODO How to use std::chrono](TODO/README.md)
+
+[TODO How to use std::accumulate and std::reduce](TODO/README.md)
+
 To build all the examples, just do:
 ```C++
    make 
