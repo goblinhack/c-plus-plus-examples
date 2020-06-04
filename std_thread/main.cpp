@@ -36,8 +36,8 @@ private:
 static void test()
 {
     DOC("Create two threads:");
-    MyThread thread1("A", 100);
-    MyThread thread2("B", 100);
+    MyThread thread1("A", 1000);
+    MyThread thread2("B", 1000);
     DOC("Wait for threads to finish");
 }
 
