@@ -1,0 +1,23 @@
+NOTE-BEGIN
+How to use std::thread
+======================
+
+Do you want a portable standard way to start and stop threads? Of course
+you do! Enter std::thread
+TODO
+```C++
+```
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

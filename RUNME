@@ -33,7 +33,8 @@ SUBDIRS="\
          std_unique_ptr_with_custom_deallocator \
          std_unordered_map \
          std_unordered_set \
-         std_shared_ptr_wrapper"
+         std_shared_ptr_wrapper \
+         std_thread"
 
 cp README.md.template README.md
 

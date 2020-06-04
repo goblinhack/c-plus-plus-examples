@@ -27,7 +27,8 @@ SUBDIRS=\
 	std_unique_ptr_with_custom_deallocator \
 	std_unique_ptr_for_file_handling \
 	std_shared_ptr \
-	std_shared_ptr_wrapper
+	std_shared_ptr_wrapper \
+	std_thread
 
 #
 # To force clean and avoid "up to date" warning.
