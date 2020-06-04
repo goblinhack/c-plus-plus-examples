@@ -8,11 +8,17 @@ class MyThread {
 public:
     ~MyThread () {
         std::cout << to_string() << " destructor" << std::endl;
+        //
+        // Wait for our thread to finish
+        //
         if (my_thread.joinable()) {
             my_thread.join();
         }
     }
     MyThread (const std::string& data, const int count) : data(data), count(count) {
+        //
+        // Start our thread.
+        //
         my_thread = std::thread(&MyThread::run, this);
         std::cout << to_string() << " constructor" << std::endl;
     }
@@ -33,16 +39,14 @@ private:
     int count;
 };
 
-static void test()
-{
+static void test() {
     DOC("Create two threads:");
     MyThread thread1("A", 1000);
     MyThread thread2("B", 1000);
     DOC("Wait for threads to finish");
 }
 
-int main()
-{
+int main() {
     test();
     DOC("End");
     return 0;
