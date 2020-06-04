@@ -17,6 +17,8 @@ This is a (probably perpetual) work in progress!
 
 [How to print hello world in color in C++, because why not](hello_world_color/README.md)
 
+[How to use read a file in far too many ways](std_file_read/README.md)
+
 [How to use scoped enums](scoped_enums/README.md)
 
 [How to use std::initializer_list](initializer_lists/README.md)
@@ -33,7 +35,7 @@ This is a (probably perpetual) work in progress!
 
 [How to use lambdas](lambda/README.md)
 
-[How to use read a file in far too many ways](std_file_read/README.md)
+[How to use std::for_each and how it differs from std::transform](std_for_each_and_transform/README.md)
 
 [How to use std::map with a custom key](std_map_with_custom_key/README.md)
 

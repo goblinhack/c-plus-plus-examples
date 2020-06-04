@@ -122,20 +122,20 @@ Expected output:
 <pre>
 
 # Create a std::initializer_list of MyString:
-0x7ffee2de6728 MyString(std::string &&) elem1
-0x7ffee2de6740 MyString(std::string &&) elem2
+0x7ffee7183728 MyString(std::string &&) elem1
+0x7ffee7183740 MyString(std::string &&) elem2
 
 # Assign this initializer_list to a vector:
-0x7fe257d02870 MyString(const std::string &) elem1
-0x7fe257d02888 MyString(const std::string &) elem2
+0x7f8bbac029b0 MyString(const std::string &) elem1
+0x7f8bbac029c8 MyString(const std::string &) elem2
 
 # Walk the vector with 'const auto i': (this will involve copies)
-0x7ffee2de6068 MyString(const std::string &) elem1
+0x7ffee7183068 MyString(const std::string &) elem1
 elem1
-0x7ffee2de6068 ~MyString() elem1
-0x7ffee2de6068 MyString(const std::string &) elem2
+0x7ffee7183068 ~MyString() elem1
+0x7ffee7183068 MyString(const std::string &) elem2
 elem2
-0x7ffee2de6068 ~MyString() elem2
+0x7ffee7183068 ~MyString() elem2
 
 # Walk the vector with 'const auto &i': (should see no copies)
 elem1
@@ -146,18 +146,18 @@ elem1
 elem2
 
 # Create another vector with an inline initializer list
-0x7ffee2de66f8 MyString(std::string &&) elem3
-0x7ffee2de6710 MyString(std::string &&) elem4
-0x7fe257d028a0 MyString(const std::string &) elem3
-0x7fe257d028b8 MyString(const std::string &) elem4
-0x7ffee2de6710 ~MyString() elem4
-0x7ffee2de66f8 ~MyString() elem3
+0x7ffee71836f8 MyString(std::string &&) elem3
+0x7ffee7183710 MyString(std::string &&) elem4
+0x7f8bbac029e0 MyString(const std::string &) elem3
+0x7f8bbac029f8 MyString(const std::string &) elem4
+0x7ffee7183710 ~MyString() elem4
+0x7ffee71836f8 ~MyString() elem3
 
 # End:
-0x7fe257d028b8 ~MyString() elem4
-0x7fe257d028a0 ~MyString() elem3
-0x7fe257d02888 ~MyString() elem2
-0x7fe257d02870 ~MyString() elem1
-0x7ffee2de6740 ~MyString() elem2
-0x7ffee2de6728 ~MyString() elem1
+0x7f8bbac029f8 ~MyString() elem4
+0x7f8bbac029e0 ~MyString() elem3
+0x7f8bbac029c8 ~MyString() elem2
+0x7f8bbac029b0 ~MyString() elem1
+0x7ffee7183740 ~MyString() elem2
+0x7ffee7183728 ~MyString() elem1
 </pre>

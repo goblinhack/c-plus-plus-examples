@@ -1,5 +1,6 @@
 SUBDIRS=\
 	hello_world_color \
+	std_file_read \
 	scoped_enums \
 	initializer_lists \
 	initializer_lists_with_custom_vector \
@@ -8,7 +9,7 @@ SUBDIRS=\
 	range_based_for_loop \
 	range_based_for_loop_custom_begin_end \
 	lambda \
-	std_file_read \
+	std_for_each_and_transform \
 	std_map_with_custom_key \
 	std_map_reverse_sort \
 	std_unordered_map \
