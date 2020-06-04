@@ -1,0 +1,58 @@
+NOTE-BEGIN
+How to use lambdas
+==================
+
+Lambdas are like inline functions and very useful in a number of places where
+you need a one off function. For example:
+```C++
+    std::initializer_list< int > i = {42, 6, 7, 1, 4, 2, 3};
+    std::vector< int > v(i);
+    std::sort(v.begin(), v.end(), [](const int &a, const int &b) { return a < b; });
+```
+This invokes a lambda at each point in the sort algorighm and is identical to:
+```C++
+    static int my_sorter (const int &a, const int &b) { return a < b; };
+    std::initializer_list< int > i = {42, 6, 7, 1, 4, 2, 3};
+    std::vector< int > v(i);
+    std::sort(v.begin(), v.end(), my_sorter);
+}
+```
+Now the syntax is a bit obscure. "[]" is defined as the capture set and indicates
+what kind of things are accessible within the lambda:
+    - [] means capture everything
+    - [&zaphod] means capture the lvalue zaphod by reference so it can be modified
+    - [=zaphod] capture by value
+
+"()" are the arguements to the lambda and "->" is used to specify the return
+type if that cannot be derived or is not clear.
+
+Lambas can also be generic. This is very similar to templating e.g.:
+```C++
+    auto lambda = [](auto x, auto y) {return x + y;};
+```
+You can also do odd things like the following. "life" here is created on the
+fly as a local variable and can be incremented each time "deep_thought()" is
+invoked.
+```C++
+    auto the_meaning = 42;
+    auto deep_thought = [&life = the_meaning, the_meaning = the_meaning + 1] () {
+                life += 2;
+                return the_meaning + 2;
+            };
+    auto the_answer = deep_thought();
+    deep_thought();
+```
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

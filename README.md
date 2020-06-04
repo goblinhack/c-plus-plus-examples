@@ -31,6 +31,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use range-based for loops with your own iterator](range_based_for_loop_custom_begin_end/README.md)
 
+[How to use lambdas](lambda/README.md)
+
 [How to use read a file in far too many ways](std_file_read/README.md)
 
 [How to use std::map with a custom key](std_map_with_custom_key/README.md)
