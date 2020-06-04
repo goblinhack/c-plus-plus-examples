@@ -18,12 +18,12 @@ This invokes a lambda at each point in the sort algorighm and is identical to:
 ```
 Now the syntax is a bit obscure. "[]" is defined as the capture set and indicates
 what kind of things are accessible within the lambda:
-    - [] means capture everything
-    - [&zaphod] means capture the lvalue zaphod by reference so it can be modified
-    - [=zaphod] capture by value
-
-"()" are the arguements to the lambda and "->" is used to specify the return
-type if that cannot be derived or is not clear.
+- [] means capture everything
+- [&zaphod] means capture the lvalue zaphod by reference so it can be modified
+- [=zaphod] capture by value
+- "()" are the arguements to the lambda
+- "->" is used to specify the return type if that cannot be derived or is not 
+clear to the reader.
 
 Lambas can also be generic. This is very similar to templating e.g.:
 ```C++
