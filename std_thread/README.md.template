@@ -4,8 +4,68 @@ How to use std::thread
 
 Do you want a portable standard way to start and stop threads? Of course
 you do! Enter std::thread
-TODO
+
+Let's start simple and kick off a thread that uses a local function.
+
+Note the use of std::ref here. This creates a reference_wrapper<T>
+around the object provided and allows it to be passed to our function.
+
+Note also the use of join(). This will cause the current thread to
+block and wait for the child thread to complete e.g.:
 ```C++
+struct thread_context { std::string output; };
+static void thread_fn (const thread_context& context) {
+    for (int i = 0; i < 1000; i++) {
+        std::cout << context.output;
+    }
+}
+
+int main (void) {
+    auto c1 = thread_context{std::string("A")};
+    auto a = std::thread(thread_fn, std::ref(c1));
+    a.join();
+}
+```
+Simpler yet is to use a lamda function:
+```C++
+    auto lambda = ([](void) {
+        for (int i = 0; i < 1000; i++) { std::cout << "A"; }
+    });
+    auto a = std::thread(lambda);
+    a.join();
+}
+```
+Another approach is to wrap the thread in a class. The class will
+destroy the thread in its destructor, but will also block with join
+until the thread has finished executing:
+```C++
+    class MyThread {
+    public:
+        ~MyThread () {
+            std::cout << to_string() << " destructor" << std::endl;
+            //
+            // Wait for our thread to finish
+            //
+            if (my_thread.joinable()) {
+                my_thread.join();
+            }
+        }
+        MyThread (const std::string& data, const int count) :
+          data(data), count(count) {
+            //
+            // Start our thread.
+            //
+            my_thread = std::thread(&MyThread::run, this);
+        }
+        void run() { while (count--) { std::cout << data; } }
+    private:
+        std::thread my_thread;
+        int count;
+    };
+
+    int main (void) {
+        MyThread thread1("A", 1000);
+    }
 ```
 Here is a full example:
 ```C++
