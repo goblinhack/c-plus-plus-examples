@@ -71,9 +71,9 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::shared_ptr](std_shared_ptr/README.md)
 
-[How to make a wrapper around std::shared_ptr](std_shared_ptr_wrapper/README.md)
+[How to use std::shared_ptr with your own wrapper for extra debugging](std_shared_ptr_wrapper/README.md)
 
-[How to use std::thread](std_thread/README.md)
+[How to use std::thread in three different ways](std_thread/README.md)
 
 [TODO How to use std::mutex](TODO/README.md)
 

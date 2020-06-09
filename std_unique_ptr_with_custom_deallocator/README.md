@@ -119,24 +119,24 @@ Expected output:
 <pre>
 
 # Cpp strdup wrapper with lambda deleter
-copy hello addr 0x7f8e6dc029b0
+copy hello addr 0x7ff03f4029b0
 hello
 
 # Cpp strdup wrapper with std::function deleter
-copy there addr 0x7f8e6dc029c0
+copy there addr 0x7ff03f4029c0
 there
 
 # Cpp strdup wrapper with decltype(&mydeleter) deleter
-copy Zaphod addr 0x7f8e6dc029d0
+copy Zaphod addr 0x7ff03f4029d0
 Zaphod
 
 # Cpp strdup wrapper with std::bind deleter
-copy Beeblebrox addr 0x7f8e6dc029e0
+copy Beeblebrox addr 0x7ff03f4029e0
 Beeblebrox
 
 # End, expect memory to be freed
-free Beeblebrox addr 0x7f8e6dc029e0
-free Zaphod addr 0x7f8e6dc029d0
-free there addr 0x7f8e6dc029c0
-free hello addr 0x7f8e6dc029b0
+free Beeblebrox addr 0x7ff03f4029e0
+free Zaphod addr 0x7ff03f4029d0
+free there addr 0x7ff03f4029c0
+free hello addr 0x7ff03f4029b0
 </pre>
