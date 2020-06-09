@@ -67,6 +67,13 @@ until the thread has finished executing:
         MyThread thread1("A", 1000);
     }
 ```
+Of final note, you can print the unique identifier for the thread as such
+(this can be useful in debugging):
+```C++
+    std::stringstream ss;
+    ss << std::this_thread::get_id();
+    std::cout << "MyThread(" + ss.str() + ")" << std::endl;
+```
 Here is a full example:
 ```C++
 NOTE-READ-CODE

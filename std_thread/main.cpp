@@ -30,9 +30,8 @@ public:
         std::cout << to_string() << " constructor" << std::endl;
     }
     std::string to_string (void) const {
-        auto address = static_cast<const void*>(this);
         std::stringstream ss;
-        ss << address;
+        ss << std::this_thread::get_id();
         return "MyThread(" + ss.str() + ")";
     }
     void run() { while (count--) { std::cout << data; } }
@@ -67,6 +66,7 @@ static void thread_with_local_function_and_cotext() {
     auto b = std::thread(thread_fn, std::ref(c2));
     a.join();
     b.join();
+    DOC("Wait for threads to finish");
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -84,6 +84,7 @@ static void thread_with_lambda() {
     auto b = std::thread(l2);
     a.join();
     b.join();
+    DOC("Wait for threads to finish");
 }
 
 int main() {
