@@ -75,6 +75,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::thread in three different ways](std_thread/README.md)
 
+[TODO How to use std::remove_if and std::erase](TODO/README.md)
+
 [TODO How to use std::mutex](TODO/README.md)
 
 [TODO How to use std::chrono](TODO/README.md)
