@@ -40,8 +40,8 @@ public:
         // Note, other.reset will be called for us
         std::cout << "delete " << to_string() << std::endl;
     }
-    void addref (Foop other) {
-        other = other;
+    void addref (Foop o) {
+        other = o;
         std::cout << "other use_count now " << other.use_count() << std::endl;
     }
     void delref (void) {
@@ -92,8 +92,38 @@ To build:
 cd std_shared_ptr
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+c++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
+
+# Create a copy constructed class and share it between two pointers:
+new Foo(0x7ffee1fa4c00, data=foo1)
+copy constructor Foo(0x7fdaa9c05c08, data=)
+delete Foo(0x7ffee1fa4c00, data=foo1)
+sptr1 ref count now 1
+sptr2 ref count now 2
+
+# Try to create a deadlock:
+other use_count now 4
+sptr1 ref count now 3
+other use_count now 4
+sptr2 ref count now 3
+
+# Undo the 'deadlock':
+other use_count now 0
+sptr1 ref count now 2
+other use_count now 0
+sptr2 ref count now 2
+
+# Release the shared sptrs, expect foo1 to be destroyed:
+sptr1 ref count now 0
+delete Foo(0x7fdaa9c05c08, data=foo1)
+sptr2 ref count now 0
+
+# You can also create shared pointers WITHOUT copy constructor overhead
+new Foo(0x7fdaa9c05bc0, data=foo0)
+sptr0 = Foo(0x7fdaa9c05bc0, data=foo0)
+delete Foo(0x7fdaa9c05bc0, data=foo0)
 </pre>
