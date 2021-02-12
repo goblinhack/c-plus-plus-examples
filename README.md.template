@@ -75,6 +75,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::thread in three different ways](std_thread/README.md)
 
+[How to use variadic templated for recursion instanity](TODO/README.md)
+
 [TODO How to use std::remove_if and std::erase](TODO/README.md)
 
 [TODO How to use std::erase_if](TODO/README.md)
