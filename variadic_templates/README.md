@@ -13,11 +13,6 @@ Here is a full example:
 ```C++
 #include <iostream>
 #include <sstream>
-#include <thread>
-#include <string>
-
-#include <iostream>
-#include <sstream>
 
 template <typename T>
 void write_one(std::ostringstream & out, T t) {
