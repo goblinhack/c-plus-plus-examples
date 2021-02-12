@@ -45,26 +45,4 @@ clobber: clean
 all: $(TARGET) 
 # DO NOT DELETE
 
-.o/main.o: /usr/include/string.h /usr/include/_types.h
-.o/main.o: /usr/include/sys/_types.h /usr/include/sys/cdefs.h
-.o/main.o: /usr/include/sys/_symbol_aliasing.h
-.o/main.o: /usr/include/sys/_posix_availability.h
-.o/main.o: /usr/include/machine/_types.h /usr/include/i386/_types.h
-.o/main.o: /usr/include/sys/_pthread/_pthread_types.h
-.o/main.o: /usr/include/Availability.h /usr/include/AvailabilityInternal.h
-.o/main.o: /usr/include/sys/_types/_size_t.h /usr/include/sys/_types/_null.h
-.o/main.o: /usr/include/sys/_types/_rsize_t.h /usr/include/machine/types.h
-.o/main.o: /usr/include/i386/types.h /usr/include/sys/_types/_int8_t.h
-.o/main.o: /usr/include/sys/_types/_int16_t.h
-.o/main.o: /usr/include/sys/_types/_int32_t.h
-.o/main.o: /usr/include/sys/_types/_int64_t.h
-.o/main.o: /usr/include/sys/_types/_u_int8_t.h
-.o/main.o: /usr/include/sys/_types/_u_int16_t.h
-.o/main.o: /usr/include/sys/_types/_u_int32_t.h
-.o/main.o: /usr/include/sys/_types/_u_int64_t.h
-.o/main.o: /usr/include/sys/_types/_intptr_t.h
-.o/main.o: /usr/include/sys/_types/_uintptr_t.h
-.o/main.o: /usr/include/sys/_types/_errno_t.h
-.o/main.o: /usr/include/sys/_types/_ssize_t.h /usr/include/strings.h
-.o/main.o: /usr/include/secure/_strings.h /usr/include/secure/_common.h
-.o/main.o: /usr/include/secure/_string.h ../common/common.h
+.o/main.o: ../common/common.h

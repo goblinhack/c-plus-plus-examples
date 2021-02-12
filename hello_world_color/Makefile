@@ -44,7 +44,3 @@ clobber: clean
 
 all: $(TARGET) 
 # DO NOT DELETE
-
-.o/main.o: /usr/include/assert.h /usr/include/sys/cdefs.h
-.o/main.o: /usr/include/sys/_symbol_aliasing.h
-.o/main.o: /usr/include/sys/_posix_availability.h

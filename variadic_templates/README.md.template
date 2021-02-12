@@ -1,0 +1,26 @@
+NOTE-BEGIN
+How to use variadic templates
+=============================
+
+Do you want to have a template with a variable number of arguments?
+And do you want to have different types for each? Are you insane? Of
+course you want this!
+
+The trick here is to think recursively when processing the arguments.
+To do this you typically need a base worker template function and
+then one at a higher level to do the recursion for you.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

@@ -46,10 +46,13 @@ int main() {
     DOC("Assign this initializer_list to a vector:");
     std::vector< MyString > vec1(init1);
 
-    DOC("Walk the vector with 'const auto i': (this will involve copies)");
-    for (const auto i : vec1) {
-        std::cout << i << std::endl;
-    }
+    //
+    // Commented out as compilers are now smart and complain about this intentional copy
+    //
+    // DOC("Walk the vector with 'const auto i': (this will involve copies)");
+    // for (const auto i : vec1) {
+    //     std::cout << i << std::endl;
+    // }
 
     DOC("Walk the vector with 'const auto &i': (should see no copies)");
     for (const auto &i : vec1) {

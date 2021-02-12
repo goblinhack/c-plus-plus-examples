@@ -13,7 +13,7 @@ public:
     AccountNumber (void) { }
     AccountNumber (int val) : val(val) { }
     bool operator< (const AccountNumber& rhs) const {
-        return (val < rhs.val); 
+        return (val < rhs.val);
     }
     std::string to_string (void) const {
         return "AccountNumber(" + std::to_string(val) + ")";

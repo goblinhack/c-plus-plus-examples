@@ -5,6 +5,7 @@
 . common/common.sh
 
 SUBDIRS="\
+         variadic_templates \
          constexpr \
          decltype \
          hello_world_color\

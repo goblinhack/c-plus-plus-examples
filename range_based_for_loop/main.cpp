@@ -9,7 +9,7 @@ int main() {
     std::vector< std::string > vec1(init1);
 
     DOC("Range based for loop iterator with a const:");
-    for (const auto i : vec1) {
+    for (const auto &i : vec1) {
         std::cout << "vec1: walk " << i << std::endl;
     }
 

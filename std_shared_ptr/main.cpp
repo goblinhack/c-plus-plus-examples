@@ -22,8 +22,8 @@ public:
         // Note, other.reset will be called for us
         std::cout << "delete " << to_string() << std::endl;
     }
-    void addref (Foop other) {
-        other = other;
+    void addref (Foop o) {
+        other = o;
         std::cout << "other use_count now " << other.use_count() << std::endl;
     }
     void delref (void) {

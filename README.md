@@ -77,6 +77,8 @@ This is a (probably perpetual) work in progress!
 
 [TODO How to use std::remove_if and std::erase](TODO/README.md)
 
+[TODO How to use std::erase_if](TODO/README.md)
+
 [TODO How to use std::mutex](TODO/README.md)
 
 [TODO How to use std::chrono](TODO/README.md)

@@ -1,4 +1,5 @@
 SUBDIRS=\
+	variadic_templates \
 	hello_world_color \
 	std_file_read \
 	scoped_enums \
@@ -28,7 +29,7 @@ SUBDIRS=\
 	std_unique_ptr_for_file_handling \
 	std_shared_ptr \
 	std_shared_ptr_wrapper \
-	std_thread
+	std_thread \
 
 #
 # To force clean and avoid "up to date" warning.
