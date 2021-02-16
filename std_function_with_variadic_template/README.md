@@ -21,7 +21,6 @@ void my_argument_modifier (int &x)
     x++;
 }
 
-
 template<typename ret, typename T, typename... Rest>
 using fn = std::function<ret(T, Rest...)>;
 
@@ -48,7 +47,6 @@ int main()
     auto f2 = fn<void,int&>(my_argument_modifier);
     wrapper(f2, result);
     // Result should be 44: 
-    // End
 
     return 0;
 }
@@ -74,6 +72,4 @@ Expected output:
 # SUCCESS: Hello from my_argument_modifier(x=43) => 44;
 
 # Result should be 44: 44
-
-# End
 </pre>
