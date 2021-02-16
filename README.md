@@ -75,7 +75,13 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::thread in three different ways](std_thread/README.md)
 
+[How to use std::thread and std::mutex to implement a timeout around a function](std_thread_timeout/README.md)
+
 [How to use variadic templates for recursion instanity](variadic_templates/README.md)
+
+[How to use std::thread and variadic templates to call a function with variable number and types of args](std_thread_timeout_template/README.md)
+
+[How to use std::function with variadic templates](std_function_with_variadic_template/README.md)
 
 [TODO How to use std::remove_if and std::erase](TODO/README.md)
 

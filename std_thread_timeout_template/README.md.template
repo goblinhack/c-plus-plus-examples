@@ -1,0 +1,22 @@
+NOTE-BEGIN
+How to use std::thread and std::mutex to wrap a blocking function
+=================================================================
+
+This is identical to the previous example in std_thread_timeout however
+here we use variadic templates to allow passing a variable number of 
+arguments into the timeout wrapper.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

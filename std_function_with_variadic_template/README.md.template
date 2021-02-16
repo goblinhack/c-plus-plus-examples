@@ -1,0 +1,22 @@
+NOTE-BEGIN
+How to use std::thread and std::mutex to wrap a blocking function
+=================================================================
+
+This example creates a variadic template that can be used to wrap a 
+function with variable arguments and types. We can then call that
+function like a callback to allow us to easily wrap any function.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

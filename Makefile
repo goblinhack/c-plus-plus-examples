@@ -31,6 +31,8 @@ SUBDIRS=\
 	std_shared_ptr_wrapper \
 	std_thread \
 	std_thread_timeout \
+	std_thread_timeout_template \
+	std_function_with_variadic_template \
 
 #
 # To force clean and avoid "up to date" warning.

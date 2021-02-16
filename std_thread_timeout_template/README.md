@@ -1,14 +1,9 @@
 How to use std::thread and std::mutex to wrap a blocking function
 =================================================================
 
-Sometimes you might have a long running function that you wish to take
-action on, should it get stuck. A nice way to achieve this is to spawn
-the function within a thread and then have a timer that expires if that
-command never completes.
-
-Condition variables have a builtin wait_for() function that allows this
-to be done simply. If the function does complete in time, then it simply
-sets the condition variable and this allows wait_for() to terminate.
+This is identical to the previous example in std_thread_timeout however
+here we use variadic templates to allow passing a variable number of 
+arguments into the timeout wrapper.
 
 Here is a full example:
 ```C++
@@ -44,16 +39,21 @@ std::string timestamp(void)
 int my_function_that_might_block(int x)
 {
     DOC("Function begins at :" << timestamp());
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    DOC("Function argument  :" << x);
+    std::this_thread::sleep_for(std::chrono::seconds(10));
     DOC("Function ends at   :" << timestamp());
     return 1;
 }
 
-int wrap_my_slow_function()
+template<typename ret, typename T, typename... Rest>
+using fn = std::function<ret(T, Rest...)>;
+
+template<typename ret, typename T, typename... Rest>
+ret wrap_my_slow_function(fn<ret, T, Rest...> f, T t, Rest... rest)
 {
     std::mutex my_mutex;
     std::condition_variable my_condition_var;
-    int result;
+    ret result = 0;
 
     std::unique_lock<std::mutex> my_lock(my_mutex);
 
@@ -61,9 +61,9 @@ int wrap_my_slow_function()
     // Spawn a thread to call my_function_that_might_block(). 
     // Pass in the condition variables and result by reference.
     //
-    std::thread t([&my_condition_var, &result]() 
+    std::thread my_thread([&]() 
     {
-        result = my_function_that_might_block(1);
+        result = f(t, rest...);
         // Unblocks one of the threads currently waiting for this condition.
         my_condition_var.notify_one();
     });
@@ -72,7 +72,7 @@ int wrap_my_slow_function()
     // Detaches the thread represented by the object from the calling 
     // thread, allowing them to execute independently from each other. B
     //
-    t.detach();
+    my_thread.detach();
 
     if (my_condition_var.wait_for(my_lock, std::chrono::seconds(1)) == 
             std::cv_status::timeout)  {
@@ -91,7 +91,8 @@ int main()
     // Run a function that might block
 
     try {
-        wrap_my_slow_function();
+        auto f1 = fn<int,int>(my_function_that_might_block);
+        wrap_my_slow_function(f1, 42);
         //
         // Success, no timeout
         //
@@ -110,7 +111,7 @@ int main()
 ```
 To build:
 <pre>
-cd std_thread_timeout
+cd std_thread_timeout_template
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
@@ -121,7 +122,9 @@ Expected output:
 
 # Run a function that might block
 
-# Function begins at :10:43:28.058 
+# Function begins at :10:43:32.130 
 
-# Timed out at       :10:43:29.061 
+# Function argument  :42
+
+# Timed out at       :10:43:33.130 
 </pre>
