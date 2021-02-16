@@ -11,13 +11,13 @@ Here is a full example:
 
 int my_wrapped_function (int x, const std::string y)
 {
-    // Hello from my_wrapped_function(x=" << x << ", y=" << y << ")
+    std::cout << "SUCCESS: Hello from my_wrapped_function(x=" << x << ", y=" << y << ");" << std::endl;
     return 43;
 }
 
 void my_argument_modifier (int &x)
 {
-    // Hello from my_argument_modifier(x=" << x << ") => 
+    std::cout << "SUCCESS: Hello from my_argument_modifier(x=" << x << ") => " << x + 1 << ";" << std::endl;
     x++;
 }
 
@@ -66,14 +66,12 @@ Expected output:
 <pre>
 
 # Wrap a function with variable arguments
-
-# Hello from my_wrapped_function(x=42, y=hello)
+# SUCCESS: Hello from my_wrapped_function(x=42, y=hello);
 
 # Result should be 43: 43
 
 # Wrap a function that modifies its arguments
-
-# Hello from my_argument_modifier(x=43) => 44
+# SUCCESS: Hello from my_argument_modifier(x=43) => 44;
 
 # Result should be 44: 44
 
