@@ -38,10 +38,10 @@ std::string timestamp(void)
 
 int my_function_that_might_block(int x)
 {
-    DOC("Function begins at :" << timestamp());
-    DOC("Function argument  :" << x);
+    // Function begins at :
+    // Function argument  :
     std::this_thread::sleep_for(std::chrono::seconds(10));
-    DOC("Function ends at   :" << timestamp());
+    // Function ends at   :
     return 1;
 }
 
@@ -79,7 +79,7 @@ ret wrap_my_slow_function(fn<ret, T, Rest...> f, T t, Rest... rest)
         //
         // Throw an exception so the caller knows we failed
         //
-        DOC("Timed out at       :" << timestamp());
+        // Timed out at       :
         throw std::runtime_error("Timeout");
     }
 
@@ -122,9 +122,9 @@ Expected output:
 
 # Run a function that might block
 
-# Function begins at :10:52:55.557 
+# Function begins at :10:59:22.237 
 
 # Function argument  :42
 
-# Timed out at       :10:52:56.559 
+# Timed out at       :10:59:23.238 
 </pre>
