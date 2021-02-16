@@ -12,7 +12,7 @@ cat $TEMPLATE | sed '/NOTE-BEGIN/,/NOTE-READ-CODE/!d' | grep -v "^NOTE-"
 cat main.cpp | \
     grep -v "define DOC" | \
     grep -v "common.h" | \
-    sed -e 's/DOC(\"\(.*\)\"); *$/\/\/ \1/g' \
+    sed -e 's/DOC(\"\(.*\)\".*$/\/\/ \1/g' \
         -e 's/SUCCESS(\"\(.*\)\"); *$/std::cout << "SUCCESS: \1" << std::endl;/g' \
         -e 's/FAILED(\"\(.*\)\" + e); *$/std::cerr << "FAILED: \1" << e << std::endl;/g'
 cat $TEMPLATE | sed '/NOTE-READ-CODE/,/NOTE-BUILD-CODE/!d' | grep -v "^NOTE-"

@@ -32,15 +32,14 @@ ret wrapper(fn<ret, T&, Rest&...> f, T& t, Rest&... rest)
 int main()
 {
     DOC("Wrap a function with variable arguments");
-
     auto f1 = fn<int,int,const std::string>(my_wrapped_function);
     auto result = wrapper(f1, 42, std::string("hello"));
-    DOC("Result is (should be 43) " << result);
+    DOC("Result should be 43: " << result);
 
+    DOC("Wrap a function that modifies its arguments");
     auto f2 = fn<void,int&>(my_argument_modifier);
     wrapper(f2, result);
-    DOC("Result is (should be 44) " << result);
-
+    DOC("Result should be 44: " << result);
     DOC("End");
 
     return 0;
