@@ -76,9 +76,9 @@ Expected output:
 # Create a file and write to it
 
 # Read from the file
-open file 0x7fff88a03fe0
+open file 0x7fff88c2ffe0
 Time is an illusion. Lunch time, doubly so
-close file 0x7fff88a03fe0
+close file 0x7fff88c2ffe0
 
 # End, expect file clost to automatically happen
 </pre>

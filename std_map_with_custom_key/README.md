@@ -231,27 +231,27 @@ Expected output:
 # Create a std::map of AccountNumber -> Account
 
 # Create some accounts
-new cash BankAccount(0x7ffee4b69be8, cash $10000)
-new cash BankAccount(0x7ffee4b69bd8, cash $20000)
-new cash BankAccount(0x7ffee4b69bc8, cash $30000)
-new cash BankAccount(0x7ffee4b69bb8, cash $30000)
+new cash BankAccount(0x7ffee5ec3828, cash $10000)
+new cash BankAccount(0x7ffee5ec3818, cash $20000)
+new cash BankAccount(0x7ffee5ec3808, cash $30000)
+new cash BankAccount(0x7ffee5ec37f8, cash $30000)
 
 # Add an account with insert()
-copy cash constructor called for BankAccount(0x7ffee4b69be8, cash $10000)
-copy cash constructor result is  BankAccount(0x7ffee4b69bb4, cash $10000)
-copy cash constructor called for BankAccount(0x7ffee4b69bb4, cash $10000)
-copy cash constructor result is  BankAccount(0x7f86a3c05be0, cash $10000)
-delete account BankAccount(0x7ffee4b69bb4, cash $10000)
+copy cash constructor called for BankAccount(0x7ffee5ec3828, cash $10000)
+copy cash constructor result is  BankAccount(0x7ffee5ec37f4, cash $10000)
+copy cash constructor called for BankAccount(0x7ffee5ec37f4, cash $10000)
+copy cash constructor result is  BankAccount(0x7fa23c405bb0, cash $10000)
+delete account BankAccount(0x7ffee5ec37f4, cash $10000)
 
 # Add an account with map[k] = v
-default constructor BankAccount(0x7f86a3c05c10, cash $0)
+default constructor BankAccount(0x7fa23c405be0, cash $0)
 
 # Add an account with emplace()
-copy cash constructor called for BankAccount(0x7ffee4b69bc8, cash $30000)
-copy cash constructor result is  BankAccount(0x7ffee4b69b9c, cash $30000)
-copy cash constructor called for BankAccount(0x7ffee4b69b9c, cash $30000)
-copy cash constructor result is  BankAccount(0x7f86a3c05c40, cash $30000)
-delete account BankAccount(0x7ffee4b69b9c, cash $30000)
+copy cash constructor called for BankAccount(0x7ffee5ec3808, cash $30000)
+copy cash constructor result is  BankAccount(0x7ffee5ec37dc, cash $30000)
+copy cash constructor called for BankAccount(0x7ffee5ec37dc, cash $30000)
+copy cash constructor result is  BankAccount(0x7fa23c405c10, cash $30000)
+delete account BankAccount(0x7ffee5ec37dc, cash $30000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
@@ -272,26 +272,26 @@ AccountNumber(102) $20000
 AccountNumber(104) $30000
 
 # Remove account2
-delete account BankAccount(0x7f86a3c05c10, cash $20000)
+delete account BankAccount(0x7fa23c405be0, cash $20000)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30000
 
 # Modify account3
-deposit cash called BankAccount(0x7f86a3c05c40, cash $30100)
+deposit cash called BankAccount(0x7fa23c405c10, cash $30100)
 
 # Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30100
 
 # Rob the bank
-delete account BankAccount(0x7f86a3c05be0, cash $10000)
-delete account BankAccount(0x7f86a3c05c40, cash $30100)
+delete account BankAccount(0x7fa23c405bb0, cash $10000)
+delete account BankAccount(0x7fa23c405c10, cash $30100)
 
 # End
-delete account BankAccount(0x7ffee4b69bb8, cash $30000)
-delete account BankAccount(0x7ffee4b69bc8, cash $30000)
-delete account BankAccount(0x7ffee4b69bd8, cash $20000)
-delete account BankAccount(0x7ffee4b69be8, cash $10000)
+delete account BankAccount(0x7ffee5ec37f8, cash $30000)
+delete account BankAccount(0x7ffee5ec3808, cash $30000)
+delete account BankAccount(0x7ffee5ec3818, cash $20000)
+delete account BankAccount(0x7ffee5ec3828, cash $10000)
 </pre>
