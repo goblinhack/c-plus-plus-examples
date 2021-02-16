@@ -43,11 +43,11 @@ int main()
 
     auto f1 = fn<int,int,const std::string>(my_wrapped_function);
     auto result = wrapper(f1, 42, std::string("hello"));
-    DOC("Result is " << result);
+    DOC("Result is (should be 43) " << result);
 
     auto f2 = fn<void,int&>(my_argument_modifier);
     wrapper(f2, result);
-    DOC("Result is " << result);
+    DOC("Result is (should be 44) " << result);
 
     // End
 
@@ -70,11 +70,11 @@ Expected output:
 
 # Hello from my_wrapped_function(x=42, y=hello)
 
-# Result is 43
+# Result is (should be 43) 43
 
 # Hello from my_argument_modifier(x=43) => 44
 
-# Result is 44
+# Result is (should be 44) 44
 
 # End
 </pre>

@@ -7,7 +7,7 @@ NAME=$(basename $PWD)
 cat $TEMPLATE | sed '/NOTE-BEGIN/,/NOTE-READ-CODE/!d' | grep -v "^NOTE-"
 
 #
-# Add the source wit DOC changed to a C++ comment
+# Add the source with DOC changed to a C++ comment
 #
 cat main.cpp | \
     grep -v "define DOC" | \
