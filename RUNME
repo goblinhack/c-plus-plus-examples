@@ -35,7 +35,8 @@ SUBDIRS="\
          std_unordered_map \
          std_unordered_set \
          std_shared_ptr_wrapper \
-         std_thread"
+         std_thread \
+         std_thread_timeout"
 
 cp README.md.template README.md
 

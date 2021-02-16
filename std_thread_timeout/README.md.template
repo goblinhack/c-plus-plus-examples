@@ -1,0 +1,27 @@
+NOTE-BEGIN
+How to use std::thread and std::mutex to wrap a blocking function
+=================================================================
+
+Sometimes you might have a long running function that you wish to take
+action on, should it get stuck. A nice way to achieve this is to spawn
+the function within a thread and then have a timer that expires if that
+command never completes.
+
+Condition variables have a builtin wait_for() function that allows this
+to be done simply. If the function does complete in time, then it simply
+sets the condition variable and this allows wait_for() to terminate.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END

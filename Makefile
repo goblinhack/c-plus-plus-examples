@@ -30,6 +30,7 @@ SUBDIRS=\
 	std_shared_ptr \
 	std_shared_ptr_wrapper \
 	std_thread \
+	std_thread_timeout \
 
 #
 # To force clean and avoid "up to date" warning.

@@ -75,15 +75,13 @@ This is a (probably perpetual) work in progress!
 
 [How to use std::thread in three different ways](std_thread/README.md)
 
+[How to use std::thread, std::mutexc and std::chrono to implement a function timeout](std_thread_timeout/README.md)
+
 [How to use variadic templates for recursion instanity](variadic_templates/README.md)
 
 [TODO How to use std::remove_if and std::erase](TODO/README.md)
 
 [TODO How to use std::erase_if](TODO/README.md)
-
-[TODO How to use std::mutex](TODO/README.md)
-
-[TODO How to use std::chrono](TODO/README.md)
 
 [TODO How to use std::accumulate and std::reduce](TODO/README.md)
 
