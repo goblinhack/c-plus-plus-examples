@@ -122,9 +122,9 @@ Expected output:
 
 # Run a function that might block
 
-# Function begins at :10:59:22.237 
+# Function begins at :09:41:20.334 
 
 # Function argument  :42
 
-# Timed out at       :10:59:23.238 
+# Timed out at       :09:41:21.336 
 </pre>

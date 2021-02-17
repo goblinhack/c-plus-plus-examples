@@ -120,7 +120,7 @@ Expected output:
 <pre>
 
 # Run a function that might block
-Function begins at :10:59:18.072 
-Timed out at       :10:59:19.077 
-Function ends at   :10:59:19.077 
+Function begins at :09:41:16.380 
+Timed out at       :09:41:17.382 
+Function ends at   :09:41:17.382 
 </pre>
