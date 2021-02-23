@@ -38,7 +38,8 @@ SUBDIRS="\
          std_thread \
          std_thread_timeout \
          std_thread_timeout_template \
-         std_function_with_variadic_template"
+         std_function_with_variadic_template \
+         std_to_string"
 
 cp README.md.template README.md
 

@@ -35,6 +35,8 @@ This is a (probably perpetual) work in progress!
 
 [How to use lambdas](lambda/README.md)
 
+[How to use std::to_string with custom classes and templates](std_to_string/README.md)
+
 [How to use std::for_each and how it differs from std::transform](std_for_each_and_transform/README.md)
 
 [How to use std::map with a custom key](std_map_with_custom_key/README.md)

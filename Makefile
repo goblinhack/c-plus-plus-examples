@@ -33,6 +33,7 @@ SUBDIRS=\
 	std_thread_timeout \
 	std_thread_timeout_template \
 	std_function_with_variadic_template \
+	std_to_string \
 
 #
 # To force clean and avoid "up to date" warning.

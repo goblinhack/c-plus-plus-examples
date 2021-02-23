@@ -1,0 +1,34 @@
+NOTE-BEGIN
+How to use (std::) to_string with containers and custom classes
+===============================================================
+
+There are two options for printing your own class.
+
+One option is to take advantage of ADL (argument dependent lookup) via
+"using std::to_string;" in your own code. This will cause the compiler
+to pick either std::to_string or your own to_string() for your own class.
+
+The other option is to extend the std namespace.
+
+The first option is cleaner, but you can get into trouble with type promotion
+with enum types. In such cases I prefer to know which namespace I am really
+pulling to_string from. This code below follows the second approach.
+
+Here we add template container support in addition to to_string for a custom
+class. This allows us to easily print a vector or list of custom classes for
+example.
+
+Here is a full example:
+```C++
+NOTE-READ-CODE
+```
+To build:
+<pre>
+NOTE-BUILD-CODE
+</pre>
+NOTE-END
+Expected output:
+<pre>
+NOTE-RUN-CODE
+</pre>
+NOTE-END
