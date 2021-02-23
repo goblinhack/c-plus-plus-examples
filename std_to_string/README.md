@@ -1,180 +1,87 @@
-How to use std::thread
-======================
+How to use (std::) to_string with containers and custom classes
+===============================================================
 
-Do you want a portable standard way to start and stop threads? Of course
-you do! Enter std::thread
+There are two options for printing your own class.
 
-Let's start simple and kick off a thread that uses a local function.
+One option is to take advantage of ADL (argument dependent lookup) via
+"using std::to_string;" in your own code. This will cause the compiler
+to pick either std::to_string or your own to_string() for your own class.
 
-Note the use of std::ref here. This creates a reference_wrapper<T>
-around the object provided and allows it to be passed to our function.
+The other option is to extend the std namespace.
 
-Note also the use of join(). This will cause the current thread to
-block and wait for the child thread to complete e.g.:
-```C++
-struct thread_context { std::string output; };
-static void thread_fn (const thread_context& context) {
-    for (int i = 0; i < 1000; i++) {
-        std::cout << context.output;
-    }
-}
+The first option is cleaner, but you can get into trouble with type promotion
+with enum types. In such cases I prefer to know which namespace I am really
+pulling to_string from. This code below follows the second approach.
 
-int main (void) {
-    auto c1 = thread_context{std::string("A")};
-    auto a = std::thread(thread_fn, std::ref(c1));
-    a.join();
-}
-```
-Simpler yet is to use a lamda function:
-```C++
-    auto lambda = ([](void) {
-        for (int i = 0; i < 1000; i++) { std::cout << "A"; }
-    });
-    auto a = std::thread(lambda);
-    a.join();
-}
-```
-Another approach is to wrap the thread in a class. The class will
-destroy the thread in its destructor, but will also block with join
-until the thread has finished executing:
-```C++
-    class MyThread {
-    public:
-        ~MyThread () {
-            std::cout << to_string() << " destructor" << std::endl;
-            //
-            // Wait for our thread to finish
-            //
-            if (my_thread.joinable()) {
-                my_thread.join();
-            }
-        }
-        MyThread (const std::string& data, const int count) :
-          data(data), count(count) {
-            //
-            // Start our thread.
-            //
-            my_thread = std::thread(&MyThread::run, this);
-        }
-        void run() { while (count--) { std::cout << data; } }
-    private:
-        std::thread my_thread;
-        int count;
-    };
+Here we add template container support in addition to to_string for a custom
+class. This allows us to easily print a vector or list of custom classes for
+example.
 
-    int main (void) {
-        MyThread thread1("A", 1000);
-    }
-```
-Of final note, you can print the unique identifier for the thread as such
-(this can be useful in debugging):
-```C++
-    std::stringstream ss;
-    ss << std::this_thread::get_id();
-    std::cout << "MyThread(" + ss.str() + ")" << std::endl;
-```
 Here is a full example:
 ```C++
 #include <iostream>
-#include <sstream>
-#include <thread>
 #include <string>
+#include <list>
+#include <vector>
 
-static const auto thread_loop_count = 1000;
-
-////////////////////////////////////////////////////////////////////////////
-// Here we start a thread with a class wrapper. We will not complete
-// destruction of this class until our thread is finished.
-////////////////////////////////////////////////////////////////////////////
-class MyThread {
+struct Foo {
+    Foo(int v) : value(v) {}
 public:
-    ~MyThread () {
-        std::cout << to_string() << " destructor" << std::endl;
-        //
-        // Wait for our thread to finish
-        //
-        if (my_thread.joinable()) {
-            my_thread.join();
-        }
-    }
-    MyThread (const std::string& data, const int count) : 
-      data(data), count(count) {
-        //
-        // Start our thread.
-        //
-        my_thread = std::thread(&MyThread::run, this);
-        std::cout << to_string() << " constructor" << std::endl;
-    }
-    std::string to_string (void) const {
-        std::stringstream ss;
-        ss << std::this_thread::get_id();
-        return "MyThread(" + ss.str() + ")";
-    }
-    void run() { while (count--) { std::cout << data; } }
-private:
-    std::thread my_thread;
-    std::string data;
-    int count;
+    int value;
 };
 
-static void thread_with_class_example() {
-    // Start 2 threads with class wrappers
-    MyThread thread1("A", thread_loop_count);
-    MyThread thread2("B", thread_loop_count);
-    // Wait for threads to finish
-}
+namespace std {
+    std::string to_string(const struct Foo &f)
+    {
+        return std::to_string(f.value);
+    }
 
-////////////////////////////////////////////////////////////////////////////
-// Here we start threads with a local function that is passed some context
-////////////////////////////////////////////////////////////////////////////
-struct thread_context { std::string output; };
-static void thread_fn (const thread_context& context) {
-    for (int i = 0; i < thread_loop_count; i++) {
-        std::cout << context.output;
+    template<typename T> std::string to_string(const T& v) {
+        return std::to_string(v);
+    }
+
+    template <class T, template <typename Elem, typename Allocator = std::allocator<Elem>> class C>
+    static inline const std::string
+    to_string(const C<T>& elems)
+    {
+        std::string out = "[";
+        for (const auto& elem : elems) {
+            if (out.size() > 1) {
+                out += ", ";
+            }
+            out += std::to_string<T>(elem);
+        }
+        out += "]";
+        return out;
     }
 }
 
-static void thread_with_local_function_and_cotext() {
-    // Start 2 threads implemented as function calls
-    auto c1 = thread_context{std::string("A")};
-    auto c2 = thread_context{std::string("B")};
-    auto a = std::thread(thread_fn, std::ref(c1));
-    auto b = std::thread(thread_fn, std::ref(c2));
-    a.join();
-    b.join();
-    // Wait for threads to finish
-}
+int main (void)
+{
+    // Print Foo
+    Foo foo(99);
+    std::cout << "Single foo: " << std::to_string(foo) << std::endl;
 
-////////////////////////////////////////////////////////////////////////////
-// Here we start threads with lambdas
-////////////////////////////////////////////////////////////////////////////
-static void thread_with_lambda() {
-    // Start 2 threads implemented as lambdas
-    auto l1 = ([](void) {
-        for (int i = 0; i < thread_loop_count; i++) { std::cout << "A"; }
-    });
-    auto l2 = ([](void) {
-        for (int i = 0; i < thread_loop_count; i++) { std::cout << "B"; }
-    });
-    auto a = std::thread(l1);
-    auto b = std::thread(l2);
-    a.join();
-    b.join();
-    // Wait for threads to finish
-}
+    // Print std::list<Foo>
+    std::list<Foo> list_of_foo;
+    list_of_foo.push_back(Foo(42));
+    list_of_foo.push_back(Foo(43));
+    std::cout << "List of foo: " << std::to_string(list_of_foo) << std::endl;
 
-int main() {
-    thread_with_class_example();
-    thread_with_local_function_and_cotext();
-    thread_with_lambda();
+    // Print std::vector<Foo>
+    std::vector<Foo> vector_of_foo;
+    vector_of_foo.push_back(Foo(6));
+    vector_of_foo.push_back(Foo(7));
+    vector_of_foo.push_back(Foo(8));
+    std::cout << "Vector of foo: " << std::to_string(vector_of_foo) << std::endl;
 
     // End
-    return 0;
 }
+
 ```
 To build:
 <pre>
-cd std_thread
+cd std_to_string
 rm -f *.o example
 c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
 c++ main.o  -o example
@@ -183,21 +90,14 @@ c++ main.o  -o example
 Expected output:
 <pre>
 
-# Start 2 threads with class wrappers
-MyThread(0x10df7ae00) constructor
-MyThread(0x10df7ae00) constructor
+# Print Foo
+Single foo: 99
 
-# Wait for threads to finish
-BBBBBBAAAAAMyThread(0x10df7ae00)B destructorBBB
-BBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAABABBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBAAAAAAAAAAABBAAAABBBAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBAAAAABABBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBABBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBABAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBAAAAAAAAAABBAAAABAAAAAAAAAAAAAAAABBBBBBBBBBAAAABBBBBBBBBBBBBBAAAAAAAAAABBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAABBBABAAAAAAAAAAABBBABAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAABAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAABBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBMyThread(0x10df7ae00) destructor
+# Print std::list<Foo>
+List of foo: [42, 43]
 
-# Start 2 threads implemented as function calls
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBAAAAABBBBBBBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAABBBBBBBBBBBBBBAABABABABABABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBBBBBBBAAAAAAAAAAAAABBBBBBBBBBBBBAAAAABBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBBBAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBABAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBAAAABBBBBBBBBBBBAABBBBABABABABABBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBAABAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBBAABBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAABBAAAAAAAAAAAABBBBBBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBAAABAAAAAAAAAAAAABBBBBBBBBBBBAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAABBBBBBBBBBBBBBBAAABBBBBBBBBBBAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAABBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-# Wait for threads to finish
-
-# Start 2 threads implemented as lambdas
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAABBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAABBBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBABBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBAAAAAAAAAAAAABBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBABBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAABBBBBBBBAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAABBBBBBBBAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBABBAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAABBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAABBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAABBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBAAAAAAAAAABBBBBBBBBABBBAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAABBBBBBBBBBBBAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBAAAAAAAAAAA
-# Wait for threads to finish
+# Print std::vector<Foo>
+Vector of foo: [6, 7, 8]
 
 # End
 </pre>
