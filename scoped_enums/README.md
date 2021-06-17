@@ -70,14 +70,14 @@ To build:
 <pre>
 cd scoped_enums
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Various enum accessors:
+[31;1;4mVarious enum accessors:[0m
 ClassColors::GREEN     = 5
 GlobalColors::GREEN    = 2
 GREEN                  = 2

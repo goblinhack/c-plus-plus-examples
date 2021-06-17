@@ -8,6 +8,7 @@ function like a callback to allow us to easily wrap any function.
 Here is a full example:
 ```C++
 #include <iostream>
+#include <functional>
 
 int my_wrapped_function (int x, const std::string y)
 {
@@ -56,20 +57,20 @@ To build:
 <pre>
 cd std_function_with_variadic_template
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Wrap a function with variable arguments
-# SUCCESS: Hello from my_wrapped_function(x=42, y=hello);
+[31;1;4mWrap a function with variable arguments[0m
+[0;35mSUCCESS: Hello from my_wrapped_function(x=42, y=hello);[0m
 
-# Result should be 43: 43
+[31;1;4mResult should be 43: 43[0m
 
-# Wrap a function that modifies its arguments
-# SUCCESS: Hello from my_argument_modifier(x=43) => 44;
+[31;1;4mWrap a function that modifies its arguments[0m
+[0;35mSUCCESS: Hello from my_argument_modifier(x=43) => 44;[0m
 
 # Result should be 44: 44
 </pre>

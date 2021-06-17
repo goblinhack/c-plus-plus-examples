@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "../common/common.h"
 
 int my_wrapped_function (int x, const std::string y)

@@ -111,32 +111,32 @@ To build:
 <pre>
 cd std_unique_ptr_with_custom_deallocator
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Cpp strdup wrapper with lambda deleter
-copy hello addr 0x7fcb76405ba0
+[31;1;4mCpp strdup wrapper with lambda deleter[0m
+copy hello addr 0x55ddcba01ec0
 hello
 
-# Cpp strdup wrapper with std::function deleter
-copy there addr 0x7fcb76405bb0
+[31;1;4mCpp strdup wrapper with std::function deleter[0m
+copy there addr 0x55ddcba01ee0
 there
 
-# Cpp strdup wrapper with decltype(&mydeleter) deleter
-copy Zaphod addr 0x7fcb76405bc0
+[31;1;4mCpp strdup wrapper with decltype(&mydeleter) deleter[0m
+copy Zaphod addr 0x55ddcba01f00
 Zaphod
 
-# Cpp strdup wrapper with std::bind deleter
-copy Beeblebrox addr 0x7fcb76405bd0
+[31;1;4mCpp strdup wrapper with std::bind deleter[0m
+copy Beeblebrox addr 0x55ddcba01f20
 Beeblebrox
 
-# End, expect memory to be freed
-free Beeblebrox addr 0x7fcb76405bd0
-free Zaphod addr 0x7fcb76405bc0
-free there addr 0x7fcb76405bb0
-free hello addr 0x7fcb76405ba0
+[31;1;4mEnd, expect memory to be freed[0m
+free Beeblebrox addr 0x55ddcba01f20
+free Zaphod addr 0x55ddcba01f00
+free there addr 0x55ddcba01ee0
+free hello addr 0x55ddcba01ec0
 </pre>

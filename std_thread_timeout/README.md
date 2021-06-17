@@ -112,15 +112,15 @@ To build:
 <pre>
 cd std_thread_timeout
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o -lpthread -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Run a function that might block
-Function begins at :16:07:24.066 
-Timed out at       :16:07:25.069 
-Function ends at   :16:07:25.069 
+[31;1;4mRun a function that might block[0m
+Function begins at :11:54:25.051 
+Timed out at       :11:54:26.051 
+Function ends at   :11:54:26.051 
 </pre>

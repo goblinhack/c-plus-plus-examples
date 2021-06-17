@@ -85,24 +85,24 @@ To build:
 <pre>
 cd std_for_each_and_transform
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Use std::for_each to modify a list of strings
+[31;1;4mUse std::for_each to modify a list of strings[0m
 list-elem is Zaphod is modified via std::for_each
 list-elem is Marvin is modified via std::for_each
 list-elem is The Mice is modified via std::for_each
 
-# Use std::transform to modify a list of strings
+[31;1;4mUse std::transform to modify a list of strings[0m
 list-elem is Zaphod is modified via std::transform
 list-elem is Marvin is modified via std::transform
 list-elem is The Mice is modified via std::transform
 
-# Use std::transform to write to a new list
+[31;1;4mUse std::transform to write to a new list[0m
 oldlist-elem is Zaphod
 oldlist-elem is Marvin
 oldlist-elem is The Mice

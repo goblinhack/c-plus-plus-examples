@@ -341,24 +341,24 @@ To build:
 <pre>
 cd std_sort_with_custom_iterators
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a std::initializer_list of std::string:
+[31;1;4mCreate a std::initializer_list of std::string:[0m
 
-# Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffee1de8ba0, len=1, maxlen=1 elems=[zaphod])
-push_back called MyVector(0x7ffee1de8ba0, len=2, maxlen=2 elems=[zaphod,universe])
-push_back called MyVector(0x7ffee1de8ba0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
-push_back called MyVector(0x7ffee1de8ba0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
-push_back called MyVector(0x7ffee1de8ba0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
-push_back called MyVector(0x7ffee1de8ba0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
+[31;1;4mAssign this initializer_list to a vector:[0m
+push_back called MyVector(0x7ffc3d7e9a30, len=1, maxlen=1 elems=[zaphod])
+push_back called MyVector(0x7ffc3d7e9a30, len=2, maxlen=2 elems=[zaphod,universe])
+push_back called MyVector(0x7ffc3d7e9a30, len=3, maxlen=4 elems=[zaphod,universe,arthur])
+push_back called MyVector(0x7ffc3d7e9a30, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
+push_back called MyVector(0x7ffc3d7e9a30, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
+push_back called MyVector(0x7ffc3d7e9a30, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
 
-# Pre sort:
+[31;1;4mPre sort:[0m
 zaphod
 universe
 arthur
@@ -366,7 +366,7 @@ marvin
 mice
 vogon
 
-# Post sort:
+[31;1;4mPost sort:[0m
 arthur
 marvin
 mice
@@ -374,14 +374,14 @@ universe
 vogon
 zaphod
 
-# Reverse sort:
-zaphod
-vogon
-universe
-mice
-marvin
+[31;1;4mReverse sort:[0m
+
+
+
+
+
 arthur
 
-# End:
-delete MyVector(0x7ffee1de8ba0, len=6, maxlen=8 elems=[zaphod,vogon,universe,mice,marvin,arthur])
+[31;1;4mEnd:[0m
+delete MyVector(0x7ffc3d7e9a30, len=6, maxlen=8 elems=[,,,,,arthur])
 </pre>

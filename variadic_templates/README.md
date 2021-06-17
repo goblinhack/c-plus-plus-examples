@@ -45,14 +45,14 @@ To build:
 <pre>
 cd variadic_templates
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Combine various arguments of different types into a string
+[31;1;4mCombine various arguments of different types into a string[0m
 The meaning of life is 42 or 6 times 7 
 
 # End

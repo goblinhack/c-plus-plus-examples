@@ -83,20 +83,20 @@ To build:
 <pre>
 cd std_to_string
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Print Foo
+[31;1;4mPrint Foo[0m
 Single foo: 99
 
-# Print std::list<Foo>
+[31;1;4mPrint std::list<Foo>[0m
 List of foo: [42, 43]
 
-# Print std::vector<Foo>
+[31;1;4mPrint std::vector<Foo>[0m
 Vector of foo: [6, 7, 8]
 
 # End

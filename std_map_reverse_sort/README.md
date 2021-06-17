@@ -102,14 +102,14 @@ To build:
 <pre>
 cd std_map_reverse_sort
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# backward sorted map
+[31;1;4mbackward sorted map[0m
 zaphod 1
 vogon 6
 universe 2
@@ -117,7 +117,7 @@ mice 5
 marvin 4
 arthur 3
 
-# forward sorted map
+[31;1;4mforward sorted map[0m
 arthur 3
 marvin 4
 mice 5
@@ -125,7 +125,7 @@ universe 2
 vogon 6
 zaphod 1
 
-# default sorted map
+[31;1;4mdefault sorted map[0m
 arthur 3
 marvin 4
 mice 5

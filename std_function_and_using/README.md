@@ -41,6 +41,7 @@ Or for clarity or if the return type is in doubt:
 Here is the full example:
 ```C++
 #include <iostream>
+#include <functional>
 
 static int add_two_numbers_callback (const int a, const int b) {
     return a + b;
@@ -98,29 +99,29 @@ To build:
 <pre>
 cd std_function_and_using
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# invoke old C style typedef callback
+[31;1;4minvoke old C style typedef callback[0m
 cb(1, 2) = 3
 
-# invoke new C++ style std::function callback
+[31;1;4minvoke new C++ style std::function callback[0m
 cb(1, 2) = 3
 
-# invoke with a lambda (non inline syntax)
+[31;1;4minvoke with a lambda (non inline syntax)[0m
 cb(1, 2) = 3
 
-# invoke with a lambda (inline syntax)
+[31;1;4minvoke with a lambda (inline syntax)[0m
 cb(1, 2) = 3
 
-# invoke with a lambda (inline longer syntax)
+[31;1;4minvoke with a lambda (inline longer syntax)[0m
 cb(1, 2) = 3
 
-# invoke the old typedef handler with a lambda, this should be equivalent
+[31;1;4minvoke the old typedef handler with a lambda, this should be equivalent[0m
 cb(1, 2) = 3
 
 # end

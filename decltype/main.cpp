@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <cxxabi.h>  // needed for abi::__cxa_demangle
 #include "../common/common.h"
 

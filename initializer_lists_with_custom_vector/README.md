@@ -150,23 +150,23 @@ To build:
 <pre>
 cd initializer_lists_with_custom_vector
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a std::initializer_list of std::string:
+[31;1;4mCreate a std::initializer_list of std::string:[0m
 
-# Assign this initializer_list to a vector:
-push_back called MyVector(0x7ffee4047c00, currlen=1, maxlen=1 elems=[elem1])
-push_back called MyVector(0x7ffee4047c00, currlen=2, maxlen=2 elems=[elem1,elem2])
+[31;1;4mAssign this initializer_list to a vector:[0m
+push_back called MyVector(0x7ffc843f0ba0, currlen=1, maxlen=1 elems=[elem1])
+push_back called MyVector(0x7ffc843f0ba0, currlen=2, maxlen=2 elems=[elem1,elem2])
 
-# Walk the vector with 'const auto &i': (to avoid copies)
+[31;1;4mWalk the vector with 'const auto &i': (to avoid copies)[0m
 elem1
 elem2
 
-# End:
-delete MyVector(0x7ffee4047c00, currlen=2, maxlen=2 elems=[elem1,elem2])
+[31;1;4mEnd:[0m
+delete MyVector(0x7ffc843f0ba0, currlen=2, maxlen=2 elems=[elem1,elem2])
 </pre>

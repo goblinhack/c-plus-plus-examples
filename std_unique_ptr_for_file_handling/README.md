@@ -66,19 +66,19 @@ To build:
 <pre>
 cd std_unique_ptr_for_file_handling
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a file and write to it
+[31;1;4mCreate a file and write to it[0m
 
-# Read from the file
-open file 0x7fff889b1fe0
+[31;1;4mRead from the file[0m
+open file 0x564875dfef00
 Time is an illusion. Lunch time, doubly so
-close file 0x7fff889b1fe0
+close file 0x564875dfef00
 
 # End, expect file clost to automatically happen
 </pre>

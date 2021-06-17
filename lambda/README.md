@@ -158,16 +158,16 @@ To build:
 <pre>
 cd lambda
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a vector of unsorted ints:
+[31;1;4mCreate a vector of unsorted ints:[0m
 
-# Sort via lamda sorter:
+[31;1;4mSort via lamda sorter:[0m
 vec1: walk 1
 vec1: walk 2
 vec1: walk 3
@@ -176,7 +176,7 @@ vec1: walk 6
 vec1: walk 7
 vec1: walk 42
 
-# Modify vector via lamda modifier:
+[31;1;4mModify vector via lamda modifier:[0m
 vec1: walk 2
 vec1: walk 3
 vec1: walk 4
@@ -185,7 +185,7 @@ vec1: walk 7
 vec1: walk 8
 vec1: walk 43
 
-# Modify vector via lamda modifier that specifies return type:
+[31;1;4mModify vector via lamda modifier that specifies return type:[0m
 vec1: walk 3
 vec1: walk 4
 vec1: walk 5
@@ -194,7 +194,7 @@ vec1: walk 8
 vec1: walk 9
 vec1: walk 44
 
-# Modify vector via lamda modifier that specifies return type:
+[31;1;4mModify vector via lamda modifier that specifies return type:[0m
 vec1: walk 4
 vec1: walk 5
 vec1: walk 6
@@ -203,7 +203,7 @@ vec1: walk 9
 vec1: walk 10
 vec1: walk 45
 
-# Modify vector via lamda modifier with [=] capture:
+[31;1;4mModify vector via lamda modifier with [=] capture:[0m
 vec1: walk 5
 vec1: walk 6
 vec1: walk 7
@@ -212,7 +212,7 @@ vec1: walk 10
 vec1: walk 11
 vec1: walk 46
 
-# Modify vector via lamda modifier with [&] capture:
+[31;1;4mModify vector via lamda modifier with [&] capture:[0m
 vec1: walk 6
 vec1: walk 8
 vec1: walk 10
@@ -221,7 +221,7 @@ vec1: walk 15
 vec1: walk 17
 vec1: walk 53
 
-# Auto lambda:
+[31;1;4mAuto lambda:[0m
 vec2: walk 3.6
 vec2: walk 2.5
 vec2: walk 4.4
@@ -230,13 +230,13 @@ vec2: walk 7.3
 vec2: walk 6.2
 vec2: walk 42.1
 
-# Lambda with modification:
+[31;1;4mLambda with modification:[0m
 Zaphod has 2 heads
 
-# Lambda with modification:
+[31;1;4mLambda with modification:[0m
 Marvin has 1 heads
 
-# Lambda with modification in the capture:
+[31;1;4mLambda with modification in the capture:[0m
 life        = 38
 life        = 40
 life        = 42

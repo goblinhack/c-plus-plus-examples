@@ -45,4 +45,4 @@ clobber: clean
 all: $(TARGET) 
 # DO NOT DELETE
 
-.o/main.o: ../common/common.h
+.o/main.o: /usr/include/string.h ../common/common.h

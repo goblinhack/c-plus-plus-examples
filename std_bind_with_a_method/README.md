@@ -136,29 +136,29 @@ To build:
 <pre>
 cd std_bind_with_a_method
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# create account1 and try to deposit into it
-new cash BankAccount(0x7ffee37eec68, cash $0)
+[31;1;4mcreate account1 and try to deposit into it[0m
+new cash BankAccount(0x7fff4ad716c8, cash $0)
 
-# invoke a bind to a method via proxy
-copy cash constructor called for BankAccount(0x7ffee37eec68, cash $0)
-copy cash constructor result is  BankAccount(0x7ffee37eec60, cash $0)
-deposit cash called BankAccount(0x7ffee37eec60, cash $100)
+[31;1;4minvoke a bind to a method via proxy[0m
+copy cash constructor called for BankAccount(0x7fff4ad716c8, cash $0)
+copy cash constructor result is  BankAccount(0x7fff4ad716d8, cash $0)
+deposit cash called BankAccount(0x7fff4ad716d8, cash $100)
 
-# invoke a bind to a method via proxy with std::ref
-deposit cash called BankAccount(0x7ffee37eec68, cash $100)
+[31;1;4minvoke a bind to a method via proxy with std::ref[0m
+deposit cash called BankAccount(0x7fff4ad716c8, cash $100)
 
-# invoke a bind to a method directly
-deposit cash called BankAccount(0x7ffee37eec68, cash $200)
+[31;1;4minvoke a bind to a method directly[0m
+deposit cash called BankAccount(0x7fff4ad716c8, cash $200)
 
-# check the deposits succeeded
-delete account BankAccount(0x7ffee37eec60, cash $100)
-delete account BankAccount(0x7ffee37eec68, cash $200)
-# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffee37eec68, cash $200) than expected 300
+[31;1;4mcheck the deposits succeeded[0m
+delete account BankAccount(0x7fff4ad716d8, cash $100)
+delete account BankAccount(0x7fff4ad716c8, cash $200)
+# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7fff4ad716c8, cash $200) than expected 300
 </pre>

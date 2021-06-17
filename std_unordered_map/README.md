@@ -127,24 +127,24 @@ To build:
 <pre>
 cd std_unordered_map
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# std::map
+[31;1;4mstd::map[0m
 arthur 3
 marvin 4
 mice 5
 vogon 6
 zaphod 1
 
-# std::unordered_map
-zaphod 1
-marvin 4
-arthur 3
+[31;1;4mstd::unordered_map[0m
 vogon 6
 mice 5
+marvin 4
+arthur 3
+zaphod 1
 </pre>

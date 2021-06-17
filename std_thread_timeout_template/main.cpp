@@ -1,5 +1,6 @@
 #include <chrono>
 #include <ctime>
+#include <functional>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>

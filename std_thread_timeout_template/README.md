@@ -9,6 +9,7 @@ Here is a full example:
 ```C++
 #include <chrono>
 #include <ctime>
+#include <functional>
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
@@ -113,18 +114,18 @@ To build:
 <pre>
 cd std_thread_timeout_template
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o -lpthread -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Run a function that might block
+[31;1;4mRun a function that might block[0m
 
-# Function begins at :16:07:28.034 
+[31;1;4mFunction begins at :11:54:29.056 [0m
 
-# Function argument  :42
+[31;1;4mFunction argument  :42[0m
 
-# Timed out at       :16:07:29.037 
+# Timed out at       :11:54:30.056 
 </pre>

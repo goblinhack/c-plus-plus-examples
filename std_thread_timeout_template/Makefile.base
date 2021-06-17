@@ -4,6 +4,8 @@ TARGET_OBJECTS=main.o
 
 EXTRA_CXXFLAGS=
 
+LDLIBS=-lpthread
+
 %.o: %.cpp
 	@echo $(CXX) $(EXTRA_CXXFLAGS) $(CXXFLAGS) -c -o $@ $<
 	@$(CXX) $(EXTRA_CXXFLAGS) $(CXXFLAGS) -c -o $@ $<

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 #include "../common/common.h"
 
 static int add_two_numbers_callback (const int a, const int b) {

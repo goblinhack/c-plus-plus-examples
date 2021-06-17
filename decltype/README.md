@@ -29,6 +29,7 @@ In the following example we have a demangler (which you can ignore) but it
 prints slightly more verbose output using g++ abi interface:
 ```C++
 #include <iostream>
+#include <memory>
 #include <cxxabi.h>  // needed for abi::__cxa_demangle
 
 //
@@ -172,69 +173,69 @@ To build:
 <pre>
 cd decltype
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# What is the meaning...:
+[31;1;4mWhat is the meaning...:[0m
 the meaning is 42
 
-# What type is life...:
+[31;1;4mWhat type is life...:[0m
 i
 int
 
-# How big is the earth...:
+[31;1;4mHow big is the earth...:[0m
 42
 
-# What type is the earth...:
+[31;1;4mWhat type is the earth...:[0m
 A42_c
 char [42]
 
-# How big is the universe...:
+[31;1;4mHow big is the universe...:[0m
 4200000
 
-# What type is the universe...:
+[31;1;4mWhat type is the universe...:[0m
 11TheUniverse
 TheUniverse
 
-# What type is a lambda_add_two...:
-Z4mainE3$_1
-main::$_1
+[31;1;4mWhat type is a lambda_add_two...:[0m
+Z4mainEUliiE_
+main::{lambda(int, int)#1}
 
-# What type is a lambda_add_two(1, 2)...:
+[31;1;4mWhat type is a lambda_add_two(1, 2)...:[0m
 int
 
-# What type is add_two()...:
+[31;1;4mWhat type is add_two()...:[0m
 FiiiE
 int (int, int)
 
-# What type is add_two(1, 2)...:
+[31;1;4mWhat type is add_two(1, 2)...:[0m
 int
 
-# What type is add_two_template<int, int>()...:
+[31;1;4mWhat type is add_two_template<int, int>()...:[0m
 int (int, int)
 
-# What type is add_two_template<float, int>()...:
+[31;1;4mWhat type is add_two_template<float, int>()...:[0m
 float (float, int)
 
-# What type is add_two_template<int, float>()...:
+[31;1;4mWhat type is add_two_template<int, float>()...:[0m
 float (int, float)
 
-# What type is add_two_template<float, float>()...:
+[31;1;4mWhat type is add_two_template<float, float>()...:[0m
 float (float, float)
 
-# What type is add_two_template((int)1, (int)2)...:
+[31;1;4mWhat type is add_two_template((int)1, (int)2)...:[0m
 int
 
-# What type is add_two_template((float)1.1, (int)2)...:
+[31;1;4mWhat type is add_two_template((float)1.1, (int)2)...:[0m
 float
 
-# What type is add_two_template((int)1, (float)2.2)...:
+[31;1;4mWhat type is add_two_template((int)1, (float)2.2)...:[0m
 float
 
-# What type is add_two_template((float)1.1, (float)2.2)...:
+[31;1;4mWhat type is add_two_template((float)1.1, (float)2.2)...:[0m
 float
 </pre>

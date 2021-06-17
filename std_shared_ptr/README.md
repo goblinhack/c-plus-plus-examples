@@ -91,39 +91,39 @@ To build:
 <pre>
 cd std_shared_ptr
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Create a copy constructed class and share it between two pointers:
-new Foo(0x7ffeeeeb3c50, data=foo1)
-copy constructor Foo(0x7fea65405be8, data=)
-delete Foo(0x7ffeeeeb3c50, data=foo1)
+[31;1;4mCreate a copy constructed class and share it between two pointers:[0m
+new Foo(0x7ffd2d425940, data=foo1)
+copy constructor Foo(0x55e69eac7f00, data=)
+delete Foo(0x7ffd2d425940, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-# Try to create a deadlock:
+[31;1;4mTry to create a deadlock:[0m
 other use_count now 4
 sptr1 ref count now 3
 other use_count now 4
 sptr2 ref count now 3
 
-# Undo the 'deadlock':
+[31;1;4mUndo the 'deadlock':[0m
 other use_count now 0
 sptr1 ref count now 2
 other use_count now 0
 sptr2 ref count now 2
 
-# Release the shared sptrs, expect foo1 to be destroyed:
+[31;1;4mRelease the shared sptrs, expect foo1 to be destroyed:[0m
 sptr1 ref count now 0
-delete Foo(0x7fea65405be8, data=foo1)
+delete Foo(0x55e69eac7f00, data=foo1)
 sptr2 ref count now 0
 
-# You can also create shared pointers WITHOUT copy constructor overhead
-new Foo(0x7fea65405ba0, data=foo0)
-sptr0 = Foo(0x7fea65405ba0, data=foo0)
-delete Foo(0x7fea65405ba0, data=foo0)
+[31;1;4mYou can also create shared pointers WITHOUT copy constructor overhead[0m
+new Foo(0x55e69eac7f40, data=foo0)
+sptr0 = Foo(0x55e69eac7f40, data=foo0)
+delete Foo(0x55e69eac7f40, data=foo0)
 </pre>

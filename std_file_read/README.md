@@ -80,6 +80,7 @@ Here is a full example:
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <iterator>
 
 static const std::string filename = "tmp.txt";
 static const std::string msg = "Time is an illusion.\n  Lunch time, doubly so.\n\n    Douglas Adams";
@@ -236,34 +237,34 @@ To build:
 <pre>
 cd std_file_read
 rm -f *.o example
-c++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-c++ main.o  -o example
+g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
-# Show default IO formatting flags:
+[31;1;4mShow default IO formatting flags:[0m
 std::cout flags are: :dec:skipws
 
-# Create a file
+[31;1;4mCreate a file[0m
 
-# Method 1a (string at a time, newlines are lost, whitespace is skipped)
+[31;1;4mMethod 1a (string at a time, newlines are lost, whitespace is skipped)[0m
 Time is an illusion. Lunch time, doubly so. Douglas Adams 
 
-# Method 1b (string at a time, newlines are lost, no skip of whitespace)
+[31;1;4mMethod 1b (string at a time, newlines are lost, no skip of whitespace)[0m
 Time  
 
-# Method 2 (via std::copy with back insert iterator, spaces are lost)
+[31;1;4mMethod 2 (via std::copy with back insert iterator, spaces are lost)[0m
 Timeisanillusion.Lunchtime,doublyso.DouglasAdams
 
-# Method 3 (via istreambuf, char at a time, likely slower)
+[31;1;4mMethod 3 (via istreambuf, char at a time, likely slower)[0m
 Time is an illusion.
   Lunch time, doubly so.
 
     Douglas Adams
 
-# Method 4 (via getline, line at a time, likely fast)
+[31;1;4mMethod 4 (via getline, line at a time, likely fast)[0m
 Time is an illusion.
   Lunch time, doubly so.
 

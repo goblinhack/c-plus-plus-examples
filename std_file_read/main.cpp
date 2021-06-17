@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <iterator>
 #include "../common/common.h"
 
 static const std::string filename = "tmp.txt";
