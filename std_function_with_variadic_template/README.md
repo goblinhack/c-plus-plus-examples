@@ -7,51 +7,47 @@ function like a callback to allow us to easily wrap any function.
 
 Here is a full example:
 ```C++
-#include <iostream>
 #include <functional>
+#include <iostream>
 
-int my_wrapped_function (int x, const std::string y)
+int my_wrapped_function(int x, const std::string y)
 {
-    std::cout << "SUCCESS: Hello from my_wrapped_function(x=" << x << ", y=" << y << ");" << std::endl;
-    return 43;
+  std::cout << "SUCCESS: Hello from my_wrapped_function(x=" << x << ", y=" << y << ");" << std::endl;
+  return 43;
 }
 
-void my_argument_modifier (int &x)
+void my_argument_modifier(int &x)
 {
-    std::cout << "SUCCESS: Hello from my_argument_modifier(x=" << x << ") => " << x + 1 << ";" << std::endl;
-    x++;
+  std::cout << "SUCCESS: Hello from my_argument_modifier(x=" << x << ") => " << x + 1 << ";" << std::endl;
+  x++;
 }
 
-template<typename ret, typename T, typename... Rest>
-using fn = std::function<ret(T, Rest...)>;
+template < typename ret, typename T, typename... Rest > using fn = std::function< ret(T, Rest...) >;
 
-template<typename ret, typename T, typename... Rest>
-ret wrapper(fn<ret, T, Rest...> f, T t, Rest... rest)
+template < typename ret, typename T, typename... Rest > ret wrapper(fn< ret, T, Rest... > f, T t, Rest... rest)
 {
-    return f(t, rest...);
+  return f(t, rest...);
 }
 
-template<typename ret, typename T, typename... Rest>
-ret wrapper(fn<ret, T&, Rest&...> f, T& t, Rest&... rest)
+template < typename ret, typename T, typename... Rest > ret wrapper(fn< ret, T &, Rest &... > f, T &t, Rest &...rest)
 {
-    return f(t, rest...);
+  return f(t, rest...);
 }
 
 int main()
 {
-    // Wrap a function with variable arguments
-    auto f1 = fn<int,int,const std::string>(my_wrapped_function);
-    auto result = wrapper(f1, 42, std::string("hello"));
-    // Result should be 43: 
+  // Wrap a function with variable arguments
+  auto f1     = fn< int, int, const std::string >(my_wrapped_function);
+  auto result = wrapper(f1, 42, std::string("hello"));
+  // Result should be 43: 
 
-    // Wrap a function that modifies its arguments
-    auto f2 = fn<void,int&>(my_argument_modifier);
-    wrapper(f2, result);
-    // Result should be 44: 
+  // Wrap a function that modifies its arguments
+  auto f2 = fn< void, int & >(my_argument_modifier);
+  wrapper(f2, result);
+  // Result should be 44: 
 
-    return 0;
+  return 0;
 }
-
 ```
 To build:
 <pre>

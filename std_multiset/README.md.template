@@ -35,8 +35,8 @@ which yields:
 In our example we will provide the comparison operator so we can sort
 accounts by balance:
 ```C++
-    friend bool operator<(const class BankCustomer<T> & lhs,
-                          const class BankCustomer<T> & rhs) {
+    friend bool operator<(const class BankCustomer< T > & lhs,
+                          const class BankCustomer< T > & rhs) {
         return lhs.account.balance() > rhs.account.balance();
     }
 ```

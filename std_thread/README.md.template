@@ -7,7 +7,7 @@ you do! Enter std::thread
 
 Let's start simple and kick off a thread that uses a local function.
 
-Note the use of std::ref here. This creates a reference_wrapper<T>
+Note the use of std::ref here. This creates a reference_wrapper< T >
 around the object provided and allows it to be passed to our function.
 
 Note also the use of join(). This will cause the current thread to

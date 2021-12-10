@@ -36,81 +36,84 @@ However there can be some hidden costs. When the initializer list is
 assigned to a container, the copy constructor is invoked. So you are
 still doing a push_back onto the container for each element.
 ```C++
-#include <iostream>
 #include <algorithm>
-#include <vector>
 #include <initializer_list>
+#include <iostream>
+#include <vector>
 
-class MyString {
+class MyString
+{
 private:
-    std::string s;
+  std::string s;
+
 public:
-    MyString() {
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " MyString() " << std::endl;
-    }
-    ~MyString() {
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " ~MyString() " << s << std::endl;
-    }
-    MyString(const std::string &s) : s(s) {
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " MyString(std::string &) " << s << std::endl;
-    }
-    MyString(const std::string &&s) : s(s) {
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " MyString(std::string &&) " << s << std::endl;
-    }
-    MyString(const MyString & o) : s(o.s) { // copy constructor
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " MyString(const std::string &) " << s << std::endl;
-    }
-    MyString(const MyString && o) : s(o.s) { // move constructor
-        auto address = static_cast<const void*>(this);
-        std::cout << address << " MyString(const std::string &&) " << s << std::endl;
-    }
-    friend std::ostream& operator<<(std::ostream &os, const MyString& o) {
-        return os << o.s;
-    }
+  MyString()
+  {
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " MyString() " << std::endl;
+  }
+  ~MyString()
+  {
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " ~MyString() " << s << std::endl;
+  }
+  MyString(const std::string &s) : s(s)
+  {
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " MyString(std::string &) " << s << std::endl;
+  }
+  MyString(const std::string &&s) : s(s)
+  {
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " MyString(std::string &&) " << s << std::endl;
+  }
+  MyString(const MyString &o) : s(o.s)
+  { // copy constructor
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " MyString(const std::string &) " << s << std::endl;
+  }
+  MyString(const MyString &&o) : s(o.s)
+  { // move constructor
+    auto address = static_cast< const void * >(this);
+    std::cout << address << " MyString(const std::string &&) " << s << std::endl;
+  }
+  friend std::ostream &operator<<(std::ostream &os, const MyString &o) { return os << o.s; }
 };
 
-int main() {
-    // Create a std::initializer_list of MyString:
-    std::initializer_list< MyString > init1 = {
-        MyString(std::string("elem1")), MyString(std::string("elem2"))
-    };
+int main()
+{
+  // Create a std::initializer_list of MyString:
+  std::initializer_list< MyString > init1 = {MyString(std::string("elem1")), MyString(std::string("elem2"))};
 
-    // Assign this initializer_list to a vector:
-    std::vector< MyString > vec1(init1);
+  // Assign this initializer_list to a vector:
+  std::vector< MyString > vec1(init1);
 
-    //
-    // Commented out as compilers are now smart and complain about this intentional copy
-    //
-    // // Walk the vector with 'const auto i': (this will involve copies)
-    // for (const auto i : vec1) {
-    //     std::cout << i << std::endl;
-    // }
+  //
+  // Commented out as compilers are now smart and complain about this intentional copy
+  //
+  // // Walk the vector with 'const auto i': (this will involve copies)
+  // for (const auto i : vec1) {
+  //     std::cout << i << std::endl;
+  // }
 
-    // Walk the vector with 'const auto &i': (should see no copies)
-    for (const auto &i : vec1) {
-        std::cout << i << std::endl;
-    }
+  // Walk the vector with 'const auto &i': (should see no copies)
+  for (const auto &i : vec1) {
+    std::cout << i << std::endl;
+  }
 
-    // Walk the vector with forward reference 'auto &&i': (should see no copies)
-    for (auto &&i : vec1) {
-        std::cout << i << std::endl;
-    }
+  // Walk the vector with forward reference 'auto &&i': (should see no copies)
+  for (auto &&i : vec1) {
+    std::cout << i << std::endl;
+  }
 
-    // Create another vector with an inline initializer list
-    // This will not work
-    // std::vector< MyString > vec2 (
-    //     MyString(std::string("elem3")), MyString(std::string("elem4"))
-    // );
-    std::vector< MyString > vec2 = {
-        MyString(std::string("elem3")), MyString(std::string("elem4"))
-    };
+  // Create another vector with an inline initializer list
+  // This will not work
+  // std::vector< MyString > vec2 (
+  //     MyString(std::string("elem3")), MyString(std::string("elem4"))
+  // );
+  std::vector< MyString > vec2 = {MyString(std::string("elem3")), MyString(std::string("elem4"))};
 
-    // End:
+  // End:
 }
 ```
 To build:
@@ -125,12 +128,12 @@ Expected output:
 <pre>
 
 [31;1;4mCreate a std::initializer_list of MyString:[0m
-0x7fffb02409f0 MyString(std::string &&) elem1
-0x7fffb0240a10 MyString(std::string &&) elem2
+0x7fff9cbb2ca0 MyString(std::string &&) elem1
+0x7fff9cbb2cc0 MyString(std::string &&) elem2
 
 [31;1;4mAssign this initializer_list to a vector:[0m
-0x560f21d60ec0 MyString(const std::string &) elem1
-0x560f21d60ee0 MyString(const std::string &) elem2
+0x563b3965eec0 MyString(const std::string &) elem1
+0x563b3965eee0 MyString(const std::string &) elem2
 
 [31;1;4mWalk the vector with 'const auto &i': (should see no copies)[0m
 elem1
@@ -141,18 +144,18 @@ elem1
 elem2
 
 [31;1;4mCreate another vector with an inline initializer list[0m
-0x7fffb0240a30 MyString(std::string &&) elem3
-0x7fffb0240a50 MyString(std::string &&) elem4
-0x560f21d60f10 MyString(const std::string &) elem3
-0x560f21d60f30 MyString(const std::string &) elem4
-0x7fffb0240a50 ~MyString() elem4
-0x7fffb0240a30 ~MyString() elem3
+0x7fff9cbb2ce0 MyString(std::string &&) elem3
+0x7fff9cbb2d00 MyString(std::string &&) elem4
+0x563b3965ef10 MyString(const std::string &) elem3
+0x563b3965ef30 MyString(const std::string &) elem4
+0x7fff9cbb2d00 ~MyString() elem4
+0x7fff9cbb2ce0 ~MyString() elem3
 
 [31;1;4mEnd:[0m
-0x560f21d60f10 ~MyString() elem3
-0x560f21d60f30 ~MyString() elem4
-0x560f21d60ec0 ~MyString() elem1
-0x560f21d60ee0 ~MyString() elem2
-0x7fffb0240a10 ~MyString() elem2
-0x7fffb02409f0 ~MyString() elem1
+0x563b3965ef10 ~MyString() elem3
+0x563b3965ef30 ~MyString() elem4
+0x563b3965eec0 ~MyString() elem1
+0x563b3965eee0 ~MyString() elem2
+0x7fff9cbb2cc0 ~MyString() elem2
+0x7fff9cbb2ca0 ~MyString() elem1
 </pre>

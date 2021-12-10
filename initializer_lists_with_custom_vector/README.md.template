@@ -11,9 +11,9 @@ would! All you need to do is add the following to your container class:
 
     template <typename T> class MyClass {
     private:
-        std::vector<T> stuff;
+        std::vector< T > stuff;
     public:
-        MyClass(std::initializer_list<T> l) {
+        MyClass(std::initializer_list< T > l) {
             for (auto i : l) { stuff.push_back(i); }
     };
 ```

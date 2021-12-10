@@ -25,37 +25,37 @@ a templatized iterator e.g.:
 And then later we can save some typing by having the const and non const
 versions be instantiations of this template e.g.:
 ```C++
-    typedef MyIterator<T>              iterator;
+    typedef MyIterator< T >              iterator;
     typedef MyIterator<const T>        const_iterator;
-    typedef MyReverseIterator<T>       reverse_iterator;
+    typedef MyReverseIterator< T >       reverse_iterator;
     typedef MyReverseIterator<const T> const_reverse_iterator;
 ```
 Note that we have one template each for forward and reverse iterators.
 The only real difference is that operations like ++ will increment in the
 forward container and decrement in the reverse container e.g.:
 ```C++
-    MyIterator<T>        operator++ (int) { auto temp(*this); ++dataptr; return temp; }
-    MyReverseIterator<T> operator++ (int) { auto temp(*this); --dataptr; return temp; }
+    MyIterator< T >        operator++ (int) { auto temp(*this); ++dataptr; return temp; }
+    MyReverseIterator< T > operator++ (int) { auto temp(*this); --dataptr; return temp; }
 ```
 We must also provide all operators for moving around the 
 container, +,-,++,--,==.!= etc...:
 ```C++
-    MyReverseIterator<T> operator+ (const difference_type& delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
-    MyReverseIterator<T> operator+ (int delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
-    MyReverseIterator<T> operator++ (int) { auto temp(*this); --dataptr; return temp; }
-    MyReverseIterator<T> operator- (const difference_type& delta) { auto oldptr = dataptr; dataptr+=delta; auto temp(*this); dataptr = oldptr; return temp; }
-    MyReverseIterator<T> operator- (int delta) { auto oldptr = dataptr; dataptr+=delta; auto temp(*this); dataptr = oldptr; return temp; }
-    MyReverseIterator<T> operator-- (int) { auto temp(*this); ++dataptr; return temp; }
-    MyReverseIterator<T>& operator++ () { --dataptr; return (*this); }
-    MyReverseIterator<T>& operator+= (const difference_type& delta) { dataptr -= delta; return (*this); }
-    MyReverseIterator<T>& operator-- () { ++dataptr; return (*this); }
-    MyReverseIterator<T>& operator-= (const difference_type& delta) { dataptr += delta; return (*this); }
-    MyReverseIterator<T>& operator= (T* ptr) { dataptr = ptr; return (*this); }
-    MyReverseIterator<T>& operator= (const MyReverseIterator<T>& it) = default;
+    MyReverseIterator< T > operator+ (const difference_type& delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
+    MyReverseIterator< T > operator+ (int delta) { auto oldptr = dataptr; dataptr-=delta; auto temp(*this); dataptr = oldptr; return temp; }
+    MyReverseIterator< T > operator++ (int) { auto temp(*this); --dataptr; return temp; }
+    MyReverseIterator< T > operator- (const difference_type& delta) { auto oldptr = dataptr; dataptr+=delta; auto temp(*this); dataptr = oldptr; return temp; }
+    MyReverseIterator< T > operator- (int delta) { auto oldptr = dataptr; dataptr+=delta; auto temp(*this); dataptr = oldptr; return temp; }
+    MyReverseIterator< T > operator-- (int) { auto temp(*this); ++dataptr; return temp; }
+    MyReverseIterator< T >& operator++ () { --dataptr; return (*this); }
+    MyReverseIterator< T >& operator+= (const difference_type& delta) { dataptr -= delta; return (*this); }
+    MyReverseIterator< T >& operator-- () { ++dataptr; return (*this); }
+    MyReverseIterator< T >& operator-= (const difference_type& delta) { dataptr += delta; return (*this); }
+    MyReverseIterator< T >& operator= (T* ptr) { dataptr = ptr; return (*this); }
+    MyReverseIterator< T >& operator= (const MyReverseIterator< T >& it) = default;
     T& operator*() { return *dataptr; }
     T* operator->() { return dataptr; }
-    bool operator!=(const MyReverseIterator<T>& it) const { return (dataptr != it.get_const_ptr()); }
-    bool operator==(const MyReverseIterator<T>& it) const { return (dataptr == it.get_const_ptr()); }
+    bool operator!=(const MyReverseIterator< T >& it) const { return (dataptr != it.get_const_ptr()); }
+    bool operator==(const MyReverseIterator< T >& it) const { return (dataptr == it.get_const_ptr()); }
 ```
 One other note, is that the STL will expect the following traits to be 
 provided within your iterator:
@@ -78,9 +78,9 @@ first instantiate the templates e.g.:
 ```C++
 template<typename T> class MyVector {
     ...
-    typedef MyIterator<T>              iterator;
+    typedef MyIterator< T >              iterator;
     typedef MyIterator<const T>        const_iterator;
-    typedef MyReverseIterator<T>       reverse_iterator;
+    typedef MyReverseIterator< T >       reverse_iterator;
     typedef MyReverseIterator<const T> const_reverse_iterator;
 ```
 And then also provide the normal container traversing functions that we

@@ -34,8 +34,8 @@ which yields:
 In our example we will provide the comparison operator so we can sort
 accounts by balance:
 ```C++
-    friend bool operator<(const class BankCustomer<T> & lhs,
-                          const class BankCustomer<T> & rhs) {
+    friend bool operator<(const class BankCustomer< T > & lhs,
+                          const class BankCustomer< T > & rhs) {
         return lhs.account.balance() > rhs.account.balance();
     }
 ```
@@ -87,205 +87,210 @@ Here is the full example:
 #include <algorithm>
 #include <iostream>
 #include <list>
-#include <string>
-#include <sstream>
 #include <set>
+#include <sstream>
+#include <string>
 
-template<class T> class BankAccount;
+template < class T > class BankAccount;
 
-template<class T> class BankAccount {
-private:
-    T cash {};
-public:
-    BankAccount<T> () {
-        std::cout << "default constructor " << to_string() << std::endl;
-    }
-    BankAccount<T> (T cash) : cash (cash) {
-        std::cout << "new cash " << to_string() << std::endl;
-    }
-    BankAccount<T> (const BankAccount& o) {
-        std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
-        cash = o.cash;
-        std::cout << "copy cash constructor result is  " << to_string() << std::endl;
-    }
-    ~BankAccount<T> () {
-        std::cout << "delete account " << to_string() << std::endl;
-    }
-    void deposit (const T& deposit) {
-        cash += deposit;
-        std::cout << "deposit cash called " << to_string() << std::endl;
-    }
-    using CheckTransactionCallback = std::function<void(T)>;
-    int check_transaction (int cash, CheckTransactionCallback fn) {
-        if (cash < 100) {
-            throw std::string("transaction is too small for Mr Money Bags");
-        } else {
-            fn(cash);
-        }
-        return cash;
-    }
-    T balance (void) const {
-        return cash;
-    }
-    bool check_balance (T expected) const {
-        if (cash == expected) {
-            return true;
-        } else {
-            throw std::string("account has different funds " +
-                              to_string() + " than expected " +
-                              std::to_string(expected));
-        }
-    }
-    friend std::ostream& operator<<(std::ostream &os, const BankAccount<T>& o) {
-        os << "$" << std::to_string(o.cash);
-        return os;
-    }
-    std::string to_string (void) const {
-        auto address = static_cast<const void*>(this);
-        std::stringstream ss;
-        ss << address;
-        return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
-    }
-};
-
-template<class T> class BankCustomer;
-
-template<class T> class BankCustomer {
-private:
-    std::string name {};
-    BankAccount<T> account;
-public:
-    BankCustomer (void) { 
-        std::cout << "default customer " << to_string() << std::endl;
-    }
-    BankCustomer (const std::string& name) : name(name) {
-        std::cout << "new temporary customer " << to_string() << std::endl;
-    }
-    BankCustomer (const std::string& name, const BankAccount<T>& account) :
-                    name(name), account(account) {
-        std::cout << "new customer " << to_string() << std::endl;
-    }
-    ~BankCustomer () {
-        std::cout << "delete customer " << to_string() << std::endl;
-    }
-    std::string to_string (void) const {
-        return "Customer(" + name + ", " + account.to_string() + ")";
-    }
-    friend std::ostream& operator<<(std::ostream &os, const BankCustomer<T>& o) {
-        os << o.to_string();
-        return os;
-    }
-    friend bool operator<(const class BankCustomer<T> & lhs,
-                          const class BankCustomer<T> & rhs) {
-        return lhs.name > rhs.name;
-    }
-};
-
-static void backward_sort (void) {
-    // Backward sorted multiset
-    std::multiset< std::string, std::greater<std::string> > m;
-
-    m.insert("zaphod");
-    m.insert("universe");
-    m.insert("arthur");
-    m.insert("marvin");
-    m.insert("mice");
-    m.insert("vogon");
-
-    for (auto i : m) { std::cout << i << std::endl; }
-}
-
-static void forward_sort (void) {
-    // Forward sorted multiset
-    std::multiset< std::string, std::less<std::string> > m;
-
-    m.insert("zaphod");
-    m.insert("universe");
-    m.insert("arthur");
-    m.insert("marvin");
-    m.insert("mice");
-    m.insert("vogon");
-
-    for (auto i : m) { std::cout << i << std::endl; }
-}
-
-static void default_sort (void) {
-    // Default sorted multiset
-    std::multiset< std::string > m;
-
-    m.insert("zaphod");
-    m.insert("universe");
-    m.insert("arthur");
-    m.insert("marvin");
-    m.insert("mice");
-    m.insert("vogon");
-
-    for (auto i : m) { std::cout << i << std::endl; }
-}
-
-static void account_demo (void)
+template < class T > class BankAccount
 {
-    // Create a std::multiset of BankCustomer -> Account
-    using Account = BankAccount<int>;
-    using Customer = BankCustomer<int>;
-    using TheBank = std::multiset<Customer>;
+private:
+  T cash {};
 
-    //
-    // Notice, Zaphod has two accounts and the multiset allows both
-    //
-    TheBank customers;
-    customers.insert(Customer("Arthur",  Account(100)));
-    customers.insert(Customer("Zaphod",  Account(100000)));
-    customers.insert(Customer("Zaphod",  Account(999999)));
-    customers.insert(Customer("Marvin",  Account(0)));
-    customers.insert(Customer("TheMice", Account(666)));
-    customers.insert(Customer("Ford",    Account(10)));
-
-    //
-    // Two ways to print this. One a simple loop. the other a lambda:
-    //
-    // All customers, sorted by wealth
-    for (const auto& b : customers) {
-        std::cout << b << std::endl;
+public:
+  BankAccount() { std::cout << "default constructor " << to_string() << std::endl; }
+  BankAccount(T cash) : cash(cash) { std::cout << "new cash " << to_string() << std::endl; }
+  BankAccount(const BankAccount &o)
+  {
+    std::cout << "copy cash constructor called for " << o.to_string() << std::endl;
+    cash = o.cash;
+    std::cout << "copy cash constructor result is  " << to_string() << std::endl;
+  }
+  ~BankAccount() { std::cout << "delete account " << to_string() << std::endl; }
+  void deposit(const T &deposit)
+  {
+    cash += deposit;
+    std::cout << "deposit cash called " << to_string() << std::endl;
+  }
+  using CheckTransactionCallback = std::function< void(T) >;
+  int check_transaction(int cash, CheckTransactionCallback fn)
+  {
+    if (cash < 100) {
+      throw std::string("transaction is too small for Mr Money Bags");
+    } else {
+      fn(cash);
     }
-
-    auto show_all_bank_accounts = ([](const TheBank &customers)
-        {
-            // All customers, sorted by wealth (lambda version)
-            for (const auto& b : customers) {
-                std::cout << b << std::endl;
-            }
-        } );
-
-    show_all_bank_accounts(customers);
-
-    // Find sneaky customers
-    for (const auto& customer : customers) {
-        using Iter = std::multiset<Customer>::iterator;
-        std::pair<Iter,Iter> ret = customers.equal_range(customer);
-        auto account_count = 0;
-        for (auto iter = ret.first; iter != ret.second; iter++) {
-            if (account_count++) {
-                // Customer has two accounts!
-                std::cout << *iter << std::endl;
-            }
-        }
+    return cash;
+  }
+  T    balance(void) const { return cash; }
+  bool check_balance(T expected) const
+  {
+    if (cash == expected) {
+      return true;
+    } else {
+      throw std::string("account has different funds " + to_string() + " than expected " + std::to_string(expected));
     }
+  }
+  friend std::ostream &operator<<(std::ostream &os, const BankAccount< T > &o)
+  {
+    os << "$" << std::to_string(o.cash);
+    return os;
+  }
+  std::string to_string(void) const
+  {
+    auto              address = static_cast< const void              *>(this);
+    std::stringstream ss;
+    ss << address;
+    return "BankAccount(" + ss.str() + ", cash $" + std::to_string(cash) + ")";
+  }
+};
 
-    // Get rid of a customer
-    customers.erase(Customer("Zaphod"));
+template < class T > class BankCustomer;
 
-    // Get rid of all customers
-    customers.clear();
+template < class T > class BankCustomer
+{
+private:
+  std::string      name {};
+  BankAccount< T > account;
 
-    // End
+public:
+  BankCustomer(void) { std::cout << "default customer " << to_string() << std::endl; }
+  BankCustomer(const std::string &name) : name(name)
+  {
+    std::cout << "new temporary customer " << to_string() << std::endl;
+  }
+  BankCustomer(const std::string &name, const BankAccount< T > &account) : name(name), account(account)
+  {
+    std::cout << "new customer " << to_string() << std::endl;
+  }
+  ~BankCustomer() { std::cout << "delete customer " << to_string() << std::endl; }
+  std::string          to_string(void) const { return "Customer(" + name + ", " + account.to_string() + ")"; }
+  friend std::ostream &operator<<(std::ostream &os, const BankCustomer< T > &o)
+  {
+    os << o.to_string();
+    return os;
+  }
+  friend bool operator<(const class BankCustomer< T > &lhs, const class BankCustomer< T > &rhs)
+  {
+    return lhs.name > rhs.name;
+  }
+};
+
+static void backward_sort(void)
+{
+  // Backward sorted multiset
+  std::multiset< std::string, std::greater< std::string > > m;
+
+  m.insert("zaphod");
+  m.insert("universe");
+  m.insert("arthur");
+  m.insert("marvin");
+  m.insert("mice");
+  m.insert("vogon");
+
+  for (auto i : m) {
+    std::cout << i << std::endl;
+  }
 }
 
-int main(int, char**) {
-    backward_sort();
-    forward_sort();
-    default_sort();
-    account_demo();
+static void forward_sort(void)
+{
+  // Forward sorted multiset
+  std::multiset< std::string, std::less< std::string > > m;
+
+  m.insert("zaphod");
+  m.insert("universe");
+  m.insert("arthur");
+  m.insert("marvin");
+  m.insert("mice");
+  m.insert("vogon");
+
+  for (auto i : m) {
+    std::cout << i << std::endl;
+  }
+}
+
+static void default_sort(void)
+{
+  // Default sorted multiset
+  std::multiset< std::string > m;
+
+  m.insert("zaphod");
+  m.insert("universe");
+  m.insert("arthur");
+  m.insert("marvin");
+  m.insert("mice");
+  m.insert("vogon");
+
+  for (auto i : m) {
+    std::cout << i << std::endl;
+  }
+}
+
+static void account_demo(void)
+{
+  // Create a std::multiset of BankCustomer -> Account
+  using Account  = BankAccount< int >;
+  using Customer = BankCustomer< int >;
+  using TheBank  = std::multiset< Customer >;
+
+  //
+  // Notice, Zaphod has two accounts and the multiset allows both
+  //
+  TheBank customers;
+  customers.insert(Customer("Arthur", Account(100)));
+  customers.insert(Customer("Zaphod", Account(100000)));
+  customers.insert(Customer("Zaphod", Account(999999)));
+  customers.insert(Customer("Marvin", Account(0)));
+  customers.insert(Customer("TheMice", Account(666)));
+  customers.insert(Customer("Ford", Account(10)));
+
+  //
+  // Two ways to print this. One a simple loop. the other a lambda:
+  //
+  // All customers, sorted by wealth
+  for (const auto &b : customers) {
+    std::cout << b << std::endl;
+  }
+
+  auto show_all_bank_accounts = ([](const TheBank &customers) {
+    // All customers, sorted by wealth (lambda version)
+    for (const auto &b : customers) {
+      std::cout << b << std::endl;
+    }
+  });
+
+  show_all_bank_accounts(customers);
+
+  // Find sneaky customers
+  for (const auto &customer : customers) {
+    using Iter                            = std::multiset< Customer >::iterator;
+    std::pair< Iter, Iter > ret           = customers.equal_range(customer);
+    auto                    account_count = 0;
+    for (auto iter = ret.first; iter != ret.second; iter++) {
+      if (account_count++) {
+        // Customer has two accounts!
+        std::cout << *iter << std::endl;
+      }
+    }
+  }
+
+  // Get rid of a customer
+  customers.erase(Customer("Zaphod"));
+
+  // Get rid of all customers
+  customers.clear();
+
+  // End
+}
+
+int main(int, char **)
+{
+  backward_sort();
+  forward_sort();
+  default_sort();
+  account_demo();
 }
 ```
 To build:
@@ -324,104 +329,104 @@ vogon
 zaphod
 
 [31;1;4mCreate a std::multiset of BankCustomer -> Account[0m
-new cash BankAccount(0x7ffc64284790, cash $100)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $100)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $100)
-new customer Customer(Arthur, BankAccount(0x7ffc64284810, cash $100))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $100)
-copy cash constructor result is  BankAccount(0x56191eabaff0, cash $100)
-delete customer Customer(Arthur, BankAccount(0x7ffc64284810, cash $100))
-delete account BankAccount(0x7ffc64284810, cash $100)
-delete account BankAccount(0x7ffc64284790, cash $100)
-new cash BankAccount(0x7ffc64284790, cash $100000)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $100000)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $100000)
-new customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $100000))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $100000)
-copy cash constructor result is  BankAccount(0x56191eabb090, cash $100000)
-delete customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $100000))
-delete account BankAccount(0x7ffc64284810, cash $100000)
-delete account BankAccount(0x7ffc64284790, cash $100000)
-new cash BankAccount(0x7ffc64284790, cash $999999)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $999999)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $999999)
-new customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $999999))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $999999)
-copy cash constructor result is  BankAccount(0x56191eabafa0, cash $999999)
-delete customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $999999))
-delete account BankAccount(0x7ffc64284810, cash $999999)
-delete account BankAccount(0x7ffc64284790, cash $999999)
-new cash BankAccount(0x7ffc64284790, cash $0)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $0)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $0)
-new customer Customer(Marvin, BankAccount(0x7ffc64284810, cash $0))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $0)
-copy cash constructor result is  BankAccount(0x56191eabb040, cash $0)
-delete customer Customer(Marvin, BankAccount(0x7ffc64284810, cash $0))
-delete account BankAccount(0x7ffc64284810, cash $0)
-delete account BankAccount(0x7ffc64284790, cash $0)
-new cash BankAccount(0x7ffc64284790, cash $666)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $666)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $666)
-new customer Customer(TheMice, BankAccount(0x7ffc64284810, cash $666))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $666)
-copy cash constructor result is  BankAccount(0x56191eabaf00, cash $666)
-delete customer Customer(TheMice, BankAccount(0x7ffc64284810, cash $666))
-delete account BankAccount(0x7ffc64284810, cash $666)
-delete account BankAccount(0x7ffc64284790, cash $666)
-new cash BankAccount(0x7ffc64284790, cash $10)
-copy cash constructor called for BankAccount(0x7ffc64284790, cash $10)
-copy cash constructor result is  BankAccount(0x7ffc64284810, cash $10)
-new customer Customer(Ford, BankAccount(0x7ffc64284810, cash $10))
-copy cash constructor called for BankAccount(0x7ffc64284810, cash $10)
-copy cash constructor result is  BankAccount(0x56191eabaf50, cash $10)
-delete customer Customer(Ford, BankAccount(0x7ffc64284810, cash $10))
-delete account BankAccount(0x7ffc64284810, cash $10)
-delete account BankAccount(0x7ffc64284790, cash $10)
+new cash BankAccount(0x7ffc90308630, cash $100)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $100)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $100)
+new customer Customer(Arthur, BankAccount(0x7ffc903086b0, cash $100))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $100)
+copy cash constructor result is  BankAccount(0x55f7dfdb0ff0, cash $100)
+delete customer Customer(Arthur, BankAccount(0x7ffc903086b0, cash $100))
+delete account BankAccount(0x7ffc903086b0, cash $100)
+delete account BankAccount(0x7ffc90308630, cash $100)
+new cash BankAccount(0x7ffc90308630, cash $100000)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $100000)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $100000)
+new customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $100000))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $100000)
+copy cash constructor result is  BankAccount(0x55f7dfdb1090, cash $100000)
+delete customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $100000))
+delete account BankAccount(0x7ffc903086b0, cash $100000)
+delete account BankAccount(0x7ffc90308630, cash $100000)
+new cash BankAccount(0x7ffc90308630, cash $999999)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $999999)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $999999)
+new customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $999999))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $999999)
+copy cash constructor result is  BankAccount(0x55f7dfdb0fa0, cash $999999)
+delete customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $999999))
+delete account BankAccount(0x7ffc903086b0, cash $999999)
+delete account BankAccount(0x7ffc90308630, cash $999999)
+new cash BankAccount(0x7ffc90308630, cash $0)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $0)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $0)
+new customer Customer(Marvin, BankAccount(0x7ffc903086b0, cash $0))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $0)
+copy cash constructor result is  BankAccount(0x55f7dfdb1040, cash $0)
+delete customer Customer(Marvin, BankAccount(0x7ffc903086b0, cash $0))
+delete account BankAccount(0x7ffc903086b0, cash $0)
+delete account BankAccount(0x7ffc90308630, cash $0)
+new cash BankAccount(0x7ffc90308630, cash $666)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $666)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $666)
+new customer Customer(TheMice, BankAccount(0x7ffc903086b0, cash $666))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $666)
+copy cash constructor result is  BankAccount(0x55f7dfdb0f00, cash $666)
+delete customer Customer(TheMice, BankAccount(0x7ffc903086b0, cash $666))
+delete account BankAccount(0x7ffc903086b0, cash $666)
+delete account BankAccount(0x7ffc90308630, cash $666)
+new cash BankAccount(0x7ffc90308630, cash $10)
+copy cash constructor called for BankAccount(0x7ffc90308630, cash $10)
+copy cash constructor result is  BankAccount(0x7ffc903086b0, cash $10)
+new customer Customer(Ford, BankAccount(0x7ffc903086b0, cash $10))
+copy cash constructor called for BankAccount(0x7ffc903086b0, cash $10)
+copy cash constructor result is  BankAccount(0x55f7dfdb0f50, cash $10)
+delete customer Customer(Ford, BankAccount(0x7ffc903086b0, cash $10))
+delete account BankAccount(0x7ffc903086b0, cash $10)
+delete account BankAccount(0x7ffc90308630, cash $10)
 
 [31;1;4mAll customers, sorted by wealth[0m
-Customer(Zaphod, BankAccount(0x56191eabb090, cash $100000))
-Customer(Zaphod, BankAccount(0x56191eabafa0, cash $999999))
-Customer(TheMice, BankAccount(0x56191eabaf00, cash $666))
-Customer(Marvin, BankAccount(0x56191eabb040, cash $0))
-Customer(Ford, BankAccount(0x56191eabaf50, cash $10))
-Customer(Arthur, BankAccount(0x56191eabaff0, cash $100))
+Customer(Zaphod, BankAccount(0x55f7dfdb1090, cash $100000))
+Customer(Zaphod, BankAccount(0x55f7dfdb0fa0, cash $999999))
+Customer(TheMice, BankAccount(0x55f7dfdb0f00, cash $666))
+Customer(Marvin, BankAccount(0x55f7dfdb1040, cash $0))
+Customer(Ford, BankAccount(0x55f7dfdb0f50, cash $10))
+Customer(Arthur, BankAccount(0x55f7dfdb0ff0, cash $100))
 
 [31;1;4mAll customers, sorted by wealth (lambda version)[0m
-Customer(Zaphod, BankAccount(0x56191eabb090, cash $100000))
-Customer(Zaphod, BankAccount(0x56191eabafa0, cash $999999))
-Customer(TheMice, BankAccount(0x56191eabaf00, cash $666))
-Customer(Marvin, BankAccount(0x56191eabb040, cash $0))
-Customer(Ford, BankAccount(0x56191eabaf50, cash $10))
-Customer(Arthur, BankAccount(0x56191eabaff0, cash $100))
+Customer(Zaphod, BankAccount(0x55f7dfdb1090, cash $100000))
+Customer(Zaphod, BankAccount(0x55f7dfdb0fa0, cash $999999))
+Customer(TheMice, BankAccount(0x55f7dfdb0f00, cash $666))
+Customer(Marvin, BankAccount(0x55f7dfdb1040, cash $0))
+Customer(Ford, BankAccount(0x55f7dfdb0f50, cash $10))
+Customer(Arthur, BankAccount(0x55f7dfdb0ff0, cash $100))
 
 [31;1;4mFind sneaky customers[0m
 
 [31;1;4mCustomer has two accounts![0m
-Customer(Zaphod, BankAccount(0x56191eabafa0, cash $999999))
+Customer(Zaphod, BankAccount(0x55f7dfdb0fa0, cash $999999))
 
 [31;1;4mCustomer has two accounts![0m
-Customer(Zaphod, BankAccount(0x56191eabafa0, cash $999999))
+Customer(Zaphod, BankAccount(0x55f7dfdb0fa0, cash $999999))
 
 [31;1;4mGet rid of a customer[0m
-default constructor BankAccount(0x7ffc64284810, cash $0)
-new temporary customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $0))
-delete customer Customer(Zaphod, BankAccount(0x56191eabb090, cash $100000))
-delete account BankAccount(0x56191eabb090, cash $100000)
-delete customer Customer(Zaphod, BankAccount(0x56191eabafa0, cash $999999))
-delete account BankAccount(0x56191eabafa0, cash $999999)
-delete customer Customer(Zaphod, BankAccount(0x7ffc64284810, cash $0))
-delete account BankAccount(0x7ffc64284810, cash $0)
+default constructor BankAccount(0x7ffc903086b0, cash $0)
+new temporary customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $0))
+delete customer Customer(Zaphod, BankAccount(0x55f7dfdb1090, cash $100000))
+delete account BankAccount(0x55f7dfdb1090, cash $100000)
+delete customer Customer(Zaphod, BankAccount(0x55f7dfdb0fa0, cash $999999))
+delete account BankAccount(0x55f7dfdb0fa0, cash $999999)
+delete customer Customer(Zaphod, BankAccount(0x7ffc903086b0, cash $0))
+delete account BankAccount(0x7ffc903086b0, cash $0)
 
 [31;1;4mGet rid of all customers[0m
-delete customer Customer(Arthur, BankAccount(0x56191eabaff0, cash $100))
-delete account BankAccount(0x56191eabaff0, cash $100)
-delete customer Customer(Ford, BankAccount(0x56191eabaf50, cash $10))
-delete account BankAccount(0x56191eabaf50, cash $10)
-delete customer Customer(Marvin, BankAccount(0x56191eabb040, cash $0))
-delete account BankAccount(0x56191eabb040, cash $0)
-delete customer Customer(TheMice, BankAccount(0x56191eabaf00, cash $666))
-delete account BankAccount(0x56191eabaf00, cash $666)
+delete customer Customer(Arthur, BankAccount(0x55f7dfdb0ff0, cash $100))
+delete account BankAccount(0x55f7dfdb0ff0, cash $100)
+delete customer Customer(Ford, BankAccount(0x55f7dfdb0f50, cash $10))
+delete account BankAccount(0x55f7dfdb0f50, cash $10)
+delete customer Customer(Marvin, BankAccount(0x55f7dfdb1040, cash $0))
+delete account BankAccount(0x55f7dfdb1040, cash $0)
+delete customer Customer(TheMice, BankAccount(0x55f7dfdb0f00, cash $666))
+delete account BankAccount(0x55f7dfdb0f00, cash $666)
 
 # End
 </pre>

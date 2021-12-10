@@ -8,9 +8,9 @@ arguments into the timeout wrapper.
 Here is a full example:
 ```C++
 #include <chrono>
+#include <condition_variable>
 #include <ctime>
 #include <functional>
-#include <condition_variable>
 #include <iostream>
 #include <mutex>
 #include <thread>
@@ -20,95 +20,91 @@ Here is a full example:
 //
 std::string timestamp(void)
 {
-    auto now = std::chrono::system_clock::now();
-    auto seconds = std::chrono::time_point_cast<std::chrono::seconds>(now);
-    auto mseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now - seconds);
-    auto date = std::chrono::system_clock::to_time_t(now);
+  auto now      = std::chrono::system_clock::now();
+  auto seconds  = std::chrono::time_point_cast< std::chrono::seconds >(now);
+  auto mseconds = std::chrono::duration_cast< std::chrono::milliseconds >(now - seconds);
+  auto date     = std::chrono::system_clock::to_time_t(now);
 
-    struct tm local_time;
-    localtime_r(&date, &local_time);
+  struct tm local_time;
+  localtime_r(&date, &local_time);
 
-    char buffer[128];
-    buffer[0] = '\0';
-    auto buffer_size = sizeof(buffer) - 1;
-    auto out = strftime(buffer, buffer_size, "%H:%M:%S", &local_time);
-    out += snprintf(buffer + out, buffer_size - out, ".%03d ", (int)mseconds.count());
+  char buffer[ 128 ];
+  buffer[ 0 ]      = '\0';
+  auto buffer_size = sizeof(buffer) - 1;
+  auto out         = strftime(buffer, buffer_size, "%H:%M:%S", &local_time);
+  out += snprintf(buffer + out, buffer_size - out, ".%03d ", (int) mseconds.count());
 
-    return std::string(buffer);
+  return std::string(buffer);
 }
 
 int my_function_that_might_block(int x)
 {
-    // Function begins at :
-    // Function argument  :
-    std::this_thread::sleep_for(std::chrono::seconds(10));
-    // Function ends at   :
-    return 1;
+  // Function begins at :
+  // Function argument  :
+  std::this_thread::sleep_for(std::chrono::seconds(10));
+  // Function ends at   :
+  return 1;
 }
 
-template<typename ret, typename T, typename... Rest>
-using fn = std::function<ret(T, Rest...)>;
+template < typename ret, typename T, typename... Rest > using fn = std::function< ret(T, Rest...) >;
 
-template<typename ret, typename T, typename... Rest>
-ret wrap_my_slow_function(fn<ret, T, Rest...> f, T t, Rest... rest)
+template < typename ret, typename T, typename... Rest >
+ret wrap_my_slow_function(fn< ret, T, Rest... > f, T t, Rest... rest)
 {
-    std::mutex my_mutex;
-    std::condition_variable my_condition_var;
-    ret result = 0;
+  std::mutex              my_mutex;
+  std::condition_variable my_condition_var;
+  ret                     result = 0;
 
-    std::unique_lock<std::mutex> my_lock(my_mutex);
+  std::unique_lock< std::mutex > my_lock(my_mutex);
 
+  //
+  // Spawn a thread to call my_function_that_might_block().
+  // Pass in the condition variables and result by reference.
+  //
+  std::thread my_thread([ & ]() {
+    result = f(t, rest...);
+    // Unblocks one of the threads currently waiting for this condition.
+    my_condition_var.notify_one();
+  });
+
+  //
+  // Detaches the thread represented by the object from the calling
+  // thread, allowing them to execute independently from each other. B
+  //
+  my_thread.detach();
+
+  if (my_condition_var.wait_for(my_lock, std::chrono::seconds(1)) == std::cv_status::timeout) {
     //
-    // Spawn a thread to call my_function_that_might_block(). 
-    // Pass in the condition variables and result by reference.
+    // Throw an exception so the caller knows we failed
     //
-    std::thread my_thread([&]() 
-    {
-        result = f(t, rest...);
-        // Unblocks one of the threads currently waiting for this condition.
-        my_condition_var.notify_one();
-    });
+    // Timed out at       :
+    throw std::runtime_error("Timeout");
+  }
 
-    //
-    // Detaches the thread represented by the object from the calling 
-    // thread, allowing them to execute independently from each other. B
-    //
-    my_thread.detach();
-
-    if (my_condition_var.wait_for(my_lock, std::chrono::seconds(1)) == 
-            std::cv_status::timeout)  {
-        //
-        // Throw an exception so the caller knows we failed
-        //
-        // Timed out at       :
-        throw std::runtime_error("Timeout");
-    }
-
-    return result;    
+  return result;
 }
 
 int main()
 {
-    // Run a function that might block
+  // Run a function that might block
 
-    try {
-        auto f1 = fn<int,int>(my_function_that_might_block);
-        wrap_my_slow_function(f1, 42);
-        //
-        // Success, no timeout
-        //
-    } catch (std::runtime_error& e) {
-        //
-        // Do whatever you need here upon timeout failure
-        //
-        return 1;
-    }
+  try {
+    auto f1 = fn< int, int >(my_function_that_might_block);
+    wrap_my_slow_function(f1, 42);
+    //
+    // Success, no timeout
+    //
+  } catch (std::runtime_error &e) {
+    //
+    // Do whatever you need here upon timeout failure
+    //
+    return 1;
+  }
 
-    // End
+  // End
 
-    return 0;
+  return 0;
 }
-
 ```
 To build:
 <pre>
@@ -123,9 +119,9 @@ Expected output:
 
 [31;1;4mRun a function that might block[0m
 
-[31;1;4mFunction begins at :11:54:29.056 [0m
+[31;1;4mFunction begins at :14:24:50.437 [0m
 
 [31;1;4mFunction argument  :42[0m
 
-# Timed out at       :11:54:30.056 
+# Timed out at       :14:24:51.438 
 </pre>

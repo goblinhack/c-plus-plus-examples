@@ -6,122 +6,121 @@ but you could use this to keep track of memory allocation and frees as part
 of a basic leak detector.
 
 ```C++
+#include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
-#include <iostream>
 
-template <typename T> class MySharedPtr {
+template < typename T > class MySharedPtr
+{
 private:
-    std::shared_ptr<T> sptr;
-    std::string name {"nullptr"};
+  std::shared_ptr< T > sptr;
+  std::string          name {"nullptr"};
 
-    void debug (const std::string &what) {
-        std::cout << name << ": " << what << " " << to_string() << std::endl;
-    }
+  void debug(const std::string &what) { std::cout << name << ": " << what << " " << to_string() << std::endl; }
 
-    std::string to_string (void) {
-        auto address = static_cast<const void*>(this);
-        std::stringstream ss;
-        ss << address;
-        if (sptr) {
-            return "MySharedPtr(" + ss.str() + "," + sptr->to_string() + ")";
-        } else {
-            return "MySharedPtr(" + ss.str() + ")";
-        }
+  std::string to_string(void)
+  {
+    auto              address = static_cast< const void              *>(this);
+    std::stringstream ss;
+    ss << address;
+    if (sptr) {
+      return "MySharedPtr(" + ss.str() + "," + sptr->to_string() + ")";
+    } else {
+      return "MySharedPtr(" + ss.str() + ")";
     }
+  }
+
 public:
-    // explicit means constructor must match exactly
-    template <typename ...ARGS> explicit
-      MySharedPtr(const std::string &name, ARGS... a) : name(name) {
-        sptr = std::make_shared<T>(a...);
-        debug("MySharedPtr::make_shared");
-    }
+  // explicit means constructor must match exactly
+  template < typename... ARGS > explicit MySharedPtr(const std::string &name, ARGS... a) : name(name)
+  {
+    sptr = std::make_shared< T >(a...);
+    debug("MySharedPtr::make_shared");
+  }
 
-    explicit MySharedPtr(const std::string &name) : name(name) {
-        sptr = std::make_shared<T>();
-        debug("MySharedPtr::make_shared");
-    }
+  explicit MySharedPtr(const std::string &name) : name(name)
+  {
+    sptr = std::make_shared< T > ();
+    debug("MySharedPtr::make_shared");
+  }
 
-    explicit MySharedPtr(void) {
-        debug("MySharedPtr::default constructor");
-    }
+  explicit MySharedPtr(void) { debug("MySharedPtr::default constructor"); }
 
-    ~MySharedPtr() {
-        debug("MySharedPtr::delete");
-    }
+  ~MySharedPtr() { debug("MySharedPtr::delete"); }
 
-    T* const operator->() {
-        debug("MySharedPtr::-> dereference");
-        return sptr.operator->();
-    }
+  T *const operator->()
+  {
+    debug("MySharedPtr::-> dereference");
+    return sptr.operator->();
+  }
 
-    T* get() const {
-        debug("MySharedPtr::get ptr");
-        return sptr.get();
-    }
+  T *get() const
+  {
+    debug("MySharedPtr::get ptr");
+    return sptr.get();
+  }
 
-    T& operator*() {
-        debug("MySharedPtr::* ptr");
-        return *sptr;
-    }
+  T &operator*()
+  {
+    debug("MySharedPtr::* ptr");
+    return *sptr;
+  }
 
-    const T& operator*() const {
-        debug("MySharedPtr::const * ptr");
-        return *sptr;
-    }
+  const T &operator*() const
+  {
+    debug("MySharedPtr::const * ptr");
+    return *sptr;
+  }
 
-    operator bool() const {
-        debug("MySharedPtr::bool");
-        return (bool)sptr;
-    }
+  operator bool() const
+  {
+    debug("MySharedPtr::bool");
+    return (bool) sptr;
+  }
 
-    size_t use_count(void) const {
-        return sptr.use_count();
-    }
+  size_t use_count(void) const { return sptr.use_count(); }
 
-    void reset() {
-        debug("MySharedPtr::reset");
-        sptr.reset();
-    }
+  void reset()
+  {
+    debug("MySharedPtr::reset");
+    sptr.reset();
+  }
 };
 
 typedef MySharedPtr< class Foo > Foop;
 
-class Foo {
+class Foo
+{
 private:
-    std::string data;
-    void debug (const std::string &what) {
-        std::cout << what << " " << to_string() << std::endl;
-    }
+  std::string data;
+  void        debug(const std::string &what) { std::cout << what << " " << to_string() << std::endl; }
+
 public:
-    Foo(std::string data) : data(data) {
-        debug("new");
-    }
-    ~Foo() {
-        debug("delete");
-    }
-    std::string to_string (void) {
-        auto address = static_cast<const void*>(this);
-        std::stringstream ss;
-        ss << address;
-        return "Foo(" + ss.str() + ", data=" + data + ")";
-    }
+  Foo(std::string data) : data(data) { debug("new"); }
+  ~Foo() { debug("delete"); }
+  std::string to_string(void)
+  {
+    auto              address = static_cast< const void              *>(this);
+    std::stringstream ss;
+    ss << address;
+    return "Foo(" + ss.str() + ", data=" + data + ")";
+  }
 };
 
-int main (void)
+int main(void)
 {
-    // create a class and share it between two pointers:
-    auto sptr1 = MySharedPtr< class Foo >("[foo1]", Foo("foo1-data"));
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    auto sptr2 = sptr1;
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+  // create a class and share it between two pointers:
+  auto sptr1 = MySharedPtr< class Foo >("[foo1]", Foo("foo1-data"));
+  std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
+  auto sptr2 = sptr1;
+  std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 
-    // release the shared sptrs, expect foo1 to be destroyed:
-    sptr1.reset();
-    std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
-    sptr2.reset();
-    std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
+  // release the shared sptrs, expect foo1 to be destroyed:
+  sptr1.reset();
+  std::cout << "sptr1 ref count now " << sptr1.use_count() << std::endl;
+  sptr2.reset();
+  std::cout << "sptr2 ref count now " << sptr2.use_count() << std::endl;
 }
 ```
 To build:
@@ -136,18 +135,18 @@ Expected output:
 <pre>
 
 [31;1;4mcreate a class and share it between two pointers:[0m
-new Foo(0x7ffcea6b3330, data=foo1-data)
-[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffcea6b3350,Foo(0x562d37bd9f50, data=foo1-data))
-delete Foo(0x7ffcea6b3330, data=foo1-data)
+new Foo(0x7ffc41b821c0, data=foo1-data)
+[foo1]: MySharedPtr::make_shared MySharedPtr(0x7ffc41b821e0,Foo(0x5590ad837f50, data=foo1-data))
+delete Foo(0x7ffc41b821c0, data=foo1-data)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
 [31;1;4mrelease the shared sptrs, expect foo1 to be destroyed:[0m
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffcea6b3350,Foo(0x562d37bd9f50, data=foo1-data))
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffc41b821e0,Foo(0x5590ad837f50, data=foo1-data))
 sptr1 ref count now 0
-[foo1]: MySharedPtr::reset MySharedPtr(0x7ffcea6b3380,Foo(0x562d37bd9f50, data=foo1-data))
-delete Foo(0x562d37bd9f50, data=foo1-data)
+[foo1]: MySharedPtr::reset MySharedPtr(0x7ffc41b82210,Foo(0x5590ad837f50, data=foo1-data))
+delete Foo(0x5590ad837f50, data=foo1-data)
 sptr2 ref count now 0
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffcea6b3380)
-[foo1]: MySharedPtr::delete MySharedPtr(0x7ffcea6b3350)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffc41b82210)
+[foo1]: MySharedPtr::delete MySharedPtr(0x7ffc41b821e0)
 </pre>

@@ -17,8 +17,8 @@ elements. That function will be invoked as std::hash<type>, so we need
 to define it within the std namespace e.g.:
 ```C++
 namespace std {
-    template <class T> struct hash<BankCustomer<T> > {
-        size_t operator()(const BankCustomer<T> & x) const noexcept {
+    template <class T> struct hash<BankCustomer< T > > {
+        size_t operator()(const BankCustomer< T > & x) const noexcept {
             return std::hash<std::string>()(x.get_name());
         }
     };
@@ -27,12 +27,12 @@ namespace std {
 Additionally we will need to provide comparitors for our class so that
 the hasher can detect collisions. e.g.:
 ```C++
-    friend bool operator==(const class BankCustomer<T> & lhs,
-                           const class BankCustomer<T> & rhs) {
+    friend bool operator==(const class BankCustomer< T > & lhs,
+                           const class BankCustomer< T > & rhs) {
         return lhs.name == rhs.name;
     }
-    friend bool operator!=(const class BankCustomer<T> & lhs,
-                           const class BankCustomer<T> & rhs) {
+    friend bool operator!=(const class BankCustomer< T > & lhs,
+                           const class BankCustomer< T > & rhs) {
         return lhs.name != rhs.name;
     }
 ```

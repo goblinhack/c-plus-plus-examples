@@ -45,8 +45,8 @@ In our example below we will provide the comparison operator so we can sort
 accounts by balance. We will try and create two accounts of the same name
 and that should fail.
 ```C++
-    friend bool operator<(const class BankCustomer<T> & lhs,
-                          const class BankCustomer<T> & rhs) {
+    friend bool operator<(const class BankCustomer< T > & lhs,
+                          const class BankCustomer< T > & rhs) {
         return lhs.account.balance() > rhs.account.balance();
     }
 ```

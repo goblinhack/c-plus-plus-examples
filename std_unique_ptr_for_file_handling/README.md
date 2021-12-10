@@ -33,33 +33,34 @@ Here is the full example:
 #include <sstream>
 #include <string.h>
 
-static void close_file (std::FILE* fp) {
-    if (fp) {
-        std::cout << "close file " << fp << std::endl;
-        std::fclose(fp);
-    }
+static void close_file(std::FILE *fp)
+{
+  if (fp) {
+    std::cout << "close file " << fp << std::endl;
+    std::fclose(fp);
+  }
 }
 
 int main(void)
 {
-    const std::string filename = "tmp.txt";
-    const std::string msg = "Time is an illusion. Lunch time, doubly so";
+  const std::string filename = "tmp.txt";
+  const std::string msg      = "Time is an illusion. Lunch time, doubly so";
 
-    // Create a file and write to it
-    std::ofstream(filename) << msg;
+  // Create a file and write to it
+  std::ofstream(filename) << msg;
 
-    // Read from the file
-    auto cfp = std::fopen(filename.c_str(), "r");
-    if (cfp) {
-        std::cout << "open file " << cfp << std::endl;
-        std::unique_ptr<std::FILE, decltype(&close_file)> filep(cfp, &close_file);
-        if (filep) {
-            char s[msg.size() + 1];
-            std::cout << std::fgets(s, sizeof(s), filep.get()) << '\n';
-        }
+  // Read from the file
+  auto cfp = std::fopen(filename.c_str(), "r");
+  if (cfp) {
+    std::cout << "open file " << cfp << std::endl;
+    std::unique_ptr< std::FILE, decltype(&close_file) > filep(cfp, &close_file);
+    if (filep) {
+      char s[ msg.size() + 1 ];
+      std::cout << std::fgets(s, sizeof(s), filep.get()) << '\n';
     }
+  }
 
-    // End, expect file clost to automatically happen
+  // End, expect file clost to automatically happen
 }
 ```
 To build:
@@ -76,9 +77,9 @@ Expected output:
 [31;1;4mCreate a file and write to it[0m
 
 [31;1;4mRead from the file[0m
-open file 0x564875dfef00
+open file 0x556e66679f00
 Time is an illusion. Lunch time, doubly so
-close file 0x564875dfef00
+close file 0x556e66679f00
 
 # End, expect file clost to automatically happen
 </pre>

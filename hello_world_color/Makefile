@@ -46,4 +46,4 @@ all: $(TARGET)
 # DO NOT DELETE
 
 .o/main.o: /usr/include/assert.h /usr/include/features.h
-.o/main.o: /usr/include/stdc-predef.h
+.o/main.o: /usr/include/features-time64.h /usr/include/stdc-predef.h
