@@ -145,19 +145,19 @@ Expected output:
 <pre>
 
 [31;1;4mcreate account1 and try to deposit into it[0m
-new cash BankAccount(0x7ffcc5cfd5d8, cash $0)
-deposit cash called BankAccount(0x7ffcc5cfd5d8, cash $100)
-BankAccount(0x7ffcc5cfd5d8, cash $100)
+new cash BankAccount(0x7ffe27e54af8, cash $0)
+deposit cash called BankAccount(0x7ffe27e54af8, cash $100)
+BankAccount(0x7ffe27e54af8, cash $100)
 [0;35mSUCCESS: account1 deposit succeeded![0m
-delete account BankAccount(0x7ffcc5cfd5d8, cash $100)
+delete account BankAccount(0x7ffe27e54af8, cash $100)
 
 [31;1;4mcreate locked account2 and try to deposit into it; this should fail[0m
-new cash BankAccount(0x7ffcc5cfd5d8, cash $0)
-delete account BankAccount(0x7ffcc5cfd5d8, cash $0)
+new cash BankAccount(0x7ffe27e54af8, cash $0)
+delete account BankAccount(0x7ffe27e54af8, cash $0)
 [0;34mFAILED: account2 deposit failed!: tried to write to a locked (const) account[0m
 
 [31;1;4mcreate locked account3 and try to deposit into it; this should fail[0m
-new cash BankAccount(0x7ffcc5cfd5d8, cash $0)
-delete account BankAccount(0x7ffcc5cfd5d8, cash $0)
+new cash BankAccount(0x7ffe27e54af8, cash $0)
+delete account BankAccount(0x7ffe27e54af8, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>

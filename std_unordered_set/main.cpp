@@ -1,5 +1,6 @@
 #include "../common/common.h"
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <sstream>

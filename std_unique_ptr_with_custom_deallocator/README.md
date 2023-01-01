@@ -120,24 +120,24 @@ Expected output:
 <pre>
 
 [31;1;4mCpp strdup wrapper with lambda deleter[0m
-copy hello addr 0x55ecf075cec0
+copy hello addr 0x56497a938ec0
 hello
 
 [31;1;4mCpp strdup wrapper with std::function deleter[0m
-copy there addr 0x55ecf075cee0
+copy there addr 0x56497a938ee0
 there
 
 [31;1;4mCpp strdup wrapper with decltype(&mydeleter) deleter[0m
-copy Zaphod addr 0x55ecf075cf00
+copy Zaphod addr 0x56497a938f00
 Zaphod
 
 [31;1;4mCpp strdup wrapper with std::bind deleter[0m
-copy Beeblebrox addr 0x55ecf075cf20
+copy Beeblebrox addr 0x56497a938f20
 Beeblebrox
 
 [31;1;4mEnd, expect memory to be freed[0m
-free Beeblebrox addr 0x55ecf075cf20
-free Zaphod addr 0x55ecf075cf00
-free there addr 0x55ecf075cee0
-free hello addr 0x55ecf075cec0
+free Beeblebrox addr 0x56497a938f20
+free Zaphod addr 0x56497a938f00
+free there addr 0x56497a938ee0
+free hello addr 0x56497a938ec0
 </pre>

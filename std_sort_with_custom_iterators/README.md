@@ -477,12 +477,12 @@ Expected output:
 [31;1;4mCreate a std::initializer_list of std::string:[0m
 
 [31;1;4mAssign this initializer_list to a vector:[0m
-push_back called MyVector(0x7ffeb98ed710, len=1, maxlen=1 elems=[zaphod])
-push_back called MyVector(0x7ffeb98ed710, len=2, maxlen=2 elems=[zaphod,universe])
-push_back called MyVector(0x7ffeb98ed710, len=3, maxlen=4 elems=[zaphod,universe,arthur])
-push_back called MyVector(0x7ffeb98ed710, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
-push_back called MyVector(0x7ffeb98ed710, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
-push_back called MyVector(0x7ffeb98ed710, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
+push_back called MyVector(0x7fff9608e6b0, len=1, maxlen=1 elems=[zaphod])
+push_back called MyVector(0x7fff9608e6b0, len=2, maxlen=2 elems=[zaphod,universe])
+push_back called MyVector(0x7fff9608e6b0, len=3, maxlen=4 elems=[zaphod,universe,arthur])
+push_back called MyVector(0x7fff9608e6b0, len=4, maxlen=4 elems=[zaphod,universe,arthur,marvin])
+push_back called MyVector(0x7fff9608e6b0, len=5, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice])
+push_back called MyVector(0x7fff9608e6b0, len=6, maxlen=8 elems=[zaphod,universe,arthur,marvin,mice,vogon])
 
 [31;1;4mPre sort:[0m
 zaphod
@@ -509,5 +509,5 @@ zaphod
 arthur
 
 [31;1;4mEnd:[0m
-delete MyVector(0x7ffeb98ed710, len=6, maxlen=8 elems=[,,,,,arthur])
+delete MyVector(0x7fff9608e6b0, len=6, maxlen=8 elems=[,,,,,arthur])
 </pre>

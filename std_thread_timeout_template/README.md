@@ -119,9 +119,9 @@ Expected output:
 
 [31;1;4mRun a function that might block[0m
 
-[31;1;4mFunction begins at :14:24:50.437 [0m
+[31;1;4mFunction begins at :13:47:26.123 [0m
 
 [31;1;4mFunction argument  :42[0m
 
-# Timed out at       :14:24:51.438 
+# Timed out at       :13:47:27.123 
 </pre>
