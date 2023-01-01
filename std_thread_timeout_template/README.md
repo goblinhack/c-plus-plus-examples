@@ -10,6 +10,7 @@ Here is a full example:
 #include <chrono>
 #include <condition_variable>
 #include <ctime>
+#include <functional> // for _1, _2
 #include <functional>
 #include <iostream>
 #include <mutex>
@@ -119,9 +120,9 @@ Expected output:
 
 [31;1;4mRun a function that might block[0m
 
-[31;1;4mFunction begins at :13:47:26.123 [0m
+[31;1;4mFunction begins at :13:54:01.812 [0m
 
 [31;1;4mFunction argument  :42[0m
 
-# Timed out at       :13:47:27.123 
+# Timed out at       :13:54:02.812 
 </pre>

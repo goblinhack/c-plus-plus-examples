@@ -2,6 +2,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <ctime>
+#include <functional> // for _1, _2
 #include <functional>
 #include <iostream>
 #include <mutex>

@@ -1,5 +1,6 @@
 #include "../common/common.h"
 #include <algorithm>
+#include <functional> // for _1, _2
 #include <iostream>
 #include <list>
 #include <set>

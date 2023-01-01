@@ -128,12 +128,12 @@ Expected output:
 <pre>
 
 [31;1;4mCreate a std::initializer_list of MyString:[0m
-0x7ffd3dea8b40 MyString(std::string &&) elem1
-0x7ffd3dea8b60 MyString(std::string &&) elem2
+0x7ffc7ebe55f0 MyString(std::string &&) elem1
+0x7ffc7ebe5610 MyString(std::string &&) elem2
 
 [31;1;4mAssign this initializer_list to a vector:[0m
-0x55e1e36f9ec0 MyString(const std::string &) elem1
-0x55e1e36f9ee0 MyString(const std::string &) elem2
+0x5617777dcec0 MyString(const std::string &) elem1
+0x5617777dcee0 MyString(const std::string &) elem2
 
 [31;1;4mWalk the vector with 'const auto &i': (should see no copies)[0m
 elem1
@@ -144,18 +144,18 @@ elem1
 elem2
 
 [31;1;4mCreate another vector with an inline initializer list[0m
-0x7ffd3dea8b80 MyString(std::string &&) elem3
-0x7ffd3dea8ba0 MyString(std::string &&) elem4
-0x55e1e36f9f10 MyString(const std::string &) elem3
-0x55e1e36f9f30 MyString(const std::string &) elem4
-0x7ffd3dea8ba0 ~MyString() elem4
-0x7ffd3dea8b80 ~MyString() elem3
+0x7ffc7ebe5630 MyString(std::string &&) elem3
+0x7ffc7ebe5650 MyString(std::string &&) elem4
+0x5617777dcf10 MyString(const std::string &) elem3
+0x5617777dcf30 MyString(const std::string &) elem4
+0x7ffc7ebe5650 ~MyString() elem4
+0x7ffc7ebe5630 ~MyString() elem3
 
 [31;1;4mEnd:[0m
-0x55e1e36f9f10 ~MyString() elem3
-0x55e1e36f9f30 ~MyString() elem4
-0x55e1e36f9ec0 ~MyString() elem1
-0x55e1e36f9ee0 ~MyString() elem2
-0x7ffd3dea8b60 ~MyString() elem2
-0x7ffd3dea8b40 ~MyString() elem1
+0x5617777dcf10 ~MyString() elem3
+0x5617777dcf30 ~MyString() elem4
+0x5617777dcec0 ~MyString() elem1
+0x5617777dcee0 ~MyString() elem2
+0x7ffc7ebe5610 ~MyString() elem2
+0x7ffc7ebe55f0 ~MyString() elem1
 </pre>

@@ -112,6 +112,7 @@ And finally to remove everything and get rid of all your customers!:
 Here is the full example:
 ```C++
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <list>
 #include <sstream>
@@ -307,8 +308,121 @@ To build:
 cd std_unordered_set
 rm -f *.o example
 g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
+g++ main.o  -o example
 ./example
 </pre>
 Expected output:
 <pre>
+
+[31;1;4mDefault sorted set[0m
+vogon
+mice
+marvin
+arthur
+universe
+zaphod
+
+[31;1;4mCreate a std::unordered_set of BankCustomer -> Account[0m
+new cash BankAccount(0x7fff47a77d70, cash $100)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $100)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $100)
+new customer Customer(Arthur, BankAccount(0x7fff47a77e00, cash $100))
+copy cash constructor called for BankAccount(0x7fff47a77e00, cash $100)
+copy cash constructor result is  BankAccount(0x55ed116b6ee8, cash $100)
+delete customer Customer(Arthur, BankAccount(0x7fff47a77e00, cash $100))
+delete account BankAccount(0x7fff47a77e00, cash $100)
+delete account BankAccount(0x7fff47a77d70, cash $100)
+new cash BankAccount(0x7fff47a77d70, cash $100000)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $100000)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $100000)
+new customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $100000))
+copy cash constructor called for BankAccount(0x7fff47a77e00, cash $100000)
+copy cash constructor result is  BankAccount(0x55ed116b6f98, cash $100000)
+delete customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $100000))
+delete account BankAccount(0x7fff47a77e00, cash $100000)
+delete account BankAccount(0x7fff47a77d70, cash $100000)
+new cash BankAccount(0x7fff47a77d70, cash $999999)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $999999)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $999999)
+new customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $999999))
+delete customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $999999))
+delete account BankAccount(0x7fff47a77e00, cash $999999)
+delete account BankAccount(0x7fff47a77d70, cash $999999)
+
+[31;1;4mSomeone (Zaphod, let's face it) tried to add a 2nd account![0m
+new cash BankAccount(0x7fff47a77d70, cash $0)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $0)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $0)
+new customer Customer(Marvin, BankAccount(0x7fff47a77e00, cash $0))
+copy cash constructor called for BankAccount(0x7fff47a77e00, cash $0)
+copy cash constructor result is  BankAccount(0x55ed116b6fd8, cash $0)
+delete customer Customer(Marvin, BankAccount(0x7fff47a77e00, cash $0))
+delete account BankAccount(0x7fff47a77e00, cash $0)
+delete account BankAccount(0x7fff47a77d70, cash $0)
+new cash BankAccount(0x7fff47a77d70, cash $666)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $666)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $666)
+new customer Customer(TheMice, BankAccount(0x7fff47a77e00, cash $666))
+copy cash constructor called for BankAccount(0x7fff47a77e00, cash $666)
+copy cash constructor result is  BankAccount(0x55ed116b7018, cash $666)
+delete customer Customer(TheMice, BankAccount(0x7fff47a77e00, cash $666))
+delete account BankAccount(0x7fff47a77e00, cash $666)
+delete account BankAccount(0x7fff47a77d70, cash $666)
+new cash BankAccount(0x7fff47a77d70, cash $10)
+copy cash constructor called for BankAccount(0x7fff47a77d70, cash $10)
+copy cash constructor result is  BankAccount(0x7fff47a77e00, cash $10)
+new customer Customer(Ford, BankAccount(0x7fff47a77e00, cash $10))
+copy cash constructor called for BankAccount(0x7fff47a77e00, cash $10)
+copy cash constructor result is  BankAccount(0x55ed116b7058, cash $10)
+delete customer Customer(Ford, BankAccount(0x7fff47a77e00, cash $10))
+delete account BankAccount(0x7fff47a77e00, cash $10)
+delete account BankAccount(0x7fff47a77d70, cash $10)
+
+[31;1;4mAll customers, sorted by wealth[0m
+Customer(Ford, BankAccount(0x55ed116b7058, cash $10))
+Customer(TheMice, BankAccount(0x55ed116b7018, cash $666))
+Customer(Marvin, BankAccount(0x55ed116b6fd8, cash $0))
+Customer(Zaphod, BankAccount(0x55ed116b6f98, cash $100000))
+Customer(Arthur, BankAccount(0x55ed116b6ee8, cash $100))
+
+[31;1;4mAll customers, sorted by wealth (lambda version)[0m
+Customer(Ford, BankAccount(0x55ed116b7058, cash $10))
+Customer(TheMice, BankAccount(0x55ed116b7018, cash $666))
+Customer(Marvin, BankAccount(0x55ed116b6fd8, cash $0))
+Customer(Zaphod, BankAccount(0x55ed116b6f98, cash $100000))
+Customer(Arthur, BankAccount(0x55ed116b6ee8, cash $100))
+
+[31;1;4mFind Zaphod via find[0m
+default constructor BankAccount(0x7fff47a77e00, cash $0)
+new temporary customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $0))
+delete customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $0))
+delete account BankAccount(0x7fff47a77e00, cash $0)
+Customer(Zaphod, BankAccount(0x55ed116b6f98, cash $100000))
+
+[31;1;4mFind customers via equal_range[0m
+Customer(Ford, BankAccount(0x55ed116b7058, cash $10))
+Customer(TheMice, BankAccount(0x55ed116b7018, cash $666))
+Customer(Marvin, BankAccount(0x55ed116b6fd8, cash $0))
+Customer(Zaphod, BankAccount(0x55ed116b6f98, cash $100000))
+Customer(Arthur, BankAccount(0x55ed116b6ee8, cash $100))
+
+[31;1;4mGet rid of a customer[0m
+default constructor BankAccount(0x7fff47a77e00, cash $0)
+new temporary customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $0))
+delete customer Customer(Zaphod, BankAccount(0x55ed116b6f98, cash $100000))
+delete account BankAccount(0x55ed116b6f98, cash $100000)
+delete customer Customer(Zaphod, BankAccount(0x7fff47a77e00, cash $0))
+delete account BankAccount(0x7fff47a77e00, cash $0)
+
+[31;1;4mGet rid of all customers[0m
+delete customer Customer(Ford, BankAccount(0x55ed116b7058, cash $10))
+delete account BankAccount(0x55ed116b7058, cash $10)
+delete customer Customer(TheMice, BankAccount(0x55ed116b7018, cash $666))
+delete account BankAccount(0x55ed116b7018, cash $666)
+delete customer Customer(Marvin, BankAccount(0x55ed116b6fd8, cash $0))
+delete account BankAccount(0x55ed116b6fd8, cash $0)
+delete customer Customer(Arthur, BankAccount(0x55ed116b6ee8, cash $100))
+delete account BankAccount(0x55ed116b6ee8, cash $100)
+
+# End
 </pre>
