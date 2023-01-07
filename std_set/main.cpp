@@ -99,6 +99,7 @@ static void backward_sort(void)
   std::set< std::string, std::greater< std::string > > m;
 
   m.insert("zaphod");
+  m.insert("zaphod"); // Should be ignored
   m.insert("universe");
   m.insert("arthur");
   m.insert("marvin");
