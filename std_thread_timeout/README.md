@@ -117,7 +117,7 @@ Expected output:
 <pre>
 
 [31;1;4mRun a function that might block[0m
-Function begins at :09:27:02.419 
-Function ends at   :Timed out at       :09:27:03.420 
-09:27:03.420 
+Function begins at :09:29:24.817 
+Function ends at   :Timed out at       :09:29:25.818 
+09:29:25.818 
 </pre>

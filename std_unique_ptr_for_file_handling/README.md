@@ -77,9 +77,9 @@ Expected output:
 [31;1;4mCreate a file and write to it[0m
 
 [31;1;4mRead from the file[0m
-open file 0x561f0b5cff00
+open file 0x55b0d4a6df00
 Time is an illusion. Lunch time, doubly so
-close file 0x561f0b5cff00
+close file 0x55b0d4a6df00
 
 # End, expect file clost to automatically happen
 </pre>

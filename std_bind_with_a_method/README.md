@@ -140,21 +140,21 @@ Expected output:
 <pre>
 
 [31;1;4mcreate account1 and try to deposit into it[0m
-new cash BankAccount(0x7ffcbd7214d0, cash $0)
+new cash BankAccount(0x7ffc573b6150, cash $0)
 
 [31;1;4minvoke a bind to a method via proxy[0m
-copy cash constructor called for BankAccount(0x7ffcbd7214d0, cash $0)
-copy cash constructor result is  BankAccount(0x7ffcbd7214e8, cash $0)
-deposit cash called BankAccount(0x7ffcbd7214e8, cash $100)
+copy cash constructor called for BankAccount(0x7ffc573b6150, cash $0)
+copy cash constructor result is  BankAccount(0x7ffc573b6168, cash $0)
+deposit cash called BankAccount(0x7ffc573b6168, cash $100)
 
 [31;1;4minvoke a bind to a method via proxy with std::ref[0m
-deposit cash called BankAccount(0x7ffcbd7214d0, cash $100)
+deposit cash called BankAccount(0x7ffc573b6150, cash $100)
 
 [31;1;4minvoke a bind to a method directly[0m
-deposit cash called BankAccount(0x7ffcbd7214d0, cash $200)
+deposit cash called BankAccount(0x7ffc573b6150, cash $200)
 
 [31;1;4mcheck the deposits succeeded[0m
-delete account BankAccount(0x7ffcbd7214e8, cash $100)
-delete account BankAccount(0x7ffcbd7214d0, cash $200)
-# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffcbd7214d0, cash $200) than expected 300
+delete account BankAccount(0x7ffc573b6168, cash $100)
+delete account BankAccount(0x7ffc573b6150, cash $200)
+# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffc573b6150, cash $200) than expected 300
 </pre>
