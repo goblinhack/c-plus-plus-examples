@@ -175,8 +175,8 @@ To build:
 <pre>
 cd decltype
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
@@ -204,8 +204,8 @@ char [42]
 TheUniverse
 
 [31;1;4mWhat type is a lambda_add_two...:[0m
-Z4mainEUliiE_
-main::{lambda(int, int)#1}
+Z4mainE3$_1
+main::$_1
 
 [31;1;4mWhat type is a lambda_add_two(1, 2)...:[0m
 int

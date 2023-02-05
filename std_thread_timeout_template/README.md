@@ -111,8 +111,8 @@ To build:
 <pre>
 cd std_thread_timeout_template
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o -lpthread -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -lpthread -o example
 ./example
 </pre>
 Expected output:
@@ -120,9 +120,9 @@ Expected output:
 
 [31;1;4mRun a function that might block[0m
 
-[31;1;4mFunction begins at :13:54:01.812 [0m
+[31;1;4mFunction begins at :09:27:06.322 [0m
 
 [31;1;4mFunction argument  :42[0m
 
-# Timed out at       :13:54:02.812 
+# Timed out at       :09:27:07.323 
 </pre>

@@ -67,8 +67,8 @@ To build:
 <pre>
 cd std_unique_ptr_for_file_handling
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
@@ -77,9 +77,9 @@ Expected output:
 [31;1;4mCreate a file and write to it[0m
 
 [31;1;4mRead from the file[0m
-open file 0x555622ea9f00
+open file 0x561f0b5cff00
 Time is an illusion. Lunch time, doubly so
-close file 0x555622ea9f00
+close file 0x561f0b5cff00
 
 # End, expect file clost to automatically happen
 </pre>

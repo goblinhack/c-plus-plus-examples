@@ -157,18 +157,18 @@ To build:
 <pre>
 cd range_based_for_loop_custom_begin_end
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
 [31;1;4mCreate a custom vector class:[0m
-new MyVector(0x7ffcd528b3d0, currlen=0, maxlen=1 elems=[])
-push_back called MyVector(0x7ffcd528b3d0, currlen=1, maxlen=1 elems=[10])
-push_back called MyVector(0x7ffcd528b3d0, currlen=2, maxlen=2 elems=[10,11])
-push_back called MyVector(0x7ffcd528b3d0, currlen=3, maxlen=4 elems=[10,11,12])
+new MyVector(0x7ffe729bd2e8, currlen=0, maxlen=1 elems=[])
+push_back called MyVector(0x7ffe729bd2e8, currlen=1, maxlen=1 elems=[10])
+push_back called MyVector(0x7ffe729bd2e8, currlen=2, maxlen=2 elems=[10,11])
+push_back called MyVector(0x7ffe729bd2e8, currlen=3, maxlen=4 elems=[10,11,12])
 
 [31;1;4mWalk the custom vector with our iterator:[0m
 vec1: walk 10
@@ -176,5 +176,5 @@ vec1: walk 11
 vec1: walk 12
 
 [31;1;4mEnd, expect vec1 destroy:[0m
-delete MyVector(0x7ffcd528b3d0, currlen=3, maxlen=4 elems=[10,11,12])
+delete MyVector(0x7ffe729bd2e8, currlen=3, maxlen=4 elems=[10,11,12])
 </pre>

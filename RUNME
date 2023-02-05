@@ -46,8 +46,26 @@ cp README.md.template README.md
 for i in $SUBDIRS
 do
     echo
-  log $i:
-    (cd $i; sh ./RUNME; ./example) | sed 's/^/    /g'
+    echo
+    echo
+    echo
+    echo
+    echo
+    log $i:
+    log "================================================="
+    cd $i
+    sh ./RUNME;
+    if [ $? -ne 0 ]; then
+      log_err "failed"
+      exit 1
+    fi
+    if [ ! -f example ]; then
+      log_err "build failed"
+      exit 1
+    fi
+    ./example
+    cd ..
+
     # Makes the main page too long:
     # cat $i/README.md >> README.md
 done

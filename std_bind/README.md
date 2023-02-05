@@ -8,7 +8,7 @@ some simple cases:
 ```C++
     auto bind_fn = bind(bind_test, _1, _2, _3);
 ```
-The funny syntax, _1 refers to an argument number is fully called
+The funny syntax, _1 refers to an argument number is is fully called 
 std::placeholders::_1 but for obvious reasons people prefer to use:
 ```C++
     using namespace std::placeholders; // for _1, _2, _3...
@@ -119,8 +119,8 @@ To build:
 <pre>
 cd std_bind
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:

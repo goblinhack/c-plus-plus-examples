@@ -157,8 +157,8 @@ To build:
 <pre>
 cd initializer_lists_with_custom_vector
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
@@ -167,13 +167,13 @@ Expected output:
 [31;1;4mCreate a std::initializer_list of std::string:[0m
 
 [31;1;4mAssign this initializer_list to a vector:[0m
-push_back called MyVector(0x7ffd785e7a40, currlen=1, maxlen=1 elems=[elem1])
-push_back called MyVector(0x7ffd785e7a40, currlen=2, maxlen=2 elems=[elem1,elem2])
+push_back called MyVector(0x7ffc968bc328, currlen=1, maxlen=1 elems=[elem1])
+push_back called MyVector(0x7ffc968bc328, currlen=2, maxlen=2 elems=[elem1,elem2])
 
 [31;1;4mWalk the vector with 'const auto &i': (to avoid copies)[0m
 elem1
 elem2
 
 [31;1;4mEnd:[0m
-delete MyVector(0x7ffd785e7a40, currlen=2, maxlen=2 elems=[elem1,elem2])
+delete MyVector(0x7ffc968bc328, currlen=2, maxlen=2 elems=[elem1,elem2])
 </pre>

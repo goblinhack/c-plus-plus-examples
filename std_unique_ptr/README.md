@@ -72,29 +72,29 @@ To build:
 <pre>
 cd std_unique_ptr
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
 [31;1;4mNOTE: make_unique creates a new ptr and will invoke foo1's copy constructor:[0m
-new Foo(0x7ffc7a66d740, data=foo1)
-copy constructor Foo(0x559dfd678ec0, data=)
-delete Foo(0x7ffc7a66d740, data=foo1)
+new Foo(0x7fffb11b2778, data=foo1)
+copy constructor Foo(0x565118f3eec0, data=)
+delete Foo(0x7fffb11b2778, data=foo1)
 
 [31;1;4mNOTE: to avoid the copy, do this:[0m
-new Foo(0x559dfd678ef0, data=foo2)
+new Foo(0x565118f3eef0, data=foo2)
 
 [31;1;4mAs you cannot copy unique pointers, reassign it with move[0m
 
 [31;1;4mLet's print all the unique ptrs now[0m
-uptr1 = Foo(0x559dfd678ec0, data=foo1)
+uptr1 = Foo(0x565118f3eec0, data=foo1)
 uptr2 = nullptr
-uptr3 = Foo(0x559dfd678ef0, data=foo2)
+uptr3 = Foo(0x565118f3eef0, data=foo2)
 
 [31;1;4mExpect the unique ptr data to be destroyed now[0m
-delete Foo(0x559dfd678ef0, data=foo2)
-delete Foo(0x559dfd678ec0, data=foo1)
+delete Foo(0x565118f3eef0, data=foo2)
+delete Foo(0x565118f3eec0, data=foo1)
 </pre>

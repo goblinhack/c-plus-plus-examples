@@ -95,17 +95,17 @@ To build:
 <pre>
 cd std_shared_ptr
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
 [31;1;4mCreate a copy constructed class and share it between two pointers:[0m
-new Foo(0x7ffecd431ea0, data=foo1)
-copy constructor Foo(0x55a7f4e5ef00, data=)
-delete Foo(0x7ffecd431ea0, data=foo1)
+new Foo(0x7ffdca943d00, data=foo1)
+copy constructor Foo(0x555f373e4f00, data=)
+delete Foo(0x7ffdca943d00, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
@@ -123,11 +123,11 @@ sptr2 ref count now 2
 
 [31;1;4mRelease the shared sptrs, expect foo1 to be destroyed:[0m
 sptr1 ref count now 0
-delete Foo(0x55a7f4e5ef00, data=foo1)
+delete Foo(0x555f373e4f00, data=foo1)
 sptr2 ref count now 0
 
 [31;1;4mYou can also create shared pointers WITHOUT copy constructor overhead[0m
-new Foo(0x55a7f4e5ef40, data=foo0)
-sptr0 = Foo(0x55a7f4e5ef40, data=foo0)
-delete Foo(0x55a7f4e5ef40, data=foo0)
+new Foo(0x555f373e4f40, data=foo0)
+sptr0 = Foo(0x555f373e4f40, data=foo0)
+delete Foo(0x555f373e4f40, data=foo0)
 </pre>

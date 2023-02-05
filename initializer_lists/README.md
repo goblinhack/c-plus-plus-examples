@@ -120,20 +120,20 @@ To build:
 <pre>
 cd initializer_lists
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o  -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
 [31;1;4mCreate a std::initializer_list of MyString:[0m
-0x7ffc7ebe55f0 MyString(std::string &&) elem1
-0x7ffc7ebe5610 MyString(std::string &&) elem2
+0x7ffc5bcf8df0 MyString(std::string &&) elem1
+0x7ffc5bcf8e10 MyString(std::string &&) elem2
 
 [31;1;4mAssign this initializer_list to a vector:[0m
-0x5617777dcec0 MyString(const std::string &) elem1
-0x5617777dcee0 MyString(const std::string &) elem2
+0x55bfd6c82ec0 MyString(const std::string &) elem1
+0x55bfd6c82ee0 MyString(const std::string &) elem2
 
 [31;1;4mWalk the vector with 'const auto &i': (should see no copies)[0m
 elem1
@@ -144,18 +144,18 @@ elem1
 elem2
 
 [31;1;4mCreate another vector with an inline initializer list[0m
-0x7ffc7ebe5630 MyString(std::string &&) elem3
-0x7ffc7ebe5650 MyString(std::string &&) elem4
-0x5617777dcf10 MyString(const std::string &) elem3
-0x5617777dcf30 MyString(const std::string &) elem4
-0x7ffc7ebe5650 ~MyString() elem4
-0x7ffc7ebe5630 ~MyString() elem3
+0x7ffc5bcf8d90 MyString(std::string &&) elem3
+0x7ffc5bcf8db0 MyString(std::string &&) elem4
+0x55bfd6c82f10 MyString(const std::string &) elem3
+0x55bfd6c82f30 MyString(const std::string &) elem4
+0x7ffc5bcf8db0 ~MyString() elem4
+0x7ffc5bcf8d90 ~MyString() elem3
 
 [31;1;4mEnd:[0m
-0x5617777dcf10 ~MyString() elem3
-0x5617777dcf30 ~MyString() elem4
-0x5617777dcec0 ~MyString() elem1
-0x5617777dcee0 ~MyString() elem2
-0x7ffc7ebe5610 ~MyString() elem2
-0x7ffc7ebe55f0 ~MyString() elem1
+0x55bfd6c82f10 ~MyString() elem3
+0x55bfd6c82f30 ~MyString() elem4
+0x55bfd6c82ec0 ~MyString() elem1
+0x55bfd6c82ee0 ~MyString() elem2
+0x7ffc5bcf8e10 ~MyString() elem2
+0x7ffc5bcf8df0 ~MyString() elem1
 </pre>

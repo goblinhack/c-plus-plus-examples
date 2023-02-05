@@ -109,15 +109,15 @@ To build:
 <pre>
 cd std_thread_timeout
 rm -f *.o example
-g++ -std=c++2a -Werror -g -ggdb3 -Wall -c -o main.o main.cpp
-g++ main.o -lpthread -o example
+clang -std=c++2a -Werror -g -O3 -fstack-protector-all -ggdb3 -Wall -c -o main.o main.cpp
+clang  main.o -lstdc++  -lpthread -o example
 ./example
 </pre>
 Expected output:
 <pre>
 
 [31;1;4mRun a function that might block[0m
-Function begins at :13:54:59.312 
-Function ends at   :Timed out at       :13:55:00.314 
-13:55:00.314 
+Function begins at :09:27:02.419 
+Function ends at   :Timed out at       :09:27:03.420 
+09:27:03.420 
 </pre>
