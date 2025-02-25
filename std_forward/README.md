@@ -144,20 +144,20 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mcreate account1 and try to deposit into it[0m
-new cash BankAccount(0x7fff5762c920, cash $0)
-deposit cash called BankAccount(0x7fff5762c920, cash $100)
-BankAccount(0x7fff5762c920, cash $100)
-[0;35mSUCCESS: account1 deposit succeeded![0m
-delete account BankAccount(0x7fff5762c920, cash $100)
+# create account1 and try to deposit into it
+new cash BankAccount(0x16b317000, cash $0)
+deposit cash called BankAccount(0x16b317000, cash $100)
+BankAccount(0x16b317000, cash $100)
+# SUCCESS: account1 deposit succeeded!
+delete account BankAccount(0x16b317000, cash $100)
 
-[31;1;4mcreate locked account2 and try to deposit into it; this should fail[0m
-new cash BankAccount(0x7fff5762c930, cash $0)
-delete account BankAccount(0x7fff5762c930, cash $0)
-[0;34mFAILED: account2 deposit failed!: tried to write to a locked (const) account[0m
+# create locked account2 and try to deposit into it; this should fail
+new cash BankAccount(0x16b316fd8, cash $0)
+delete account BankAccount(0x16b316fd8, cash $0)
+# FAILED: account2 deposit failed!: tried to write to a locked (const) account
 
-[31;1;4mcreate locked account3 and try to deposit into it; this should fail[0m
-new cash BankAccount(0x7fff5762c930, cash $0)
-delete account BankAccount(0x7fff5762c930, cash $0)
+# create locked account3 and try to deposit into it; this should fail
+new cash BankAccount(0x16b316fd8, cash $0)
+delete account BankAccount(0x16b316fd8, cash $0)
 # FAILED: account3 deposit failed!: tried to write to a locked (const) account
 </pre>

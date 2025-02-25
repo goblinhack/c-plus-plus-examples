@@ -182,62 +182,62 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mWhat is the meaning...:[0m
+# What is the meaning...:
 the meaning is 42
 
-[31;1;4mWhat type is life...:[0m
+# What type is life...:
 i
 int
 
-[31;1;4mHow big is the earth...:[0m
+# How big is the earth...:
 42
 
-[31;1;4mWhat type is the earth...:[0m
+# What type is the earth...:
 A42_c
 char [42]
 
-[31;1;4mHow big is the universe...:[0m
+# How big is the universe...:
 4200000
 
-[31;1;4mWhat type is the universe...:[0m
+# What type is the universe...:
 11TheUniverse
 TheUniverse
 
-[31;1;4mWhat type is a lambda_add_two...:[0m
-Z4mainE3$_1
-main::$_1
+# What type is a lambda_add_two...:
+Z4mainE3$_0
+main::$_0
 
-[31;1;4mWhat type is a lambda_add_two(1, 2)...:[0m
+# What type is a lambda_add_two(1, 2)...:
 int
 
-[31;1;4mWhat type is add_two()...:[0m
+# What type is add_two()...:
 FiiiE
 int (int, int)
 
-[31;1;4mWhat type is add_two(1, 2)...:[0m
+# What type is add_two(1, 2)...:
 int
 
-[31;1;4mWhat type is add_two_template<int, int>()...:[0m
+# What type is add_two_template<int, int>()...:
 int (int, int)
 
-[31;1;4mWhat type is add_two_template<float, int>()...:[0m
+# What type is add_two_template<float, int>()...:
 float (float, int)
 
-[31;1;4mWhat type is add_two_template<int, float>()...:[0m
+# What type is add_two_template<int, float>()...:
 float (int, float)
 
-[31;1;4mWhat type is add_two_template<float, float>()...:[0m
+# What type is add_two_template<float, float>()...:
 float (float, float)
 
-[31;1;4mWhat type is add_two_template((int)1, (int)2)...:[0m
+# What type is add_two_template((int)1, (int)2)...:
 int
 
-[31;1;4mWhat type is add_two_template((float)1.1, (int)2)...:[0m
+# What type is add_two_template((float)1.1, (int)2)...:
 float
 
-[31;1;4mWhat type is add_two_template((int)1, (float)2.2)...:[0m
+# What type is add_two_template((int)1, (float)2.2)...:
 float
 
-[31;1;4mWhat type is add_two_template((float)1.1, (float)2.2)...:[0m
+# What type is add_two_template((float)1.1, (float)2.2)...:
 float
 </pre>

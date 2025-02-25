@@ -48,7 +48,7 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mCombine various arguments of different types into a string[0m
+# Combine various arguments of different types into a string
 The meaning of life is 42 or 6 times 7 
 
 # End

@@ -106,22 +106,22 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4minvoke old C style typedef callback[0m
+# invoke old C style typedef callback
 cb(1, 2) = 3
 
-[31;1;4minvoke new C++ style std::function callback[0m
+# invoke new C++ style std::function callback
 cb(1, 2) = 3
 
-[31;1;4minvoke with a lambda (non inline syntax)[0m
+# invoke with a lambda (non inline syntax)
 cb(1, 2) = 3
 
-[31;1;4minvoke with a lambda (inline syntax)[0m
+# invoke with a lambda (inline syntax)
 cb(1, 2) = 3
 
-[31;1;4minvoke with a lambda (inline longer syntax)[0m
+# invoke with a lambda (inline longer syntax)
 cb(1, 2) = 3
 
-[31;1;4minvoke the old typedef handler with a lambda, this should be equivalent[0m
+# invoke the old typedef handler with a lambda, this should be equivalent
 cb(1, 2) = 3
 
 # end

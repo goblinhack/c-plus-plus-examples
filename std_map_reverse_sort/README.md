@@ -113,7 +113,7 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mbackward sorted map[0m
+# backward sorted map
 zaphod 1
 vogon 6
 universe 2
@@ -121,7 +121,7 @@ mice 5
 marvin 4
 arthur 3
 
-[31;1;4mforward sorted map[0m
+# forward sorted map
 arthur 3
 marvin 4
 mice 5
@@ -129,7 +129,7 @@ universe 2
 vogon 6
 zaphod 1
 
-[31;1;4mdefault sorted map[0m
+# default sorted map
 arthur 3
 marvin 4
 mice 5

@@ -42,6 +42,3 @@ clean:
 clobber: clean
 
 all: $(TARGET) 
-# DO NOT DELETE
-
-.o/main.o: ../common/common.h

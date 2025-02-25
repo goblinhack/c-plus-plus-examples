@@ -148,11 +148,11 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mcreate account1 and try to deposit into it[0m
-new cash BankAccount(0x7ffcd444f308, cash $0)
-deposit cash called BankAccount(0x7ffcd444f308, cash $100)
-deposit cash called BankAccount(0x7ffcd444f308, cash $200)
-[0;35mSUCCESS: account1 1st deposit succeeded![0m
-delete account BankAccount(0x7ffcd444f308, cash $200)
+# create account1 and try to deposit into it
+new cash BankAccount(0x16d522f80, cash $0)
+deposit cash called BankAccount(0x16d522f80, cash $100)
+deposit cash called BankAccount(0x16d522f80, cash $200)
+# SUCCESS: account1 1st deposit succeeded!
+delete account BankAccount(0x16d522f80, cash $200)
 # FAILED: account1 deposit failed!: transaction is too small for Mr Money Bags
 </pre>

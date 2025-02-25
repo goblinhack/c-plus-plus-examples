@@ -258,27 +258,27 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mShow default IO formatting flags:[0m
+# Show default IO formatting flags:
 std::cout flags are: :dec:skipws
 
-[31;1;4mCreate a file[0m
+# Create a file
 
-[31;1;4mMethod 1a (string at a time, newlines are lost, whitespace is skipped)[0m
+# Method 1a (string at a time, newlines are lost, whitespace is skipped)
 Time is an illusion. Lunch time, doubly so. Douglas Adams 
 
-[31;1;4mMethod 1b (string at a time, newlines are lost, no skip of whitespace)[0m
+# Method 1b (string at a time, newlines are lost, no skip of whitespace)
 Time  
 
-[31;1;4mMethod 2 (via std::copy with back insert iterator, spaces are lost)[0m
+# Method 2 (via std::copy with back insert iterator, spaces are lost)
 Timeisanillusion.Lunchtime,doublyso.DouglasAdams
 
-[31;1;4mMethod 3 (via istreambuf, char at a time, likely slower)[0m
+# Method 3 (via istreambuf, char at a time, likely slower)
 Time is an illusion.
   Lunch time, doubly so.
 
     Douglas Adams
 
-[31;1;4mMethod 4 (via getline, line at a time, likely fast)[0m
+# Method 4 (via getline, line at a time, likely fast)
 Time is an illusion.
   Lunch time, doubly so.
 

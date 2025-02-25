@@ -164,16 +164,16 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mCreate a std::initializer_list of std::string:[0m
+# Create a std::initializer_list of std::string:
 
-[31;1;4mAssign this initializer_list to a vector:[0m
-push_back called MyVector(0x7fff62aabe18, currlen=1, maxlen=1 elems=[elem1])
-push_back called MyVector(0x7fff62aabe18, currlen=2, maxlen=2 elems=[elem1,elem2])
+# Assign this initializer_list to a vector:
+push_back called MyVector(0x16b3cafb8, currlen=1, maxlen=1 elems=[elem1])
+push_back called MyVector(0x16b3cafb8, currlen=2, maxlen=2 elems=[elem1,elem2])
 
-[31;1;4mWalk the vector with 'const auto &i': (to avoid copies)[0m
+# Walk the vector with 'const auto &i': (to avoid copies)
 elem1
 elem2
 
-[31;1;4mEnd:[0m
-delete MyVector(0x7fff62aabe18, currlen=2, maxlen=2 elems=[elem1,elem2])
+# End:
+delete MyVector(0x16b3cafb8, currlen=2, maxlen=2 elems=[elem1,elem2])
 </pre>

@@ -126,27 +126,27 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mcall bind_fn1(_1, _2, _3)[0m
+# call bind_fn1(_1, _2, _3)
 argument 1 is cat
 argument 2 is dog
 argument 3 is ork
 
-[31;1;4mcall bind_fn1(_2, _1, _3)[0m
+# call bind_fn1(_2, _1, _3)
 argument 1 is dog
 argument 2 is cat
 argument 3 is ork
 
-[31;1;4mcall bind_fn1(_3, _2, _1)[0m
+# call bind_fn1(_3, _2, _1)
 argument 1 is ork
 argument 2 is cat
 argument 3 is dog
 
-[31;1;4mcall our bind function via std::for_each to modify a list of strings[0m
+# call our bind function via std::for_each to modify a list of strings
 l1 list-elem is now cat
 l1 list-elem is now dog
 l1 list-elem is now ork
 
-[31;1;4mcall our bind function via std::transform to modify a list of strings[0m
+# call our bind function via std::transform to modify a list of strings
 l2 list-elem is now cat and is modified
 l2 list-elem is now dog and is modified
 l2 list-elem is now ork and is modified

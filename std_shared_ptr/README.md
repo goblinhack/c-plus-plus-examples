@@ -102,32 +102,32 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mCreate a copy constructed class and share it between two pointers:[0m
-new Foo(0x7ffc1cc11df0, data=foo1)
-copy constructor Foo(0x56425a0aef00, data=)
-delete Foo(0x7ffc1cc11df0, data=foo1)
+# Create a copy constructed class and share it between two pointers:
+new Foo(0x16d42efb8, data=foo1)
+copy constructor Foo(0x600001250198, data=)
+delete Foo(0x16d42efb8, data=foo1)
 sptr1 ref count now 1
 sptr2 ref count now 2
 
-[31;1;4mTry to create a deadlock:[0m
+# Try to create a deadlock:
 other use_count now 4
 sptr1 ref count now 3
 other use_count now 4
 sptr2 ref count now 3
 
-[31;1;4mUndo the 'deadlock':[0m
+# Undo the 'deadlock':
 other use_count now 0
 sptr1 ref count now 2
 other use_count now 0
 sptr2 ref count now 2
 
-[31;1;4mRelease the shared sptrs, expect foo1 to be destroyed:[0m
+# Release the shared sptrs, expect foo1 to be destroyed:
 sptr1 ref count now 0
-delete Foo(0x56425a0aef00, data=foo1)
+delete Foo(0x600001250198, data=foo1)
 sptr2 ref count now 0
 
-[31;1;4mYou can also create shared pointers WITHOUT copy constructor overhead[0m
-new Foo(0x56425a0aef40, data=foo0)
-sptr0 = Foo(0x56425a0aef40, data=foo0)
-delete Foo(0x56425a0aef40, data=foo0)
+# You can also create shared pointers WITHOUT copy constructor overhead
+new Foo(0x6000009502d0, data=foo0)
+sptr0 = Foo(0x6000009502d0, data=foo0)
+delete Foo(0x6000009502d0, data=foo0)
 </pre>

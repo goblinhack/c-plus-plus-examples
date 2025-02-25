@@ -139,22 +139,22 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mcreate account1 and try to deposit into it[0m
-new cash BankAccount(0x7ffc573b6150, cash $0)
+# create account1 and try to deposit into it
+new cash BankAccount(0x16ef32fe8, cash $0)
 
-[31;1;4minvoke a bind to a method via proxy[0m
-copy cash constructor called for BankAccount(0x7ffc573b6150, cash $0)
-copy cash constructor result is  BankAccount(0x7ffc573b6168, cash $0)
-deposit cash called BankAccount(0x7ffc573b6168, cash $100)
+# invoke a bind to a method via proxy
+copy cash constructor called for BankAccount(0x16ef32fe8, cash $0)
+copy cash constructor result is  BankAccount(0x16ef32fd8, cash $0)
+deposit cash called BankAccount(0x16ef32fd8, cash $100)
 
-[31;1;4minvoke a bind to a method via proxy with std::ref[0m
-deposit cash called BankAccount(0x7ffc573b6150, cash $100)
+# invoke a bind to a method via proxy with std::ref
+deposit cash called BankAccount(0x16ef32fe8, cash $100)
 
-[31;1;4minvoke a bind to a method directly[0m
-deposit cash called BankAccount(0x7ffc573b6150, cash $200)
+# invoke a bind to a method directly
+deposit cash called BankAccount(0x16ef32fe8, cash $200)
 
-[31;1;4mcheck the deposits succeeded[0m
-delete account BankAccount(0x7ffc573b6168, cash $100)
-delete account BankAccount(0x7ffc573b6150, cash $200)
-# FAILED: account1 deposit failed!: account has different funds BankAccount(0x7ffc573b6150, cash $200) than expected 300
+# check the deposits succeeded
+delete account BankAccount(0x16ef32fd8, cash $100)
+delete account BankAccount(0x16ef32fe8, cash $200)
+# FAILED: account1 deposit failed!: account has different funds BankAccount(0x16ef32fe8, cash $200) than expected 300
 </pre>

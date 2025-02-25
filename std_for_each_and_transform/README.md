@@ -93,17 +93,17 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mUse std::for_each to modify a list of strings[0m
+# Use std::for_each to modify a list of strings
 list-elem is Zaphod is modified via std::for_each
 list-elem is Marvin is modified via std::for_each
 list-elem is The Mice is modified via std::for_each
 
-[31;1;4mUse std::transform to modify a list of strings[0m
+# Use std::transform to modify a list of strings
 list-elem is Zaphod is modified via std::transform
 list-elem is Marvin is modified via std::transform
 list-elem is The Mice is modified via std::transform
 
-[31;1;4mUse std::transform to write to a new list[0m
+# Use std::transform to write to a new list
 oldlist-elem is Zaphod
 oldlist-elem is Marvin
 oldlist-elem is The Mice

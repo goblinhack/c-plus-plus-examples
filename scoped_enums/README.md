@@ -79,7 +79,7 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mVarious enum accessors:[0m
+# Various enum accessors:
 ClassColors::GREEN     = 5
 GlobalColors::GREEN    = 2
 GREEN                  = 2

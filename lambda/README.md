@@ -169,9 +169,9 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mCreate a vector of unsorted ints:[0m
+# Create a vector of unsorted ints:
 
-[31;1;4mSort via lamda sorter:[0m
+# Sort via lamda sorter:
 vec1: walk 1
 vec1: walk 2
 vec1: walk 3
@@ -180,7 +180,7 @@ vec1: walk 6
 vec1: walk 7
 vec1: walk 42
 
-[31;1;4mModify vector via lamda modifier:[0m
+# Modify vector via lamda modifier:
 vec1: walk 2
 vec1: walk 3
 vec1: walk 4
@@ -189,7 +189,7 @@ vec1: walk 7
 vec1: walk 8
 vec1: walk 43
 
-[31;1;4mModify vector via lamda modifier that specifies return type:[0m
+# Modify vector via lamda modifier that specifies return type:
 vec1: walk 3
 vec1: walk 4
 vec1: walk 5
@@ -198,7 +198,7 @@ vec1: walk 8
 vec1: walk 9
 vec1: walk 44
 
-[31;1;4mModify vector via lamda modifier that specifies return type:[0m
+# Modify vector via lamda modifier that specifies return type:
 vec1: walk 4
 vec1: walk 5
 vec1: walk 6
@@ -207,7 +207,7 @@ vec1: walk 9
 vec1: walk 10
 vec1: walk 45
 
-[31;1;4mModify vector via lamda modifier with [=] capture:[0m
+# Modify vector via lamda modifier with [=] capture:
 vec1: walk 5
 vec1: walk 6
 vec1: walk 7
@@ -216,7 +216,7 @@ vec1: walk 10
 vec1: walk 11
 vec1: walk 46
 
-[31;1;4mModify vector via lamda modifier with [&] capture:[0m
+# Modify vector via lamda modifier with [&] capture:
 vec1: walk 6
 vec1: walk 8
 vec1: walk 10
@@ -225,7 +225,7 @@ vec1: walk 15
 vec1: walk 17
 vec1: walk 53
 
-[31;1;4mAuto lambda:[0m
+# Auto lambda:
 vec2: walk 3.6
 vec2: walk 2.5
 vec2: walk 4.4
@@ -234,13 +234,13 @@ vec2: walk 7.3
 vec2: walk 6.2
 vec2: walk 42.1
 
-[31;1;4mLambda with modification:[0m
+# Lambda with modification:
 Zaphod has 2 heads
 
-[31;1;4mLambda with modification:[0m
+# Lambda with modification:
 Marvin has 1 heads
 
-[31;1;4mLambda with modification in the capture:[0m
+# Lambda with modification in the capture:
 life        = 38
 life        = 40
 life        = 42

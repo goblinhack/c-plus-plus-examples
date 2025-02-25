@@ -225,70 +225,70 @@ clang  main.o -lstdc++  -o example
 Expected output:
 <pre>
 
-[31;1;4mCreate a std::map of AccountNumber -> Account[0m
+# Create a std::map of AccountNumber -> Account
 
-[31;1;4mCreate some accounts[0m
-new cash BankAccount(0x7fff0fd76880, cash $10000)
-new cash BankAccount(0x7fff0fd76870, cash $20000)
-new cash BankAccount(0x7fff0fd76860, cash $30000)
-new cash BankAccount(0x7fff0fd76858, cash $30000)
+# Create some accounts
+new cash BankAccount(0x16bb32fc4, cash $10000)
+new cash BankAccount(0x16bb32fc0, cash $20000)
+new cash BankAccount(0x16bb32fbc, cash $30000)
+new cash BankAccount(0x16bb32fb8, cash $30000)
 
-[31;1;4mAdd an account with insert()[0m
-copy cash constructor called for BankAccount(0x7fff0fd76880, cash $10000)
-copy cash constructor result is  BankAccount(0x7fff0fd768c4, cash $10000)
-copy cash constructor called for BankAccount(0x7fff0fd768c4, cash $10000)
-copy cash constructor result is  BankAccount(0x564ddcaecee4, cash $10000)
-delete account BankAccount(0x7fff0fd768c4, cash $10000)
+# Add an account with insert()
+copy cash constructor called for BankAccount(0x16bb32fc4, cash $10000)
+copy cash constructor result is  BankAccount(0x16bb32fe4, cash $10000)
+copy cash constructor called for BankAccount(0x16bb32fe4, cash $10000)
+copy cash constructor result is  BankAccount(0x6000030e82f0, cash $10000)
+delete account BankAccount(0x16bb32fe4, cash $10000)
 
-[31;1;4mAdd an account with map[k] = v[0m
-default constructor BankAccount(0x564ddcaecf64, cash $0)
+# Add an account with map[k] = v
+default constructor BankAccount(0x6000030e8320, cash $0)
 
-[31;1;4mAdd an account with emplace()[0m
-copy cash constructor called for BankAccount(0x7fff0fd76860, cash $30000)
-copy cash constructor result is  BankAccount(0x7fff0fd768c4, cash $30000)
-copy cash constructor called for BankAccount(0x7fff0fd768c4, cash $30000)
-copy cash constructor result is  BankAccount(0x564ddcaecf94, cash $30000)
-delete account BankAccount(0x7fff0fd768c4, cash $30000)
+# Add an account with emplace()
+copy cash constructor called for BankAccount(0x16bb32fbc, cash $30000)
+copy cash constructor result is  BankAccount(0x16bb32fe4, cash $30000)
+copy cash constructor called for BankAccount(0x16bb32fe4, cash $30000)
+copy cash constructor result is  BankAccount(0x6000030e8350, cash $30000)
+delete account BankAccount(0x16bb32fe4, cash $30000)
 
-[31;1;4mShow all bank accounts[0m
+# Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(102) $20000
 AccountNumber(104) $30000
 
-[31;1;4mDoes account1 exist?[0m
+# Does account1 exist?
 
-[31;1;4mYes[0m
+# Yes
 
-[31;1;4mDoes account4 exist?[0m
+# Does account4 exist?
 
-[31;1;4mYes[0m
+# Yes
 
-[31;1;4mShow all bank accounts[0m
+# Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(102) $20000
 AccountNumber(104) $30000
 
-[31;1;4mRemove account2[0m
-delete account BankAccount(0x564ddcaecf64, cash $20000)
+# Remove account2
+delete account BankAccount(0x6000030e8320, cash $20000)
 
-[31;1;4mShow all bank accounts[0m
+# Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30000
 
-[31;1;4mModify account3[0m
-deposit cash called BankAccount(0x564ddcaecf94, cash $30100)
+# Modify account3
+deposit cash called BankAccount(0x6000030e8350, cash $30100)
 
-[31;1;4mShow all bank accounts[0m
+# Show all bank accounts
 AccountNumber(101) $10000
 AccountNumber(104) $30100
 
-[31;1;4mRob the bank[0m
-delete account BankAccount(0x564ddcaecf94, cash $30100)
-delete account BankAccount(0x564ddcaecee4, cash $10000)
+# Rob the bank
+delete account BankAccount(0x6000030e82f0, cash $10000)
+delete account BankAccount(0x6000030e8350, cash $30100)
 
-[31;1;4mEnd[0m
-delete account BankAccount(0x7fff0fd76858, cash $30000)
-delete account BankAccount(0x7fff0fd76860, cash $30000)
-delete account BankAccount(0x7fff0fd76870, cash $20000)
-delete account BankAccount(0x7fff0fd76880, cash $10000)
+# End
+delete account BankAccount(0x16bb32fb8, cash $30000)
+delete account BankAccount(0x16bb32fbc, cash $30000)
+delete account BankAccount(0x16bb32fc0, cash $20000)
+delete account BankAccount(0x16bb32fc4, cash $10000)
 </pre>
